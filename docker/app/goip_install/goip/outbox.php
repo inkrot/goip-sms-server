@@ -32,7 +32,7 @@ if($_GET['id']) {
 	}
 	$fenye=showpage("outbox.php?id=$_REQUEST[id]&",$page,$count,$perpage,true,true,"编");
 	
-	//$db->query("update cron set over=1 where id=$_GET[id]");
+	//$db->query("update cron set `over`=1 where id=$_GET[id]");
 	$row0=$db->fetch_array($db->query("select * from message where id=$_GET[id]"));
 	//if($_SESSION['goip_permissions'] > 1 && $row0['userid']!=$_SESSION[goip_userid])
 		//die("没有权限");
@@ -87,7 +87,7 @@ SELECT sends . * , prov.prov, goip.name AS goipname
 FROM sends,  goip, prov
 WHERE sends.messageid = $_GET[id]
 AND goip.id = sends.goipid
-and  sends.over=1 
+and  sends.over=1
 and sends.provider=prov.id
 ) LIMIT $start_limit,$perpage ");
 	$sendc=0;

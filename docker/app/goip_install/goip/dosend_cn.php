@@ -84,7 +84,7 @@ else
 	function do_cron($db,$crontime,$port)
 	{
 		if(!$port) $port=44444;
-		$rs=$db->fetch_array($db->query("SELECT id FROM message WHERE crontime>0 and crontime<$crontime and over=0"));//是否有未执行的比新计划还要前的计划
+		$rs=$db->fetch_array($db->query("SELECT id FROM message WHERE crontime>0 and crontime<$crontime and `over`=0"));//是否有未执行的比新计划还要前的计划
 		$flag=1;
 		if(empty($rs[0])){
 			$flag=0;
@@ -568,7 +568,7 @@ function startdo($db, $tels,$sendid, $goipid=0){
 					if($comm[0]=="OK"){
 						//更新数据库，发送成功 
 						
-						$db->query("update sends set over=1 where id=$goipnow[telid] and messageid=$sendid");	
+						$db->query("update sends set `over`=1 where id=$goipnow[telid] and messageid=$sendid");
 						/**/
 						if($goipnow[send]!="SEND"){//不处于发送状态，无视
 							//echo "net send status <br>";

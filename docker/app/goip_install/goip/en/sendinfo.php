@@ -70,7 +70,7 @@ if($_GET['id']) {
 	$row0=$db->fetch_array($db->query("select * from message where id=$_GET[id]"));
 	if($_SESSION['goip_permissions'] > 1 && $row0['userid']!=$_SESSION[goip_userid])
 		die("permission error!");
-	//$db->query("update cron set over=1 where id=$_GET[id]");
+	//$db->query("update cron set `over`=1 where id=$_GET[id]");
 	$query=$db->query("(SELECT receiver . * ,sends . * ,  '-' as goipname,prov.prov
 FROM sends left join receiver on receiver.id = sends.recvid, message, prov
 WHERE message.id =$_GET[id]                                                                                       
@@ -133,7 +133,7 @@ SELECT sends . * , prov.prov, goip.name AS goipname
 FROM sends,  goip, prov
 WHERE sends.messageid = $_GET[id]
 AND goip.id = sends.goipid
-and  sends.over=1 
+and  sends.over=1
 and sends.provider=prov.id
 ) LIMIT $start_limit,$perpage ");
 	$sendc=0;
@@ -199,7 +199,7 @@ else {
 		$row0=$db->fetch_array($query0);
 		$row["total"]=$row0['count'];
 
-		$query0=$db->query("SELECT count(*) as count from sends,message where message.id=$row[id] and sends.messageid=message.id and `sends.over`=1");
+		$query0=$db->query("SELECT count(*) as count from sends,message where message.id=$row[id] and sends.messageid=message.id and sends.over=1");
 		$row0=$db->fetch_array($query0);
 		$row["succ"]=$row0['count'];		
 		$rsdb[]=$row;

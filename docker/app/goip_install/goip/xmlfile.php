@@ -127,7 +127,7 @@ elseif($_POST['action']=='request'){
 	//print_r($xml);
 	//echo($xml[""][0]->uid[0]);
 	//echo($uid);
-	$query=$db->query("select `message.over`,message.msgid,message.time,`sends.over` as sover from message left join sends on sends.messageid=message.id where uid='$uid'");
+	$query=$db->query("select `message.over`,message.msgid,message.time,sends.over as sover from message left join sends on sends.messageid=message.id where uid='$uid'");
 /*
 	$rs=$db->fetch_array($query);
 	

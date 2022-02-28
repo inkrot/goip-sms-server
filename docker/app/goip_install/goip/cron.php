@@ -14,7 +14,7 @@ if($_GET['id'] && $_GET['action'] != "del") {
 	$row0=$db->fetch_array($db->query("select * from message where id=$_GET[id]"));
 	if($_SESSION['goip_permissions'] > 1 && $row0['userid']!=$_SESSION[goip_userid])
 		die("没有权限~");
-	else $db->query("update message set over=3 where id=$_GET[id]");
+	else $db->query("update message set `over`=3 where id=$_GET[id]");
 
 	$query=$db->query("SELECT count(*) AS count FROM sends where messageid=$_GET[id]");
 	$row=$db->fetch_array($query);
@@ -51,7 +51,7 @@ FROM sends left join receiver on receiver.id = sends.recvid, message, goip, prov
 WHERE message.id =$_GET[id]                                                                                       
 AND sends.messageid = message.id                                                                                  
 AND goip.id = sends.goipid                                                                                        
-and sends.over=1                                                                                                  
+and sends.over=1                                                                                          
 and prov.id=sends.provider  
 ) LIMIT $start_limit,$perpage");
 	

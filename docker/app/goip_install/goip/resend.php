@@ -174,7 +174,7 @@ function startdo($db, $tels, $sendid, $msg, $len, $goipid=0){
 		//$sendid=$sendsiddb[0];
 		
 		//$id=0;
-		$db->query("update message set over=1 where id=$sendid");
+		$db->query("update message set `over`=1 where id=$sendid");
 		$query=$db->query("SELECT prov.*,goip.* FROM goip,prov where prov.id=goip.provider ORDER BY name");
 		$socks=array();
 		$goipdb=array();
@@ -352,9 +352,9 @@ function startdo($db, $tels, $sendid, $msg, $len, $goipid=0){
 						//更新數據庫，發送成功 
 						//echo "inser: ".$goipnow[tel][id]."  $goipnow[tel] ok<br>";
 						if(is_numeric($comm[3])) 
-							$db->query("update sends set over=1,sms_no=$comm[3],goipid=$goipnow[id],time=now() where id='".$goipnow[tel][id]."' and messageid=$sendid");	
+							$db->query("update sends set `over`=1,sms_no=$comm[3],goipid=$goipnow[id],time=now() where id='".$goipnow[tel][id]."' and messageid=$sendid");
 						else 
-							$db->query("update sends set over=1,goipid=$goipnow[id],time=now() where id='".$goipnow[tel][id]."' and messageid=$sendid");	
+							$db->query("update sends set `over`=1,goipid=$goipnow[id],time=now() where id='".$goipnow[tel][id]."' and messageid=$sendid");
 						/**/
 						if($goipnow[send]!="SEND"){//不處于發送狀態，無視
 							echo "not send status <br>";
@@ -692,7 +692,7 @@ function startdo($db, $tels, $sendid, $msg, $len, $goipid=0){
 		//$i=0;
 		//$i=count($tels);
 		//$i+=count($errortels);
-		$db->query("update message set over=2 where id=$sendid");
+		$db->query("update message set `over`=2 where id=$sendid");
 		echo "All sendings done!";
 		echo "<br><br>";
 		echo "<a href=sendinfo.php?id=$sendid target=main><font size=2'>Click me to check details.</font></a>";
@@ -711,7 +711,7 @@ function startdo($db, $tels, $sendid, $msg, $len, $goipid=0){
 		if(!$msg || !strlen($msg)) $msg='1';
 		$goipid=$merow[goipid];
 		$len=strlen($msg);
-		$query=$db->query("SELECT * FROM sends  where messageid=$_GET[messageid] and over=0 ORDER BY id");
+		$query=$db->query("SELECT * FROM sends  where messageid=$_GET[messageid] and `over`=0 ORDER BY id");
 		while($row=$db->fetch_array($query)) {
 			$tels[$row[provider]][]=$row; 
 			$totalnum++;
