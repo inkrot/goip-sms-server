@@ -1,0 +1,90 @@
+<!--
+<?php
+print <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="../style.css" rel="stylesheet" type="text/css">
+<title>Auto Num Management</title>
+</head>
+<body leftmargin="2" topmargin="0" marginwIdth="0" marginheight="0">
+<table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border">
+  <tr class="topbg"> 
+    <td height="22" colspan="2" align="center"><strong>Auto Get Num Management</strong></td>
+  </tr>
+  <tr class="tdbg"> 
+    <td wIdth="100" height="30"><strong>Navigation:</strong></td>
+    <td height="30"><a href="auto_num.php" target=main>Auto Get Num Modify</a>
+  </tr>
+</table>
+
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>Current Location: Auto Get Num Modify</strong></td>
+  </tr>
+</table>
+<table wIdth="100%" border="0" align="center" cellpadding="0" cellspacing="1" class="border">
+  <tr class="title">
+    <td height="22"><strong> Notice: </strong></td>
+  </tr>
+  <tr class="tdbg" >
+    <td valign="middle"><ul>
+	  If GSM LOGIN and gsm number not input in GoIP, server will try to send a USSD to get the number.If return "Your number is 12345678." , "Your number is " is Num Prefix, "." is Num Postfix, then "12345678" is the number which you want to get.
+   	 </ul>
+	</td>
+  </tr>
+</table>
+<form method="post" action="auto_num.php?action=save" name="form1" onSubmit="return confirm('Sure to Save?')">
+  <table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border" >
+    <tr class="title"> 
+      <td height="22" colspan="8"> <div align="center"><strong>Provider Modify</strong></div></td>
+    </tr>
+<!--
+EOT;
+$i=1;
+foreach($rsdb as $rs){
+	$prov=htmlspecialchars($rs["prov"]);
+	$inter=htmlspecialchars($rs["inter"]);
+	$local=htmlspecialchars($rs["local"]);
+	$recharge_ok_r=htmlspecialchars($rs["recharge_ok_r"]);
+print <<<EOT
+-->
+    <tr> 
+      <td wIdth="90" align="right" class="tdbg"><strong>Provider({$i}):</strong></td>
+      <td class="tdbg" wIdth="40">$prov</td>
+      <td wIdth="150" align="right" class="tdbg"><strong>({$i})Auto Num USSD:</strong></td>
+      <td class="tdbg" wIdth="40"><input type="input" name="auto_num_ussd$i" value="$rs[auto_num_ussd]" maxlength="20" size="10"></td>
+      <td wIdth="150" align="right" class="tdbg"><strong>({$i})Num Prefix:</strong></td>
+      <td class="tdbg" wIdth="40"><input type="input" name="num_prefix$i" value="$rs[num_prefix]" maxlength="20" size="10"></td>
+      <td wIdth="150" align="right" class="tdbg"><strong>({$i})Num Postfix:</strong></td>
+      <td class="tdbg" wIdth="40"><input type="input" name="num_postfix$i" value="$rs[num_postfix]" maxlength="20" size="10"></td>
+    </tr>
+<!--
+EOT;
+$i++;
+}
+$i=$i-1;
+print <<<EOT
+-->
+    <tr> 
+      <td height="40" colspan="8" align="center" class="tdbg"><input name="Action" type="hIdden" Id="Action" value="Modify"> 
+	<input name="count" type="hIdden" Id="count" value="{$i}">
+        <input  type="submit" name="Submit" value="  Save  " style="cursor:hand;"> 
+</td>
+    </tr>
+  </table>
+
+</form>
+
+					  </td> 
+					</tr>
+</table>
+				
+</body>
+</html>
+<!--
+EOT;
+?>
+-->

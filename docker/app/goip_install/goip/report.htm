@@ -1,0 +1,250 @@
+<!--
+<?php
+print <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="style.css" rel="stylesheet" type="text/css">
+<title>邮件报告管理</title>
+<script language="javascript">
+
+function disable_all(id)
+{
+        if (document.getElementById){
+                var obj
+
+                obj=document.getElementById(id)
+                if (obj) {
+                        var inputs=obj.getElementsByTagName("INPUT");
+                        for (i=0; i<inputs.length; i++){
+                                var input = inputs[i]
+                                var disabledbyelement=input.getAttribute("disabledbyelement")
+                                if (disabledbyelement=="") {
+                                        inputs[i].disabled=true
+                                        inputs[i].style.background=disabled_background_color
+                                        inputs[i].style.color=disabled_color
+                                        inputs[i].setAttribute("disabledbyelement", id)
+                                }
+                        }
+                }
+        }
+}
+
+function enable_all(id)                         
+{                                                       
+        if (document.getElementById){                   
+                var obj                         
+                                                
+                obj=document.getElementById(id)         
+                if (obj) {                      
+                        var inputs=obj.getElementsByTagName("INPUT");
+                        for (i=0; i<inputs.length; i++){
+                                var input = inputs[i]
+                                var disabledbyelement=input.getAttribute("disabledbyelement")
+                                if (disabledbyelement==id) {
+                                        inputs[i].disabled=false
+                                        inputs[i].style.background=""
+                                        inputs[i].style.color=""
+                                        inputs[i].setAttribute("disabledbyelement", "")
+                                }
+                        }
+                }
+        }
+}
+
+function toggle_checkbox(id, effect)
+{
+	if (document.getElementById){
+		if(document.getElementById(id)){
+			if(document.getElementById(id).checked){
+				if(document.getElementById(id+"_div")){
+					if(effect == "hide"){
+						document.getElementById(id+"_div").style.display="block"
+					}
+					else if(effect == "disable"){
+						enable_all(id+"_div")
+					}
+				}
+			}
+			else{
+				if(document.getElementById(id+"_div")){
+					if(effect == "hide"){
+						document.getElementById(id+"_div").style.display="none"
+					}
+					else if(effect == "disable"){
+						disable_all(id+"_div")
+                                        }
+                                }
+                        }
+                }
+        }
+}
+function show_tr(value,id){
+        if(!value) document.getElementById(id).style.display='none';
+        else document.getElementById(id).style.display='';
+}
+</script>
+</head>
+<body leftmargin="2" topmargin="0" marginwIdth="0" marginheight="0">
+<table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border">
+  <tr class="topbg"> 
+    <td height="22" colspan="2" align="center"><strong>邮件报告管理</strong></td>
+  </tr>
+  <tr class="tdbg"> 
+    <td wIdth="100" height="30"><strong>管理导航:</strong></td>
+    <td height="30"><a href="?" target=main>修改</a>&nbsp;|&nbsp;<a href="?&action=email" target=main>发送邮件</a>&nbsp;|&nbsp;</td>
+  </tr>
+</table>
+<!--
+EOT;
+if($action=="main") {
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>当前位置: 修改邮件报告设置</strong></td>
+  </tr>
+</table>
+<form method="post" action="?action=savemodify" name="form1">
+  <table wIdth="600" border="0" align="center" cellpadding="2" cellspacing="1" class="border" >
+    <tr class="title"> 
+      <td height="22" colspan="2"> <div align="center"><strong>修改SMTP设置</strong></div></td>
+    </tr>
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>SMTP 邮件地址:</strong></td>
+      <td class="tdbg"><input type="input" name="smtp_mail" value=$rs[smtp_mail]></td>
+    </tr>
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>SMTP 服务器地址:</strong></td>
+      <td class="tdbg"><input type="input" name="smtp_server" value=$rs[smtp_server]></td>
+    </tr>
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>SMTP 端口:</strong></td>
+      <td class="tdbg"><input type="input" name="smtp_port" value=$rs[smtp_port]></td>
+    </tr>
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>SMTP 账号:</strong></td>
+      <td class="tdbg"><input type="input" name="smtp_user" value=$rs[smtp_user]></td>
+    </tr>
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>SMTP 密码:</strong></td>
+      <td class="tdbg"><input type="input" name="smtp_pass" value=$rs[smtp_pass]></td>
+    </tr>
+    <tr class="title">
+      <td height="22" colspan="2"> <div align="center"><strong>修改报告设置</strong></div></td>
+    </tr>
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>发送报告至邮件:</strong></td>
+      <td class="tdbg"><input type="input" name="report_mail" value=$rs[report_mail]></td>
+    </tr>
+
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>发送报告当GSM LOGOUT时:</strong></td>
+      <td class="tdbg"><input type="checkbox" name="gsm_logout_enable" id="gsm_logout_enable" onclick="show_tr(this.checked, 'gsm_logout_enable_div')" $gsm_logout_checked></td>
+    </tr>
+    <tr style="display:{$gsm_logout_display}" Id='gsm_logout_enable_div'>
+      <td wIdth="300" align="right" class="tdbg"><strong>GSM LOGOUT超时时间(分钟):</strong></td>
+      <td class="tdbg"><input type="input" name="gsm_logout_time_limit" value=$rs[email_report_gsm_logout_time_limit]> </td>
+    </tr>
+
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>发送报告当线路注册到服务器掉线时:</strong></td>
+      <td class="tdbg"><input type="checkbox" name="reg_logout_enable" id="reg_logout_enable" onclick="show_tr(this.checked, 'reg_logout_enable_div')" $reg_logout_checked></td>
+    </tr>
+    <tr style="display:{$reg_logout_display}" Id='reg_logout_enable_div'>
+      <td wIdth="300" align="right" class="tdbg"><strong>掉线超时时间(分钟):</strong></td>
+      <td class="tdbg"><input type="input" name="reg_logout_time_limit" value=$rs[email_report_reg_logout_time_limit]> </td>
+    </tr>
+
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>发送报告当限制时间用尽时:</strong></td>
+      <td class="tdbg"><input type="checkbox" name="remain_timeout_enable" id="remain_timeout_enable" $remain_timeout_checked></td>
+    </tr>
+<!--
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>Email Forward SMS:</strong></td>
+      <td class="tdbg"><input type="checkbox" name="email_forward_sms_enable" id="email_forward_sms_enable" $email_forward_sms_checked></td>
+    </tr>
+-->
+    <tr> 
+      <td height="40" colspan="2" align="center" class="tdbg">
+        <input  type="submit" name="Submit" value="保存" style="cursor:hand;"> 
+        &nbsp; <input name="Cancel" type="button" Id="Cancel" value="取消" onClick="window.location.href='?'" style="cursor:hand;">
+&nbsp; <input name="Cancel" type="button" Id="Cancel" value="测试发送邮件" onClick="window.location.href='?action=email'" style="cursor:hand;">
+</td>
+    </tr>
+  </table>
+  </form>
+<!--
+EOT;
+}
+else if($action=="email"){
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>当前位置: 发送邮件</strong></td>
+  </tr>
+</table>
+<form method="post" action="?action=send_mail" name="form1">
+  <table wIdth="600" border="0" align="center" cellpadding="2" cellspacing="1" class="border" >
+    <tr class="title"> 
+      <td height="22" colspan="2"> <div align="center"><strong>修改 SMTP</strong></div></td>
+    </tr>
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>SMTP 邮件地址:</strong></td>
+      <td class="tdbg"><input type="input" name="smtp_mail" value=$rs[smtp_mail]></td>
+    </tr>
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>SMTP 服务器地址:</strong></td>
+      <td class="tdbg"><input type="input" name="smtp_server" value=$rs[smtp_server]></td>
+    </tr>
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>SMTP 端口:</strong></td>
+      <td class="tdbg"><input type="input" name="smtp_port" value=$rs[smtp_port]></td>
+    </tr>
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>SMTP 账户:</strong></td>
+      <td class="tdbg"><input type="input" name="smtp_user" value=$rs[smtp_user]></td>
+    </tr>
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>SMTP 密码:</strong></td>
+      <td class="tdbg"><input type="input" name="smtp_pass" value=$rs[smtp_pass]></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>发送邮件:</strong></td>
+      <td class="tdbg"><input type="input" name="report_mail" value=$rs[report_mail]></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>标题:</strong></td>
+      <td class="tdbg"><input type="input" name="title" value="test"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>内容:</strong></td>
+      <td class="tdbg"><input type="input" name="content" value="a test one"></td>
+    </tr>
+    <tr> 
+      <td height="40" colspan="2" align="center" class="tdbg">
+        <input  type="submit" name="Submit" value="发送" style="cursor:hand;"> 
+        &nbsp; <input name="Cancel" type="button" Id="Cancel" value="取消" onClick="window.location.href='?'" style="cursor:hand;"></td>
+    </tr>
+
+<!--
+EOT;
+}
+print <<<EOT
+-->
+
+					  </td> 
+					</tr>
+</table>
+				
+</body>
+</html>
+<!--
+EOT;
+?>
+-->

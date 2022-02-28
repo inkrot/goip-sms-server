@@ -1,0 +1,122 @@
+<!--
+<?php
+print <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="../style.css" rel="stylesheet" type="text/css">
+<title>cdr management</title>
+<script src="time.js"></script>
+<script language="javascript">
+
+</script>
+</head>
+<body leftmargin="2" topmargin="0" marginwIdth="0" marginheight="0">
+<table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border">
+  <tr class="topbg"> 
+    <td height="22" colspan="2" align="center"><strong>GoIP CDR</strong></td>
+  </tr>
+  <tr class="tdbg"> 
+    <td wIdth="100" height="30"><strong>Navigation:</strong></td>
+    <td height="30"></td>
+  </tr>
+</table>
+<!--
+EOT;
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>$mainifno</strong></td>
+  </tr>
+</table>
+<form action="goip_cdr.php" method="post">
+Provider:
+{$prov_select}
+Group:
+{$group_select}
+GoIP:
+{$select}
+
+Start:
+<input type="text" name="start_time"  readOnly onClick="SelectDate(this,'yyyy-MM-dd hh:mm')" value="{$start_time}">
+End:
+<input type="text" name="end_time"  readOnly onClick="SelectDate(this,'yyyy-MM-dd hh:mm')" value="{$end_time}">
+<input type="submit" value="View">
+</form>
+
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2">
+	<tr class=title>
+		<td align="center"><b>GoIP</b></td>
+                <td align="center"><b>ASR</b></td>
+                <td align="center"><b>ACD</b></td>
+                <td align="center"><b>Call Time</b></td>
+                <td align="center"><b>Call Count</b></td>
+	</tr>
+<!--
+EOT;
+if(!$goip_id){
+print <<<EOT
+-->
+        <tr class="even2">
+                <td align="center">ALL</td>
+                <td align="center">$asr</td>
+                <td align="center">$acd_s</td>
+                <td align="center">$calltime_s</td>
+                <td align="center">$callcount</td>
+    	</tr>
+<!--
+EOT;
+}
+foreach($goip as $rs) {
+print <<<EOT
+-->
+	<tr class="even">
+                <td align="center">{$rs[name]}</td>
+                <td align="center">{$rsdb[$rs[id]][asr]}</td>
+                <td align="center">{$rsdb[$rs[id]][acd_s]}</td>
+		<td align="center">{$rsdb[$rs[id]][calltime_s]}</td>
+                <td align="center">{$rsdb[$rs[id]][callcount]}</td>
+				
+    </tr>
+<!--
+EOT;
+}
+if(!$goip_id){
+print <<<EOT
+-->
+        <tr class="even2">
+                <td align="center">ALL</td>
+                <td align="center">$asr</td>
+                <td align="center">$acd_s</td>
+                <td align="center">$calltime_s</td>
+                <td align="center">$callcount</td>
+        </tr>
+<!--
+EOT;
+}
+print <<<EOT
+-->
+</table>
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2">
+
+
+                                        <tr>
+                                                <td  align=center>{$fenye}</td>
+                                        </tr>
+</table>
+
+</table>
+
+					  </td> 
+					</tr>
+</table>
+				
+</body>
+</html>
+<!--
+EOT;
+?>
+-->

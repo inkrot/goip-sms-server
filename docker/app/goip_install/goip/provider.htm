@@ -1,0 +1,93 @@
+<!--
+<?php
+print <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="style.css" rel="stylesheet" type="text/css">
+<title>user management</title>
+</head>
+<body leftmargin="2" topmargin="0" marginwIdth="0" marginheight="0">
+<table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border">
+  <tr class="topbg"> 
+    <td height="22" colspan="2" align="center"><strong>User Management</strong></td>
+  </tr>
+  <tr class="tdbg"> 
+    <td wIdth="100" height="30"><strong>管理导航:</strong></td>
+    <td height="30"><a href="provider.php" target=main>修改服务商</a> | <a href="provider.php?action=add" target=main onClick="return confirm('服务商添加后将不能删除，确认要添加吗？')">添加服务商</a></td>
+  </tr>
+</table>
+
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>当前位置：修改服务商</strong></td>
+  </tr>
+</table>
+<table wIdth="100%" border="0" align="center" cellpadding="0" cellspacing="1" class="border">
+  <tr class="title">
+    <td height="22"><strong> 提示： </strong></td>
+  </tr>
+  <tr class="tdbg" >
+    <td valign="middle"><ul>
+	一般情况下，国家号码和国内号码识别可以不填， GoIP以默认的方式发送短信。
+	在某些地区，需要填国家号码(如+86)和国内号码识别(如0)，这样GoIP显式地以国际通用短信或国内短信的方式发送短信。服务器短信发送时，首先判断目的号码是否以+号开头，是的话就直接把这个目的号码发送出去；如果不是以+号开头，就把目的号码与国内号码识别进行前缀匹配吗，如果匹配上，就把目的号码用国内短信的形式发送出去；如果匹配不上，就把号码前面加上国家号码，再发送出去。
+	服务商国际号码是指默认添加的国际号码前缀。服务商国内号码识别指如果一个号码以该值开头，就认为它是一个国内号码，就不再为添加国际号码前缀。例如建立数据服务商电信的国际号码是+86，国内号码识别是0，接收人甲乙丙三个人号码的服务商都是电信；接收人甲的号码为0755********，以0开头，系统识别出这个个国内号码，直接发送0755********给goip；接收人乙的号码为+86189********, 以+开头，系统识别出这已经是一个国际号码，直接发送+86189********给goip;接收人丙的号码为189********，不满足上述2个条件，将在号码前添加+86，再把+86189********发送给goip。
+
+   	 </ul>
+	</td>
+  </tr>
+</table>
+<form method="post" action="provider.php?action=save" name="form1" onSubmit="return confirm('修改服务商，将影响到数据库中已存在的goip和接收人属性，确认修改?')">
+  <table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border" >
+    <tr class="title"> 
+      <td height="22" colspan="8"> <div align="center"><strong>修 改 服 务 商</strong></div></td>
+    </tr>
+<!--
+EOT;
+$i=1;
+foreach($rsdb as $rs){
+	$prov=htmlspecialchars($rs["prov"]);
+	$inter=htmlspecialchars($rs["inter"]);
+	$local=htmlspecialchars($rs["local"]);
+	$recharge_ok_r=htmlspecialchars($rs["recharge_ok_r"]);
+print <<<EOT
+-->
+    <tr> 
+      <td  align="right" class="tdbg"><strong>{$i}名称:</strong></td>
+      <td class="tdbg" wIdth="40"><input type="input" name="prov$i" value="$prov" maxlensergth="30" size="20"></td>
+      <td  align="right" class="tdbg"><strong>{$i}国家号码:</strong></td>
+      <td class="tdbg" wIdth="20"><input type="input" name="inter$i" value="$inter" maxlength="10" size="10"></td>
+      <td  align="right" class="tdbg"><strong>{$i}国内号码识别:</strong></td>
+      <td class="tdbg" wIdth="20"><input type="input" name="local$i" value="$local" maxlength="10" size="10"></td>
+      <td wIdth="150" align="right" class="tdbg"><strong>({$i})充值成功识别字符串:</strong></td>
+      <td class="tdbg" wIdth="40"><input type="input" name="recharge_ok_r$i" value="$recharge_ok_r" maxlength="64" size="20"></td>
+    </tr>
+<!--
+EOT;
+$i++;
+}
+$i=$i-1;
+print <<<EOT
+-->
+    <tr> 
+      <td height="40" colspan="6" align="center" class="tdbg"><input name="Action" type="hIdden" Id="Action" value="Modify"> 
+	<input name="count" type="hIdden" Id="count" value="{$i}">
+        <input  type="submit" name="Submit" value="确定" style="cursor:hand;"> 
+</td>
+    </tr>
+  </table>
+
+</form>
+
+					  </td> 
+					</tr>
+</table>
+				
+</body>
+</html>
+<!--
+EOT;
+?>
+-->

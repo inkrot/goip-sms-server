@@ -1,0 +1,283 @@
+<!--
+<?php
+print <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="style.css" rel="stylesheet" type="text/css">
+<title>充值卡号</title>
+<script language="javascript">
+function unselectall()
+	{
+	    if(document.myform.chkAll.checked){
+		document.myform.chkAll.checked = document.myform.chkAll.checked&0;
+	    } 	
+	}
+
+function CheckAll(form)
+	{
+		var trck;
+		var e;
+		for (var i=0;i<form.elements.length;i++)
+	    {
+		    e = form.elements[i];
+		    if (e.type == 'checkbox' && e.id != "chkAll" && e.disabled==false){
+				e.checked = form.chkAll.checked;
+		 		do {e=e.parentNode} while (e.tagName!="TR") 
+		 		if(form.chkAll.checked)
+		 			e.className = 'even marked';
+		 		else
+		 			e.className = 'even';
+			}
+	    }
+		//form.chkAll.classname = 'even';
+	}
+
+function mouseover(obj) {
+                obj.className += ' hover';
+				//alert(obj.className);
+            	
+			}
+
+function mouseout(obj) {
+            	obj.className = obj.className.replace( ' hover', '' );
+				//alert(obj.className);
+			}
+
+function trclick(obj) {
+		//alert("ddddd");
+        var checkbox = obj.getElementsByTagName( 'input' )[0];
+        //if ( checkbox && checkbox.type == 'checkbox' ) 
+        checkbox.checked ^= 1;
+		if(checkbox.checked)
+			obj.className = 'even marked';
+		else obj.className = 'even';
+//		var ckpage=document.modifyform.elements['chkAll'+num];
+	    if(document.myform.chkAll.checked){
+		document.myform.chkAll.checked = document.myform.chkAll.checked&0;
+	    } 	
+		
+
+		}
+
+</script>
+</head>
+<body leftmargin="2" topmargin="0" marginwIdth="0" marginheight="0">
+<FORM  name=uploadform action="?action=upload" method="POST" enctype="multipart/form-data" onSubmit="return check()">
+<table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border">
+  <tr class="topbg"> 
+    <td height="22" colspan="2" align="center"><strong>导入充值卡</strong></td>
+  </tr>
+  <tr class="tdbg"> 
+    <td wIdth="100" height="30"><strong>管理导航:</strong></td>
+    <td height="30"><a href="?action=$action&order_key=$_REQUEST[order_key]&order=$_REQUEST[order]&page=$page" target=main>列表</a>&nbsp;|&nbsp;<a href="?action=add" target=main>添加充值卡卡号</a>&nbsp;|&nbsp;
+导入充值卡文件(.csv或.xls)<a href="example/card.xls" target="_blank"> [例子]</a><INPUT TYPE="HIdDEN"  name="action" value="mingsenupload">
+<input type=file name=img1><INPUT TYPE="SUBMIT" value="上 传">
+</td>
+  </tr>
+</table>
+</FORM>
+<!--
+EOT;
+if($action=="main" || $action=="search") {
+print <<<EOT
+-->
+<!--
+<br>
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>$maininfo</strong></td>
+  </tr>
+</table>
+<form action="goip.php?action=search" method="post">
+选择搜索项<select name="type"  style="width:80px" >
+<option value="1" 
+selected
+>ID</option>
+</select>
+关键字<input type="text" name="key" value="" size=16>&nbsp;
+<input type="submit" value="搜索">
+</form>
+-->
+<form action="?action=del" method=post name=myform onSubmit="return confirm('确认删除?')">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2">
+	<tr class=title>
+		<td wIdth="35" align=center height="25"><b>选择</b></td>
+                <td align="center"><a href="?action=$action&order=$order2&order_key=card"><b>充值卡号</b></a></td>
+		<td align="center"><a href="?action=$action&order=$order2&order_key=prov_id"><b>运营商</b></a></td>
+		<td align="center"><a href="?action=$action&order=$order2&order_key=used"><b>使用</b></a></td>
+		<td align="center"><a href="?action=$action&order=$order2&order_key=use_time"><b>使用时间</b></a></td>
+		<td align="center"><a href="?action=$action&order=$order2&order_key=goipid"><b>使用的GoIP</b></a></td>
+		<td  align=center><b>操作</b></td>
+	</tr>
+<!--
+EOT;
+$j=0;
+foreach($rsdb as $rs) {
+print <<<EOT
+-->
+	<tr class="even" onMouseOver="mouseover(this)" onMouseOut="mouseout(this)" onMouseDown="trclick(this)">
+		<td align=center wIdth="35"><input name="Id{$j}" type='checkbox' onClick="return false" value="{$rs['id']}"></td>
+                <td align="center">{$rs['card']}</td>
+		<td align="center">{$rs['prov']}</td>
+		<td align="center">{$rs['used']}</td>
+                <td align="center">{$rs['use_time']}</td>
+                <td align="center">{$rs['name']}</td>
+				
+		<td align=center><a href="?action=modify&id={$rs['id']}">修改</a> | <a href="?id={$rs['id']}&action=del" onClick="return confirm('确认删除?')">删除</a></td>
+    </tr>
+
+<!--
+EOT;
+$j++;
+}
+print <<<EOT
+-->
+</table>
+<input type="hIdden" name="boxs" value="{$j}">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2">
+
+
+					<tr>
+						<td height="30" ><input name="chkAll" type="checkbox" Id="chkAll" onclick=CheckAll(this.form) value="checkbox"> 
+					  选择当前页面<input name="submit" type='submit' value='删除所选'></td>
+					</tr>
+					<tr>
+						<td  align=center>{$fenye}</td>
+					</tr>
+</table>
+<!--
+EOT;
+}
+else if($action=="add")
+{
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>当前位置：添加充值卡号</strong></td>
+  </tr>
+</table>
+<form method="post" action="?action=saveadd" name="form1">
+  <br>
+  <br>
+  <table wIdth="300" border="0" align="center" cellpadding="2" cellspacing="1" class="border" >
+    <tr class="title"> 
+      <td height="22" colspan="2"> <div align="center"><strong>添加充值卡号</strong></div></td>
+    </tr>
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>充值卡号:</strong></td>
+      <td class="tdbg"><input type="input" name="card"></td>
+    </tr>
+    <tr>
+      <td wIdth="100" align="right" class="tdbg"><strong>服务商:</strong></td>
+      <td class="tdbg"><select name="prov_id" style="width:135">
+<!--
+EOT;
+
+foreach($prsdb as $prs){
+if($prs[prov]){
+print <<<EOT
+-->
+        <option value="$prs[id]">$prs[prov]</option>
+
+<!--
+EOT;
+}
+} 
+print <<<EOT
+--> 
+      </select></td>
+    </tr>
+    <tr> 
+      <td height="40" colspan="2" align="center" class="tdbg"><input name="Action" type="hIdden" Id="Action" value="Modify"> 
+        <input  type="submit" name="Submit" value="添加" style="cursor:hand;"> 
+        &nbsp; <input name="Cancel" type="button" Id="Cancel" value="取消" onClick="window.location.href='?'" style="cursor:hand;"></td>
+    </tr>
+  </table>
+</form>
+<!--
+EOT;
+}
+else if($action=="modify")
+{
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>当前位置：修改充值卡</strong></td>
+  </tr>
+</table>
+<form method="post" action="?action=savemodify" name="form1">
+  <br>
+  <br>
+  <table wIdth="300" border="0" align="center" cellpadding="2" cellspacing="1" class="border" >
+    <tr class="title"> 
+      <td height="22" colspan="2"> <div align="center"><strong>修改充值卡</strong></div></td>
+    </tr>
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>充值卡号:</strong></td>
+      <td class="tdbg"><input type="input" name="card" value=$rs[card]>  </td>
+    </tr>
+<!--
+EOT;  
+print <<<EOT
+-->     
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>服务商:</strong></td>
+      <td class="tdbg">
+          <select name="prov_id" style="width:135">
+<!--
+EOT;
+foreach($prsdb as $prs){
+
+if($rs[prov_id]==$prs[id])
+        $select=' selected';
+else 
+        $select='';
+if($prs[prov]){
+print <<<EOT
+-->
+        <option value="$prs[id]" $select >$prs[prov]</option>
+
+<!--
+EOT;
+}
+}
+if($rs[used]) $used_ck="checked";
+print <<<EOT
+-->
+      </select></td>
+    </tr>
+    <tr>
+      <td wIdth="100" align="right" class="tdbg"><strong>是否使用过:</strong></td>
+      <td class="tdbg"><input type="checkbox" name="used" value=1 $used_ck>  </td>
+    </tr>
+    <tr> 
+      <td height="40" colspan="2" align="center" class="tdbg"><input name="Id" type="hIdden" Id="Id" value="{$rs['id']}"> 
+        <input  type="submit" name="Submit" value="确定" style="cursor:hand;"> 
+        &nbsp; <input name="Cancel" type="button" Id="Cancel" value="取消" onClick="window.location.href='?'" style="cursor:hand;"></td>
+    </tr>
+  </table>
+</form>
+<!--
+EOT;
+}
+print <<<EOT
+-->
+</form>
+
+					  </td> 
+					</tr>
+</table>
+				
+</body>
+</html>
+<!--
+EOT;
+?>
+-->

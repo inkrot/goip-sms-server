@@ -1,0 +1,720 @@
+<!--
+<?php
+print <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="style.css" rel="stylesheet" type="text/css">
+<title>goip management</title>
+<script language="javascript">
+EOT;
+if(!isset($nrcount))
+echo "var nrcount=-1;";
+else echo "var nrcount=$nrcount;";
+print <<<EOT
+
+function unselectall()
+	{
+	    if(document.myform.chkAll.checked){
+		document.myform.chkAll.checked = document.myform.chkAll.checked&0;
+	    } 	
+	}
+
+function CheckAll(form, obj)
+        {
+                var e;
+        if(obj.id=="chkAll") document.getElementById("chkAll0").checked="";
+        if(obj.id=="chkAll0") document.getElementById("chkAll").checked="";
+                for (var i=0;i<form.elements.length;i++)
+            {           
+                    e = form.elements[i];
+                    if (e.type == 'checkbox' && e.id != "chkAll" && e.id != "chkAll0" && e.disabled==false && e.id!="fwd_mail_enable"  && e.id!="fwd_http_enable"){
+                                if(nrcount>=0) { 
+                                        if(obj.checked && !e.checked)
+                                                nrcount++;
+                                        else if(!obj.checked && e.checked)
+                                                nrcount--;
+                                }
+                                e.checked = obj.checked;
+                                do {e=e.parentNode} while (e.tagName!="TR") 
+                                if(obj.checked)
+                                        e.className = 'even marked';
+                                else
+                                        e.className = 'even';
+                        }
+            }
+        if(obj.id=="chkAll0" && obj.checked){
+                td01.innerText="现在选择了所有线路";
+                td02.innerText="现在选择了所有线路";
+
+        }
+        else {
+                td01.innerText="现在选择了"+nrcount+"条线路.";
+                td02.innerText="现在选择了"+nrcount+"条线路.";
+                //form.chkAll.classname = 'even';
+	}
+        }
+
+function mouseover(obj) {
+                obj.className += ' hover';
+				//alert(obj.className);
+            	
+			}
+
+function mouseout(obj) {
+            	obj.className = obj.className.replace( ' hover', '' );
+				//alert(obj.className);
+			}
+
+function trclick(obj) {
+        var checkbox = obj.getElementsByTagName( 'input' )[0];
+        //if ( checkbox && checkbox.type == 'checkbox' ) 
+        checkbox.checked ^= 1;
+
+                if(checkbox.checked){
+                        obj.className = 'even marked';
+
+                        if(nrcount>=0) {nrcount++;document.getElementById('td01').innerHTML="现在选择了"+nrcount+"条线路";} 
+                        if(nrcount>=0) {document.getElementById('td02').innerHTML="现在选择了"+nrcount+"条线路";} 
+                }
+                else {
+                        obj.className = 'even';
+                        if(nrcount>=0) {nrcount--;document.getElementById('td01').innerHTML="现在选择了"+nrcount+"条线路";}
+                        if(nrcount>=0) {document.getElementById('td02').innerHTML="现在选择了"+nrcount+"条线路";} 
+                }
+//              var ckpage=document.modifyform.elements['chkAll'+num];
+            if(document.myform.chkAll.checked){
+                document.myform.chkAll.checked = document.myform.chkAll.checked;
+            } 
+
+
+                }
+function changepage(url,fname)
+        {
+                fname.action=url;
+                fname.submit();
+                return false;
+        }
+function selectchangepage(url,page,fname)
+        {
+
+                fname.action=url+"page="+page;
+                fname.submit();
+                return false;
+        }
+
+function toggle_div(name){
+        var show_prov=document.getElementById("prov_div");
+	var show_group=document.getElementById("group_div");
+        var show_key=document.getElementById("input_key");
+        var show_ussd=document.getElementById("input_ussd");
+        var show_sms=document.getElementById("input_sms");
+
+        show_prov.style.display="none";
+	show_group.style.display="none";
+        show_ussd.style.display="none";
+        show_key.style.display="none";
+        show_sms.style.display="none";
+        document.getElementById("sms_fwd_mail").style.display="none";
+        document.getElementById("mail_addr").style.display="none";
+        document.getElementById("sms_fwd_http").style.display="none";
+        document.getElementById("http_addr").style.display="none";
+
+        if(document.getElementById(name)) document.getElementById(name).style.display="";
+}
+
+function check_action(obj){
+        if(obj.value=="USSD"){
+                toggle_div("input_ussd");
+        }
+        else if(obj.value=="SMS"){
+                toggle_div("input_sms");
+        }
+        else if(obj.value=="sms_fwd_mail"){
+                toggle_div("sms_fwd_mail");
+                document.myform.action="goip.php?action=sms_fwd_mail";
+                //document.myform.submit();
+        }
+        else if(obj.value=="mail_addr"){
+                toggle_div("mail_addr");
+                document.myform.action="goip.php?action=mail_addr";
+                //document.myform.submit();
+        }
+        else if(obj.value=="sms_fwd_http"){
+                toggle_div("sms_fwd_http");
+                document.myform.action="goip.php?action=fwd_http_enable";
+        }
+        else if(obj.value=="http_addr"){
+                toggle_div("http_addr");
+                document.myform.action="goip.php?action=http_addr";
+        }
+        else if(obj.value=="reset_remain_time"){
+                toggle_div("");
+                if(confirm("Sure to reset remain time?")){
+                        document.myform.submit();
+                }
+        }
+        else if(obj.value=="set_imei"){
+                toggle_div("");
+                if(confirm("Sure to set random IMEI?")){
+                        document.myform.submit();
+                }
+        }
+        else if(obj.value=="set_imei_db"){
+                toggle_div("");
+                if(confirm("Sure to set IMEI from Database?")){
+                        document.myform.submit();
+                }
+        }
+        else if(obj.value=="disable_moudle"){
+                toggle_div("");
+                if(confirm("Sure to disable moudle?")){
+                        document.myform.value.value="0";
+                        document.myform.submit();
+                }
+        }
+        else if(obj.value=="enable_moudle"){
+                toggle_div("");
+                if(confirm("Sure to ensable moudle?")){
+                        document.myform.value.value="1";
+                        document.myform.submit();
+                }
+        }
+        else if(obj.value=="svr_reboot_module"){
+                toggle_div("");
+                if(confirm("Sure to reboot moudle?")){
+                        document.myform.submit();
+                }
+        }
+        else if(obj.value=="svr_reboot_dev"){
+                toggle_div("");
+                if(confirm("Sure to reboot devices?")){
+                        document.myform.submit();
+                }
+        }
+
+	else if(obj.value=="reset_remain_count"){
+		toggle_div("");
+		if(confirm("Sure to reset remain count?")){
+			document.myform.action="goip.php?action=reset_remain_count";
+			document.myform.submit();
+		}
+	}
+	else if(obj.value=="reset_remain_count_d"){
+		toggle_div("");
+		if(confirm("Sure to reset remain count of this day?")){
+			document.myform.action="goip.php?action=reset_remain_count_d";
+			document.myform.submit();
+		}
+	}
+	else if(obj.value=="set_exp_time"){
+		toggle_div("");
+        }
+        else if(obj.value=="prov"){
+                toggle_div("prov_div");
+                document.myform.action="goip.php?action=set_prov";
+        }
+        else if(obj.value=="group"){
+                toggle_div("group_div");
+                document.myform.action="goip.php?action=set_group";
+        }
+        else if(obj.value=="del"){
+                toggle_div("");
+                if(confirm("Sure to set delete?")){
+                        document.myform.action="goip.php?action=del";
+                        document.myform.submit();
+                }
+        }
+        else {
+                toggle_div("");
+        }
+}
+
+function show_tr(value,id){
+        if(!value) document.getElementById(id).style.display='none';
+        else document.getElementById(id).style.display='';
+}
+</script>
+<script src="dynamic.bin" lang="javascript"></script>
+</head>
+<body leftmargin="2" topmargin="0" marginwIdth="0" marginheight="0">
+<table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border">
+  <tr class="topbg"> 
+    <td height="22" colspan="2" align="center"><strong>Goip参数设置</strong></td>
+  </tr>
+  <tr class="tdbg"> 
+    <td wIdth="100" height="30"><strong>管理导航:</strong></td>
+    <td height="30"><a href="?action=$action&column=$column&type=$type&s_key=$s_key&order_key=$_REQUEST[order_key]&order=$_REQUEST[order]&page=$page" target=main>刷新</a>&nbsp;|&nbsp;<a href="goip.php" target=main>GoIP列表</a>&nbsp;|&nbsp;<a href="goip.php?action=add" target=main>添加GoIP</a>&nbsp;|&nbsp;<a href="goip.php?action=search&column=gsm_login_time&type=less&s_key=$gsm_logout_time" target=main>GSM LOGOUT超时列表</a>&nbsp;|&nbsp;<a href="goip.php?action=search&column=remain_time&type=equal&s_key=0" target=main>剩余时间用尽列表</a></td>
+  </tr>
+</table>
+<!--
+EOT;
+if($action=="main" || $action=="search") {
+print <<<EOT
+-->
+<table border=0 cellpadding=0 cellspacing=0>
+  <tr class="topbg" width="100%">
+    <td id="td01" width="100%" height="25">Now choosed {$nrcount} Channels</td>
+  </tr>
+<tr>
+<td align="left">
+<form action="goip.php?action=search" method="post">
+$select
+</form>
+</td>
+</tr>
+</table>
+
+<form action="all_cmd.php" method=post name=myform onSubmit="return confirm('Sure to save?')">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2">
+	<tr class=title>
+		<td wIdth="35" align=center height="25"><b>选择</b></td>
+		<td align="center"><a href="?action=$action&column=$column&type=$type&s_key=$s_key&order=$order2&order_key=id"><b>ID</b></a></td>
+                <td align="center"><a href="?action=$action&column=$column&type=$type&s_key=$s_key&order=$order2&order_key=alive"><b>注册</b></a></td>
+                <td align="center"><a href="?action=$action&column=$column&type=$type&s_key=$s_key&order=$order2&order_key=gsm_status"><b>GSM状态</b></a></td>
+                <td align="center"><a href="?action=$action&column=$column&type=$type&s_key=$s_key&order=$order2&order_key=signal"><b>GSM信号</b></a></td>
+		<td align="center"><a href="?action=$action&column=$column&type=$type&s_key=$s_key&order=$order2&order_key=voip_status"><b>Voip注册</b></a></td>
+                <td align="center"><a href="?action=$action&column=$column&type=$type&s_key=$s_key&order=$order2&order_key=voip_state"><b>Voip状态</b></a></td>
+		<td align="center"><a href="?action=$action&column=$column&type=$type&s_key=$s_key&order=$order2&order_key=remain_time"><b>剩余时间</b></a></td>
+		<td align="center"><a href="?action=$action&column=$column&type=$type&s_key=$s_key&order=$order2&order_key=remain_co
+unt"><b>剩余短信</b></a></td>
+                <td align="center"><a href="?action=$action&column=$column&type=$type&s_key=$s_key&order=$order2&order_key=bal"><b>余额</b></a></td>
+		<td align="center"><a href="?action=$action&column=$column&type=$type&s_key=$s_key&order=$order2&order_key=num"><b>SIM卡信息</b></a></td>
+		<td align="center"><a href="?action=$action&column=$column&type=$type&s_key=$s_key&order=$order2&order_key=prov"><b>服务商</b></a></td>
+		<td align="center"><a href="?action=$action&column=$column&type=$type&s_key=$s_key&order=$order2&order_key=group_name"><b>组</b></a></td>
+		<td align="center"><a href="?action=$action&column=$column&type=$type&s_key=$s_key&order=$order2&order_key=fwd_mail_enable" title="SMS forward to mail"><b>短信转邮箱</b></a></td>
+		<td align="center"><a href="?action=$action&column=$column&type=$type&s_key=$s_key&order=$order2&order_key=host"><b>地址</b></a></td>
+		<td align="center"><a href="?action=$action&column=$column&type=$type&s_key=$s_key&order=$order2&order_key=password"><b>密码</b></a></td>
+		<td align=center><b>操作</b></td>
+	</tr>
+<!--
+EOT;
+$j=0;
+foreach($rsdb as $rs) {
+if(isset($strs0) && in_array($rs['id'],$strs0)){
+        $class='marked';
+        $cck='checked';
+}
+else {
+        $class='even';
+        $cck='';
+}
+$rs['CELLINFO']=str_replace("\"","'",$rs['CELLINFO']);
+print <<<EOT
+-->
+	<tr class="$class" onMouseOver="mouseover(this)" onMouseOut="mouseout(this)" onMouseDown="trclick(this)">
+		<td align=center wIdth="35"><input name="Id{$j}" type='checkbox' onClick="return false" value="{$rs['id']}" $cck></td>
+                <td align="center">{$rs['name']}</td>
+		<td align="center" title="update time:{$rs['keepalive_time']}">{$rs['alive']}</td>
+		<td align="center" title="last LOGIN time:{$rs['gsm_login_time']}">{$rs['gsm_status']}</td>
+                <td align="center">{$rs['signal']}</td>
+                <td align="center">{$rs['voip_status']}</td>
+		<td align="center">{$rs['voip_state']}</td>
+		<td align="center">{$rs['remain_time']}</td>
+		<td align="center">{$rs['remain_count']}</td>
+		<td align="center" title="check time:{$rs['bal_time']}">{$rs['bal']}</td>
+		<td align="center" title="SIM Number:{$rs['num']}\nIMSI:{$rs['imsi']}\nICCID:{$rs['iccid']}\nIMEI:{$rs['imei']}\nCarrier:{$rs['carrier']}\nCELLINFO:{$rs['CELLINFO']}">SIM卡信息</td>
+		<td align="center">{$rs['prov']}</td>
+                <td align="center">{$rs['group_name']}</td>
+                <td align="center" title="{$rs['mail_title']}">{$rs['mail']}</td>
+		<td align="center">{$rs['host']}:{$rs['port']}</td>
+		<td align="center">{$rs['password']}</td>
+				
+		<td align=center><a href="send.php?goipid={$rs['id']}&type=re" {$rs['sendsms']}>发送短信</a> | <a href="receive.php?goipname={$rs['name']}">短信收件箱</a> | <a href="outbox.php?id={$rs['id']}" >短信发件箱</a><br />
+<a href="ussd.php?debug=1&TERMID={$rs['name']}">USSD</a> | <a href="goip_record.php?goipid={$rs['id']}">通话记录</a> | <a href="state.php?cmd=GSM&id={$rs['id']}">状态</a> | <a href="goip.php?action=modify&id={$rs['id']}">修改</a> | <a href="goip.php?id={$rs['id']}&action=del" onClick="return confirm('确认删除?')">删除</a></td>
+    </tr>
+
+<!--
+EOT;
+$j++;
+}
+print <<<EOT
+-->
+</table>
+<input type="hIdden" name="boxs" value="{$j}">
+<input type="hIdden" name="rstr" value="{$str}">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2">
+<tr>
+<td height="30" ><input name="chkAll" type="checkbox" Id="chkAll" onclick="CheckAll(this.form, this)" value="checkbox">选择当前页
+<input name="chkAll0" type="checkbox" Id="chkAll0" onclick="CheckAll(this.form, this)" value="checkbox">选择所有
+</tr>
+  <tr class="topbg" width="100%">
+    <td id="td02" width="100%" height="25">Now choosed {$nrcount} Channels</td>
+  </tr>
+<tr>
+         <td height="30" >
+批量操作 <select name="cmd" id="cmd" style="width:80px"  onchange="check_action(this)" >
+<option value="none" selected>选择</option>
+<option value="prov">服务商</option>
+<option value="group">组</option>
+<option value="USSD">群发USSD</option>
+<option value="SMS">发送短信</option>
+<option value="reset_remain_count">重置短信剩余次数</option>
+<option value="reset_remain_count_d">重置单天短信剩余次数</option>
+<option value="reset_remain_time">重置剩余时间</option>
+<option value="set_imei">随机IMEI</option>
+<option value="set_imei_db">从IMEI数据库取值设置IMEI</option>
+<option value="disable_moudle">禁用模块</option>
+<option value="enable_moudle">启用模块</option>
+<option value="svr_reboot_module">重启模块</option>
+<option value="svr_reboot_dev">重启设备</option>
+<option value="sms_fwd_mail">短信中转到邮箱</option>
+<option value="mail_addr">中转到邮箱地址</option>
+<option value="sms_fwd_http">短信中转到HTTP</option>
+<option value="http_addr">短信中转到HTTP地址</option>
+<option value="del">删除GoIP</option>
+</select>
+<div style="display:none" id="prov_div">服务商
+          <select name="provider" style="width:135">
+<!--
+EOT;
+foreach($prsdb as $prs){
+if($prs[prov]){
+print <<<EOT
+--> 
+        <option value="$prs[id]">$prs[prov]</option>
+
+<!--
+EOT;
+} 
+} 
+print <<<EOT
+-->   
+      </select>
+<input  type="submit" name="Submit" value="提交" style="cursor:hand;">
+</div>
+<div style="display:none" id="group_div">组
+          <select name="group_id" style="width:135">
+        <option value="0">None(None)</option>
+<!--
+EOT;
+foreach($grsdb as $grs){
+print <<<EOT
+-->     
+        <option value="$grs[id]">$grs[group_name]</option>
+
+<!--
+EOT;
+} 
+print <<<EOT
+-->
+      </select>
+<input  type="submit" name="Submit" value="提交" style="cursor:hand;">
+</div>
+<div style="display:none" id="input_key">值<input type="input" name="key"> <input  type="submit" name="Submit" value="提交" style="cursor:hand;"></div>
+<div style="display:none" id="sms_fwd_mail">启用/禁用
+<input type="checkbox" id="fwd_mail_enable" name="fwd_mail_enable" id="fwd_mail_enable">
+<input type="submit" name="Submit" value="Save" style="cursor:hand;"></div>
+<div style="display:none" id="mail_addr">中转邮件地址
+<input type="input" name="report_mail">
+<input type="submit" name="Submit" value="Save" style="cursor:hand;"></div>
+<div style="display:none" id="sms_fwd_http">启用/禁用
+<input type="checkbox" name="fwd_http_enable" id="fwd_http_enable">
+<input type="submit" name="Submit" value="Save" style="cursor:hand;"></div>
+<div style="display:none" id="http_addr">中转到HTTP地址
+<input type="input" name="report_http">
+<input type="submit" name="Submit" value="Save" style="cursor:hand;"></div>
+<div style="display:none" id="input_ussd">USSD指令
+<input type="input" name="value">
+<input  type="submit" name="Submit" value="提交" style="cursor:hand;"></div>
+<div style="display:none" id="input_sms">
+<table>
+<tr><td>号码</td><td><input type="input" name="number"></td></tr>
+<tr><td>内容</td><td><textarea name="msg"  rows="3" wrap="virtual" cols="20" class="textarea"></textarea></td></tr>
+<tr><td colspan="2" ><input type="submit" name="Submit" value="提交" style="cursor:hand;"></td></tr>
+</table>
+</div>
+</td>
+</tr>
+					<tr>
+						<td  align=center>{$fenye}</td>
+					</tr>
+</table>
+<!--
+EOT;
+}
+else if($action=="add")
+{
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>当前位置：添加goip</strong></td>
+  </tr>
+</table>
+<form method="post" action="goip.php?action=saveadd" name="form1" onSubmit="javascript:return check_pw();">
+  <br>
+  <br>
+  <table wIdth="400" border="0" align="center" cellpadding="2" cellspacing="1" class="border" >
+    <tr class="title"> 
+      <td height="22" colspan="2"> <div align="center"><strong>添 加 GOIP</strong></div></td>
+    </tr>
+    <tr> 
+      <td wIdth="200" align="right" class="tdbg"><strong>ID:</strong></td>
+      <td class="tdbg"><input type="input" name="name"></td>
+    </tr>
+    <tr>
+      <td wIdth="200" align="right" class="tdbg"><strong>批量线路数量:</strong></td>
+      <td class="tdbg"><input type="input" name="line" onblur="onfocus_check_integer(this, 1, 99)" value=1></td>
+    </tr>
+    <tr> 
+      <td wIdth="200" align="right" class="tdbg"><strong>服务商:</strong></td>
+      <td class="tdbg"><select name="provider" style="width:135">
+<!--
+EOT;
+
+foreach($prsdb as $prs){
+
+if($prs[prov]){
+print <<<EOT
+-->
+        <option value="$prs[id]">$prs[prov]</option>
+
+<!--
+EOT;
+}
+}
+print <<<EOT
+-->
+      </select></td>
+    </tr>
+    <tr>
+      <td wIdth="200" align="right" class="tdbg"><strong>组:</strong></td>
+      <td class="tdbg"><select name="goip_group" style="width:135">
+        <option value="0">None(None)</option>
+<!--
+EOT;
+
+foreach($ggrsdb as $prs){
+
+print <<<EOT
+-->
+        <option value="$prs[id]">$prs[group_name]</option>
+
+<!--
+EOT;
+}
+print <<<EOT
+-->
+      </select></td>
+    </tr>
+    <tr> 
+      <td wIdth="200" align="right" class="tdbg"><strong>密码:</strong></td>
+      <td class="tdbg"><input type="password" name="Password"> </td>
+    </tr>
+    <tr> 
+      <td wIdth="200" align="right" class="tdbg"><strong>确认码:</strong></td>
+      <td class="tdbg"><input type="password" name="PwdConfirm"> </td>
+    </tr>
+    <tr>
+      <td wIdth="200" align="right" class="tdbg"><strong>短信限制数量:</strong></td>
+      <td class="tdbg"><input type="input" name="count_limit" onblur="onfocus_check_integer_and_null(this, -1, 99999999)"> </td>
+    </tr>
+    <tr>
+      <td wIdth="200" align="right" class="tdbg"><strong>每天短信限制数量:</strong></td>
+      <td class="tdbg"><input type="input" name="count_limit_d" onblur="onfocus_check_integer_and_null(this, -1, 99999999)"> </td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>短信中转到邮箱:</strong></td>
+      <td class="tdbg"><input type="checkbox" name="fwd_mail_enable" id="fwd_mail_enable" onclick="show_tr(this.checked, 'fwd_mail_enable_div')"></td>
+    </tr>
+    <tr style="display:none" Id='fwd_mail_enable_div'>
+      <td wIdth="300" align="right" class="tdbg"><strong>中转邮箱地址:</strong></td>
+      <td class="tdbg"><input type="input" name="report_mail"> </td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>短信中转到HTTP:</strong></td>
+      <td class="tdbg"><input type="checkbox" name="fwd_http_enable" id="fwd_http_enable" onclick="show_tr(this.checked, 'fwd_http_enable_div')"></td>
+    </tr>
+    <tr style="display:none" Id='fwd_http_enable_div'>
+      <td wIdth="300" align="right" class="tdbg"><strong>POST HTTP地址:</strong></td>
+      <td class="tdbg"><input type="input" name="report_http"> </td>
+    </tr>
+    <tr> 
+      <td height="40" colspan="2" align="center" class="tdbg"><input name="Action" type="hIdden" Id="Action" value="Modify"> 
+        <input  type="submit" name="Submit" value="添加" style="cursor:hand;"> 
+        &nbsp; <input name="Cancel" type="button" Id="Cancel" value="取消" onClick="window.location.href='goip.php'" style="cursor:hand;"></td>
+    </tr>
+  </table>
+</form>
+<!--
+EOT;
+}
+else if($action=="modify")
+{
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>当前位置：修改用户</strong></td>
+  </tr>
+</table>
+<form method="post" action="goip.php?action=savemodify" name="form1" onSubmit="javascript:return check_pw();">
+  <br>
+  <br>
+  <table wIdth="400" border="0" align="center" cellpadding="2" cellspacing="1" class="border" >
+    <tr class="title"> 
+      <td height="22" colspan="2"> <div align="center"><strong>修 改 GOIP 参数</strong></div></td>
+    </tr>
+    <tr> 
+      <td wIdth="200" align="right" class="tdbg"><strong>ID:</strong></td>
+      <td class="tdbg"><input type="input" name="name" value=$rs[name]>  </td>
+    </tr>
+<!--
+EOT;
+print <<<EOT
+-->
+    <tr> 
+      <td wIdth="200" align="right" class="tdbg"><strong>服务商:</strong></td>
+      <td class="tdbg">
+	  <select name="provider" style="width:135">
+<!--
+EOT;
+foreach($prsdb as $prs){
+
+if($rs[provider]==$prs[id])
+	$select=' selected';
+else 
+	$select='';
+if($prs[prov]){
+print <<<EOT
+-->
+        <option value="$prs[id]" $select >$prs[prov]</option>
+
+<!--
+EOT;
+}
+}
+print <<<EOT
+-->
+      </select></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>组:</strong></td>
+      <td class="tdbg">
+          <select name="goip_group" style="width:135">
+        <option value="0" $select >None(None)</option>
+<!--                                                                                                              
+EOT;
+foreach($ggrsdb as $prs){                                                                                          
+                                                                                                                  
+if($rs[group_id]==$prs[id])                                                                         
+        $select=' selected';                                                                                      
+else                                                                                                              
+        $select='';                                                                                               
+print <<<EOT
+-->
+        <option value="$prs[id]" $select >$prs[group_name]</option>
+
+<!--
+EOT;
+} 
+print <<<EOT
+-->
+	</select></td>
+    <tr>
+
+<!--
+EOT;
+print <<<EOT
+-->
+    <tr> 
+      <td wIdth="200" align="right" class="tdbg"><strong>新密码:</strong></td>
+      <td class="tdbg"><input type="password" name="Password" > </td>
+    </tr>
+    <tr> 
+      <td wIdth="200" align="right" class="tdbg"><strong>确认码:</strong></td>
+      <td class="tdbg"><input type="password" name="PwdConfirm"> </td>
+    </tr>
+    <tr>
+      <td wIdth="200" align="right" class="tdbg"><strong>短信剩余数量:</strong></td>
+      <td class="tdbg"><input type="input" name="remain_count" onblur="onfocus_check_integer_and_null(this, -1, 99999999)" value="{$rs['remain_count']}"> </td>
+    </tr>
+    <tr>
+      <td wIdth="200" align="right" class="tdbg"><strong>短信限制数量:</strong></td>
+      <td class="tdbg"><input type="input" name="count_limit" onblur="onfocus_check_integer_and_null(this, -1, 99999999)" value="{$rs['count_limit']}"> </td>
+    </tr>
+    <tr>
+      <td wIdth="200" align="right" class="tdbg"><strong>单天短信剩余数量:</strong></td>
+      <td class="tdbg"><input type="input" name="remain_count_d" onblur="onfocus_check_integer_and_null(this, -1, 99999999)" value="{$rs['remain_count_d']}"> </td>
+    </tr>
+    <tr>
+      <td wIdth="200" align="right" class="tdbg"><strong>每天短信限制数量:</strong></td>
+      <td class="tdbg"><input type="input" name="count_limit_d" onblur="onfocus_check_integer_and_null(this, -1, 99999999)" value="{$rs['count_limit_d']}"> </td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>短信中转到邮箱:</strong></td>
+      <td class="tdbg"><input type="checkbox" name="fwd_mail_enable" id="fwd_mail_enable" onclick="show_tr(this.checked, 'fwd_mail_enable_div')" $fwd_mail_checked></td>
+    </tr>
+    <tr style="display:{$fwd_mail_display}" Id='fwd_mail_enable_div'>
+      <td wIdth="300" align="right" class="tdbg"><strong>中转到邮箱地址:</strong></td>
+      <td class="tdbg"><input type="input" name="report_mail" value="{$rs['report_mail']}"> </td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>短信中转到HTTP:</strong></td>
+      <td class="tdbg"><input type="checkbox" name="fwd_http_enable" id="fwd_http_enable" onclick="show_tr(this.checked, 'fwd_http_enable_div')" $fwd_http_checked></td>
+    </tr>
+    <tr style="display:{$fwd_http_display}" Id='fwd_http_enable_div'>
+      <td wIdth="300" align="right" class="tdbg"><strong>POST HTTP地址:</strong></td>
+      <td class="tdbg"><input type="input" name="report_http" value="{$rs['report_http']}"> </td>
+    </tr>
+
+    <tr> <td height="20" colspan="2" align="center"  class="tdbg">不修改密码将新密码和确认码留空 </td></tr>	
+    <tr> 
+      <td height="40" colspan="2" align="center" class="tdbg"><input name="Id" type="hIdden" Id="Id" value="{$rs['id']}"> 
+        <input  type="submit" name="Submit" value="确定" style="cursor:hand;"> 
+        &nbsp; <input name="Cancel" type="button" Id="Cancel" value="取消" onClick="window.location.href='goip.php'" style="cursor:hand;"></td>
+    </tr>
+
+  </table>
+</form>
+<!--
+EOT;
+}
+print <<<EOT
+-->
+<script language="JavaScript" type="text/JavaScript">
+function check_pw()
+{
+  if(document.form1.Password.value=="" && document.form1.Submit.value=="确定")
+  	return true;
+  if(document.form1.Password.value=="")
+    {
+      alert("密码不能为空！");
+	  document.form1.Password.focus();
+      return false;
+    }
+    
+  if((document.form1.Password.value)!=(document.form1.PwdConfirm.value))
+    {
+      alert("初始密码与确认密码不同!");
+	  document.form1.PwdConfirm.select();
+	  document.form1.PwdConfirm.focus();	  
+      return false;
+    }
+}
+function check()
+{
+  if (document.myform.keyword.value=="")
+  {
+    alert("请输入关键字!");
+	document.myform.keyword.focus();
+	return false;
+  }
+}
+</script>
+</form>
+
+					  </td> 
+					</tr>
+</table>
+				
+</body>
+</html>
+<!--
+EOT;
+?>
+-->

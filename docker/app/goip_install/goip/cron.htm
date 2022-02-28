@@ -1,0 +1,204 @@
+<!--
+<?php 
+print <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="style.css" rel="stylesheet" type="text/css">
+<title>发送信息</title>
+<script src="time.js"></script>
+<script language="javascript">
+function mouseover(obj) {
+                obj.className += ' hover';
+				//alert(obj.className);            	
+			}
+function mouseout(obj) {
+            	obj.className = obj.className.replace( ' hover', '' );
+				//alert(obj.className);
+			}
+function trclick(obj) {
+		//alert("ddddd");
+        var checkbox = obj.getElementsByTagName( 'input' )[0];
+        //if ( checkbox && checkbox.type == 'checkbox' ) 
+        checkbox.checked ^= 1;
+		if(checkbox.checked)
+			obj.className = 'even marked';
+		else obj.className = 'even';
+//		var ckpage=document.modifyform.elements['chkAll'+num];
+		}
+</script>
+</head>
+<body leftmargin="2" topmargin="0" marginwIdth="0" marginheight="0">
+<table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border">
+  <tr class="topbg"> 
+    <td height="22" colspan="2" align="center"><strong>发送信息</strong></td>
+  </tr>
+  <tr class="tdbg"> 
+    <td wIdth="120" height="30"><strong>发送信息导航</strong></td>
+    <td height="30"><a href="cron.php?userid={$_SESSION['goip_userid']}" target=main>我的定时发送</a>&nbsp;|{$otherh}&nbsp;</td>
+  </tr>
+</table>
+<!-- 
+EOT;
+if($_GET[id]): 
+$datebuf=date("Y-m-d H:i:s T");
+$row0['msg']=htmlspecialchars($row0['msg']);
+$row0['msg']=str_replace("\n", "<br>", $row0['msg']);
+print <<<EOT
+-->
+
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="72%" height="25"><strong>当前位置：定时发送计划详情,发送内容:$row0[msg]</strong></td>
+	<td width="150"><a href="resend.php?messageid={$_GET['id']}"><font color='#FF0000'>重发所有失败发送</font></a></td>
+  </tr>
+</table>
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2" nowrap=true>
+	<tr class=title>
+		<td align="center"><b>接收人类别</b></td>
+		<td align="center"><b>姓名</b></td>
+		<td align="center"><b>号码</b></td>
+		<td align="center"><b>服务商</b></td>
+		<td align="center"><b>goip编号</b></td>
+		<td align="center"><b>goip ID</b></td>
+		<td align="center"><b>发送时间</b></td>
+		<td align="center"><b>状态</b></td>
+		<td align="center"><b>操作</b></td>
+	</tr>
+<!-- 
+EOT;
+$j=0;
+foreach($rsdb as $rs) {
+print <<<EOT
+-->
+	<tr class="even" >
+		<td align="center">{$rs['recvlev']}</td>
+		<td align="center">{$rs['name']}</td>
+		<td align="center">{$rs['telnum']}</td>
+		<td align="center">{$rs['prov']}</td>
+		<td align="center">{$rs['goipid']}</td>
+		<td align="center">{$rs['goipname']}</td>
+		<td align="center">{$rs['time']}</td>
+		<td align="center">{$rs['over']}</td>
+						
+		<td wIdth="135" align=center >{$rs['resend']}</td>
+    </tr>
+
+<!--
+EOT;
+$j++;
+}
+
+print <<<EOT
+-->
+</table>
+		<tr>
+			<td  align=center>{$fenye}</td>
+		</tr>
+<!--
+EOT;
+else: 
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>当前位置：{$username}的定时发送计划一览</strong></td>
+<!--
+EOT;
+if($_SESSION['goip_permissions']<2):
+print <<<EOT
+-->
+							<td height="30" >选择一个管理员 <select name="admin" style="width:135" onChange="if(this.options[this.selectedIndex].value!=''){location='?type=all&userid='+this.options[this.selectedIndex].value;}">
+<!--
+EOT;
+if(!empty($userdb))
+foreach($userdb as $rs) {
+if($rs[id]==$_GET[userid]){
+print <<<EOT
+-->
+      <option value={$rs[id]} selected>{$rs[username]}</option>
+<!--
+EOT;
+}
+else{ 
+print <<<EOT
+-->	 
+	<option value={$rs[id]} >{$rs[username]}</option>
+<!--
+EOT;
+}
+}
+print <<<EOT
+-->	  
+	  </select></td>
+<!--
+EOT;
+endif;
+print <<<EOT
+-->
+  </tr>
+</table>
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2" nowrap=true>
+	<tr class=title>
+		<td align="center" width="120"><b>定时时间</b></td>
+		<td align="center" width="120"><b>发送时间</b></td>
+		<td align="center"><b>发送信息</b></td>
+		<td align="center"><b>发送数</b></td>
+		<td align="center"><b>完成数</b></td>
+		<td align="center"><b>状态</b></td>
+		<td align="center"><b>操作</b></td>
+	</tr>
+
+<!-- 
+EOT;
+$j=0;
+foreach($rsdb as $rs) {
+$rs['msg']=htmlspecialchars($rs['msg']);
+$rs['msg']=str_replace("\n", "<br>", $rs['msg']);
+print <<<EOT
+-->
+	<tr class="even" >
+		<td align="center">{$rs['crontime']}</td>
+		<td align="center">{$rs['time']}</td>
+		<td  width="40%" style="word-break : break-all; ">{$rs['msg']}</td>
+		<td align="center">{$rs['total']}</td>
+		<td align="center">{$rs['succ']}</td>
+		<td align="center">{$rs['overmsg']}</td>
+<!--
+EOT;
+if($rs[over] == 0){
+print <<<EOT
+-->
+		<td wIdth="80" align=center ><a href="send.php?id={$rs['id']}&action=modify">修改</a>|<a href="cron.php?id={$rs['id']}&action=del" onClick="return confirm('确认删除该定时发送计划?')" >删除</a></td>
+    </tr>
+
+<!--
+EOT;
+}
+else{ 
+print <<<EOT
+-->
+		<td wIdth="80" align=center ><a href="cron.php?id={$rs['id']}">详情</a></td>
+    </tr>
+<!--
+EOT;
+}
+$j++;
+}
+print <<<EOT
+-->
+</table>
+					<tr>
+						<td  align=center>{$fenye}</td>
+					</tr>
+<!--
+EOT;
+?>
+-->
+
+<?php endif;?>	
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!--
+<?php
+print <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="../style.css" rel="stylesheet" type="text/css">
+<title>Provider Management</title>
+</head>
+<body leftmargin="2" topmargin="0" marginwIdth="0" marginheight="0">
+<table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border">
+  <tr class="topbg"> 
+    <td height="22" colspan="2" align="center"><strong>Provider Management</strong></td>
+  </tr>
+  <tr class="tdbg"> 
+    <td wIdth="100" height="30"><strong>Navigation:</strong></td>
+    <td height="30"><a href="provider.php" target=main>Provider Modify</a> | <a href="provider.php?action=add" target=main onClick="return confirm('After add a provider, you cannot delete it.sure to add?')">Add a Provider</a></td>
+  </tr>
+</table>
+
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>Current Location: Provider Modify</strong></td>
+  </tr>
+</table>
+<table wIdth="100%" border="0" align="center" cellpadding="0" cellspacing="1" class="border">
+  <tr class="title">
+    <td height="22"><strong> Notice: </strong></td>
+  </tr>
+  <tr class="tdbg" >
+    <td valign="middle"><ul>
+	In the most case, not nend to input International Tel and Local Recognition.
+	If send problem, you can try to input International Tel and Local Recognition. International Tel means the number will be added to a default telphone number as a prefix. Local Recognition means if a telphone number with Local Recognition at the beginning,it is a local number, will not be added the International Tel. For example, a Provider named P, its International Tel is +86 and Local Recognition is 0.There are 3 receivers A,B,C whoes provider is P.Receiver A's number is 0755********, '0' at the beginning, so the system identified that it is a domestic(local) number, 0755******** sent to the goip; Receiver B's number is +86189********, '+' at the beginning, so the system identified that it is a international number already, +86189******** sent to the goip;Receiver C's number is 189********, two above-mentioned conditions are not satisfied, so add +86 as a prefix to the number , +86189******** sent to goip.
+
+   	 </ul>
+	</td>
+  </tr>
+</table>
+<form method="post" action="provider.php?action=save" name="form1" onSubmit="return confirm('Modified providers will affect receivers and goips in database.Are you sure to continue?')">
+  <table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border" >
+    <tr class="title"> 
+      <td height="22" colspan="8"> <div align="center"><strong>Provider Modify</strong></div></td>
+    </tr>
+<!--
+EOT;
+$i=1;
+foreach($rsdb as $rs){
+	$prov=htmlspecialchars($rs["prov"]);
+	$inter=htmlspecialchars($rs["inter"]);
+	$local=htmlspecialchars($rs["local"]);
+	$recharge_ok_r=htmlspecialchars($rs["recharge_ok_r"]);
+print <<<EOT
+-->
+    <tr> 
+      <td wIdth="90" align="right" class="tdbg"><strong>Provider({$i}):</strong></td>
+      <td class="tdbg" wIdth="40"><input type="input" name="prov$i" value="$prov" maxlensergth="30" size="10"></td>
+      <td wIdth="150" align="right" class="tdbg"><strong>({$i})International Tel Code:</strong></td>
+      <td class="tdbg" wIdth="40"><input type="input" name="inter$i" value="$inter" maxlength="10" size="5"></td>
+      <td wIdth="150" align="right" class="tdbg"><strong>({$i})Local Recognition:</strong></td>
+      <td class="tdbg" wIdth="40"><input type="input" name="local$i" value="$local" maxlength="10" size="5"></td>
+      <td wIdth="150" align="right" class="tdbg"><strong>({$i})String for Recharge OK:</strong></td>
+      <td class="tdbg" wIdth="40"><input type="input" name="recharge_ok_r$i" value="$recharge_ok_r" maxlength="64" size="20"></td>
+    </tr>
+<!--
+EOT;
+$i++;
+}
+$i=$i-1;
+print <<<EOT
+-->
+    <tr> 
+      <td height="40" colspan="8" align="center" class="tdbg"><input name="Action" type="hIdden" Id="Action" value="Modify"> 
+	<input name="count" type="hIdden" Id="count" value="{$i}">
+        <input  type="submit" name="Submit" value="  Save  " style="cursor:hand;"> 
+</td>
+    </tr>
+  </table>
+
+</form>
+
+					  </td> 
+					</tr>
+</table>
+				
+</body>
+</html>
+<!--
+EOT;
+?>
+-->

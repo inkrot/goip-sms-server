@@ -1,0 +1,55 @@
+<!--
+<?php
+print <<<EOT
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>新文件群发</title>
+<meta name="Author" content="Gaby_chen">
+<link href="style.css" rel="stylesheet" type="text/css">
+<SCRIPT language=javascript>
+function check() 
+{
+	var strFileName=document.uploadform.xmlfile.value;
+	if (strFileName=="")
+	{
+    		alert("Please choose a file upload!");
+		document.uploadform.xmlfile.focus();
+    	return false;
+  	}
+}
+</SCRIPT>
+</head>
+<body leftmargin="2" topmargin="0" marginwIdth="0" marginheight="0">
+<table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border">
+  <tr class="topbg"> 
+    <td height="22" colspan="2" align="center"><strong>上传文件群发短信</strong></td>
+  </tr>
+  <tr class="tdbg"> 
+    <td wIdth="120" height="30"><strong>Navigation:</strong></td>
+    <td height="30"><a href="filesms.php" target=main>上传文件群发短信</a></td>
+  </tr>
+</table>
+</table>
+  <table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border">
+    <tr class="title"> 
+      <td height="22" colspan="2" align="center"><strong>上传xml文件群发短信</strong></td>
+    </tr>
+	 <tr class="tdbg"> 
+      <td><strong>上传xml文件来群发短信(新格式):</strong> <a href="example/sms.xml" target="_blank"> [例子]</a></td>
+      <td>
+<FORM  name=uploadform action="dosend.php" method="POST" enctype="multipart/form-data" onSubmit="return check();">
+<INPUT TYPE="HIdDEN"  name="action" value="upload">
+<input type=file name=xmlfile><INPUT TYPE="SUBMIT" value=" Send ">
+</FORM>
+	   </td>
+    </tr>
+  </table>
+</body>
+</html>
+<!--
+EOT;
+?>
+-->

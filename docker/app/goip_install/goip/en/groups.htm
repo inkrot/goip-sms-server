@@ -1,0 +1,472 @@
+<!--
+<?php
+print <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="../style.css" rel="stylesheet" type="text/css">
+<title>Group Manage</title>
+<script language="javascript">
+//window.event.cancelBubble = true;
+//event.stopPropagation();
+
+EOT;
+if(!isset($nrcount))
+echo "var nrcount=-1;";
+else echo "var nrcount=$nrcount;";
+print <<<EOT
+
+
+function unselectall()
+	{
+	    if(document.myform.chkAll.checked){
+		document.myform.chkAll.checked = document.myform.chkAll.checked&0;
+	    } 	
+	}
+
+function CheckAll(form)
+	{
+		//alert(form);
+		var trck;
+		var e;
+		for (var i=0;i<form.elements.length;i++)
+	    {
+		    e = form.elements[i];
+		    if (e.type == 'checkbox' && e.id != "chkAll" && e.disabled==false){
+				if(nrcount>=0) {
+					if(form.chkAll.checked && !e.checked)
+						nrcount++;
+					else if(!form.chkAll.checked && e.checked)
+						nrcount--;
+				}
+				e.checked = form.chkAll.checked;
+		 		do {e=e.parentNode} while (e.tagName!="TR") 
+		 		if(form.chkAll.checked)
+		 			e.className = 'even marked';
+		 		else
+		 			e.className = 'even';
+			}
+	    }
+		td01.innerText="Now selected "+nrcount+" members.if want to save, click the button named 'Modify Members'";
+		//form.chkAll.classname = 'even';
+	}
+
+function mouseover(obj) {
+                obj.className += ' hover';
+				//alert(obj.className);
+            	
+			}
+
+function mouseout(obj) {
+            	obj.className = obj.className.replace( ' hover', '' );
+				//alert(obj.className);
+			}
+
+function trclick(obj) {
+        var checkbox = obj.getElementsByTagName( 'input' )[0];
+        //if ( checkbox && checkbox.type == 'checkbox' ) 
+        checkbox.checked ^= 1;
+		
+		if(checkbox.checked){
+			obj.className = 'even marked';	
+				
+			if(nrcount>=0) {nrcount++;document.getElementById('td01').innerHTML="Now selected "+nrcount+" members.if want to save, click the button named 'Modify Members'";} 	
+ 		}
+		else {
+			obj.className = 'even';
+			if(nrcount>=0) {nrcount--;document.getElementById('td01').innerHTML="Now selected "+nrcount+" members.if want to save, click the button named 'Modify Members'";}
+		}
+//		var ckpage=document.modifyform.elements['chkAll'+num];
+	    if(document.myform.chkAll.checked){
+		document.myform.chkAll.checked = document.myform.chkAll.checked&0;
+	    } 	
+		
+
+		}
+function changepage(url,fname)
+	{
+		fname.action=url;
+		fname.submit();
+		return false;	
+	}
+function selectchangepage(url,page,fname)
+	{
+
+		fname.action=url+"page="+page;
+		fname.submit();
+		return false;	
+	}
+</script>
+</head>
+<body leftmargin="2" topmargin="0" marginwIdth="0" marginheight="0">
+<table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border">
+  <tr class="topbg"> 
+    <td height="22" colspan="2" align="center"><strong>Modify members of a group</strong></td>
+  </tr>
+  <tr class="tdbg"> 
+    <td wIdth="100" height="30"><strong>Navigation:</strong></td>
+    <td height="30"><a href="groups.php" target=main>Groups List</a>&nbsp;|&nbsp;<a href="groups.php?action=add" target=main>Add a group</a></td>
+  </tr>
+</table>
+<!--
+EOT;
+if($action=="recv") {
+print <<<EOT
+-->
+<br>
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>Current Location: The group $groupsname had total {$rcount} members</strong></td>
+  </tr>
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td id="td01" width="92%" height="25">Now Selected {$nrcount} member</td>
+  </tr>
+</table>
+<form action="groups.php?action=receivers&id={$id}" method=post name=myform onSubmit="return confirm('sure to modify?')">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2" nowrap=true>
+	<tr class=title>
+		<td wIdth="35" align=center height="25"><b>Choice</b></td>
+		<td align="center"><b>Name</b></td>
+		<td align="center"><b>ID</b></td>
+		<td align="center"><b>Remarks</b></td>
+		<td align="center"><b>In Group</b></td>
+		<td align="center"><b>Operation</b></td>
+	</tr>
+<!--
+EOT;
+$j=0;
+foreach($rsdb as $rs) {
+if( in_array($rs['id'],$strs0)){
+print <<<EOT
+-->
+	<tr class="marked" onMouseOver="mouseover(this)" onMouseOut="mouseout(this)" onMouseDown="trclick(this)">
+		<td align=center wIdth="35"><input name="Id{$j}" type='checkbox' onClick="return false" value="{$rs['id']}" checked></td>
+<!--
+EOT;
+}
+else{
+print <<<EOT
+-->
+	<tr class="even" onMouseOver="mouseover(this)" onMouseOut="mouseout(this)" onMouseDown="trclick(this)">
+		<td align=center wIdth="35"><input name="Id{$j}" type='checkbox' onClick="return false" value="{$rs['id']}"></td>
+<!--
+EOT;
+}
+print <<<EOT
+-->
+		<td align="center">{$rs['name']}</td>
+		<td align="center">{$rs['no']}</td>
+		<td align="center">{$rs['info']}</td>
+		<td align="center">{$rs['yes']}</td>
+		<td wIdth="145" align=center onMouseDown='event.cancelBubble = true;'><a href="receiver.php?action=modify&id={$rs['id']}">Details</a></td>
+    </tr>
+
+<!--
+EOT;
+$j++;
+}
+print <<<EOT
+-->
+</table>
+<input type="hIdden" name="boxs" value="{$j}">
+<input type="hIdden" name="rstr" value="{$str}">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2">
+
+
+					<tr>
+						<td height="30" ><input name="chkAll" type="checkbox" Id="chkAll" onclick=CheckAll(this.form) value="checkbox"> 
+					  Choice current page</td>
+					</tr>
+					<tr>
+						<td  align=center>{$fenye}</td>
+					</tr>
+					<tr><td  align=center><input name="submit11" type='submit' value='Modify members'></td></tr>
+</table>
+<!--
+EOT;
+}
+elseif($action=="main") {
+print <<<EOT
+-->
+<br>
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>Current Location: Groups List</strong></td>
+  </tr>
+</table>
+<form action="groups.php?action=del" method=post name=myform onSubmit="return confirm('Sure to delete?')">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2" nowrap=true>
+	<tr class=title>
+		<td wIdth="35" align=center height="25"><b>Choice</b></td>
+		<td align="center"><b>Name</b></td>
+		<td align="center"><b>In crowd</b></td>
+		<td align="center"><b>Remarks</b></td>
+		<td align="center"><b>Administrator</b></td>
+		<td align=center><b>Operation</b></td>
+	</tr>
+<!--
+EOT;
+$j=0;
+foreach($rsdb as $rs) {
+print <<<EOT
+-->
+	<tr class="even" onMouseOver="mouseover(this)" onMouseOut="mouseout(this)" onMouseDown="trclick(this)">
+		<td align=center wIdth="35"><input name="Id{$j}" type='checkbox' onClick="return false" value="{$rs['id']}"></td>
+		<td align="center">{$rs['name']}</td>
+		<td align="center">{$rs['crowdname']}</td>
+		<td align="center">{$rs['info']}</td>
+		<td align="center">{$rs['username']}</td>
+
+						
+		<td  nowrap=true align=center onMouseDown='event.cancelBubble = true;'><a href="groups.php?action=admin&id={$rs['id']}">admin</a> | <a href="groups.php?action=recv&id={$rs['id']}">member</a> | <a href="groups.php?action=modify&id={$rs['id']}">modify</a> | <a href="groups.php?id={$rs['id']}&action=del" onClick="return confirm('Sure to delete?')">delete</a></td>
+    </tr>
+
+<!--
+EOT;
+$j++;
+}
+print <<<EOT
+-->
+</table>
+<input type="hIdden" name="boxs" value="{$j}">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2">
+
+
+					<tr>
+						<td height="30" ><input name="chkAll" type="checkbox" Id="chkAll" onclick=CheckAll(this.form) value="checkbox"> 
+					  Choice current page<input name="submit" type='submit' value='Delete selected'></td>
+					</tr>
+					<tr>
+						<td  align=center>{$fenye}</td>
+					</tr>
+</table>
+<!--
+EOT;
+}
+else if($action=="add")
+{
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>Current Location: Add a Group</strong></td>
+  </tr>
+</table>
+<form method="post" action="groups.php?action=saveadd" name="form1" onSubmit="javascript:return check_pw();">
+  <br>
+  <br>
+  <table wIdth="300" border="0" align="center" cellpadding="2" cellspacing="1" class="border" >
+    <tr class="title"> 
+      <td height="22" colspan="2"> <div align="center"><strong>Add a Group</strong></div></td>
+    </tr>
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>Group Name:</strong></td>
+      <td class="tdbg"><input type="input" name="name"> </td>
+    </tr>
+<!--
+EOT;
+?>
+-->
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>In Crowd:</strong></td>
+      <td class="tdbg">
+	  	   <select name="crowdid" style="width:135">  
+
+<?php
+$i=0 ;
+foreach($crowdrs as $crs) {
+if($i==0) {
+	$i=1;
+?>
+	<option value="<?php print($crs['id']) ?>" selected><?php print($crs['name']) ?></option>
+
+<?php }
+else {
+?>
+	<option value="<?php print($crs['id']) ?>" ><?php print($crs['name']) ?></option>
+<?php } 
+} ?>
+
+</select>
+</td>
+    </tr>
+
+<!--
+<?php
+print <<<EOT
+-->
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>Remarks:</strong></td>
+      <td class="tdbg"><input type="input" name="info"> </td>
+    </tr>
+    <tr> 
+      <td height="40" colspan="2" align="center" class="tdbg"><input name="Action" type="hIdden" Id="Action" value="Modify"> 
+        <input  type="submit" name="Submit" value="  Add  " style="cursor:hand;"> 
+        &nbsp; <input name="Cancel" type="button" Id="Cancel" value="Cancel" onClick="window.location.href='groups.php'" style="cursor:hand;"></td>
+    </tr>
+  </table>
+  </form>
+<!--
+EOT;
+}
+else if($action=="modify")
+{
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>Current Location: Modify a Group</strong></td>
+  </tr>
+</table>
+<form method="post" action="groups.php?action=savemodify" name="form1" onSubmit="javascript:return check_pw();">
+  <br>
+  <br>
+  <table wIdth="300" border="0" align="center" cellpadding="2" cellspacing="1" class="border" >
+    <tr class="title"> 
+      <td height="22" colspan="2"> <div align="center"><strong>Modify a Group</strong></div></td>
+    </tr>
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>Group Name:</strong></td>
+      <td class="tdbg"><input type="input" name="name" value="{$rs['name']}"> </td>
+    </tr>
+<!--
+EOT;
+?>
+-->
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>In Crowd:</strong></td>
+      <td class="tdbg">
+	  	   <select name="crowdid" style="width:135">  
+
+<?php foreach($crowdrs as $crs) {
+if($crs['id']==$rs['crowdid']) {
+?>
+	<option value="<?php print($crs['id']) ?>" selected><?php print($crs['name']) ?></option>
+
+<?php }
+else {
+?>
+	<option value="<?php print($crs['id']) ?>" ><?php print($crs['name']) ?></option>
+<?php } 
+} ?>
+
+</select>
+</td>
+    </tr>
+
+<!--
+<?php
+print <<<EOT
+-->
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>Remark:</strong></td>
+      <td class="tdbg"><input type="input" name="info" value="{$rs['info']}"> </td>
+    </tr>
+    <tr> 
+      <td height="40" colspan="2" align="center" class="tdbg"><input name="Id" type="hIdden" Id="Id" value="{$rs['id']}"> 
+        <input  type="submit" name="Submit" value="Modify" style="cursor:hand;"> 
+        &nbsp; <input name="Cancel" type="button" Id="Cancel" value="Cancel" onClick="window.location.href='groups.php'" style="cursor:hand;"></td>
+    </tr>
+  </table>
+  </form>
+<!--
+EOT;
+}
+elseif($action=="admin") {
+print <<<EOT
+-->
+<br>
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>Current Location: Administrators of the group</strong></td>
+  </tr>
+</table>
+<form action="groups.php?action=del" method=post name=myform onSubmit="return confirm('Sure to delete?')">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2" nowrap=true>
+	<tr class=title>
+		<td wIdth="35" align=center height="25"><b>Choice</b></td>
+		<td align="center"><b>Group name</b></td>
+		<td align="center"><b>Admin name</b></td>
+		<td align="center"><b>Admin level</b></td>
+		<td align="center"><b>Admin remarks</b></td>
+		<td wIdth="80" align=center><b>Operation</b></td>
+	</tr>
+<!--
+EOT;
+$j=0;
+foreach($rsdb as $rs) {
+print <<<EOT
+-->
+	<tr class="even" onMouseOver="mouseover(this)" onMouseOut="mouseout(this)" onMouseDown="trclick(this)">
+		<td align=center wIdth="35"><input name="Id{$j}" type='checkbox' onClick="return false" value="{$rs['id']}"></td>
+		<td align="center">{$rs['groupsname']}</td>
+		<td align="center">{$rs['username']}</td>
+		<td align="center">{$rs['permissions']}</td>		
+		<td align="center">{$rs['info']}</td>
+
+						
+		<td align=center wIdth="80"><a href="groups.php?id={$rs['id']}&action=deladmin&groupsid={$_GET[id]}" onClick="return confirm('sure to remove?')">Remove</a></td>
+    </tr>
+
+<!--
+EOT;
+$j++;
+}
+print <<<EOT
+-->
+</table>
+<input type="hIdden" name="boxs" value="{$j}">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2">
+
+
+					<tr>
+						<td height="30" ><input name="chkAll" type="checkbox" Id="chkAll" onclick=CheckAll(this.form) value="checkbox"> 
+					  Choice current page<input name="submit" type='submit' value='remove selected'></td>
+					</tr>
+					<tr>
+						<td  align=center>{$fenye}</td>
+					</tr>
+
+</table>
+</form>
+<form action="groups.php?action=addadmin&id=$_GET[id]" method=post name=myform onSubmit="return confirm('sure to add?')">
+					<tr>
+						<td height="30" >add a administrator for the crowd<select name="admin" style="width:135">
+        <option value=0 >choose a administrator</option>
+<!--
+EOT;
+if(!empty($userdb))
+foreach($userdb as $rs) {
+print <<<EOT
+-->
+      <option value={$rs[id]} >{$rs[username]}</option>
+<!--
+EOT;
+}
+print <<<EOT
+-->	  
+	  </select><input name="submit" type='submit' value='  Add  '></td>
+					</tr>
+					  </td> 
+					</tr>
+</table>
+<!--
+EOT;
+}
+print <<<EOT
+-->
+</form>				
+</body>
+</html>
+<!--
+EOT;
+?>
+-->
+

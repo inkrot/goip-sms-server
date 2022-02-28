@@ -1,0 +1,95 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="style.css" rel="stylesheet" type="text/css">
+<title>发送信息</title>
+<script src="time.js"></script>
+<script language="javascript">
+function mouseover(obj) {
+                obj.className += ' hover';
+				//alert(obj.className);            	
+			}
+function mouseout(obj) {
+            	obj.className = obj.className.replace( ' hover', '' );
+				//alert(obj.className);
+			}
+function trclick(obj) {
+		//alert("ddddd");
+        var checkbox = obj.getElementsByTagName( 'input' )[0];
+        //if ( checkbox && checkbox.type == 'checkbox' ) ;
+        checkbox.checked ^= 1;
+		if(checkbox.checked)
+			obj.className = 'even marked';
+		else obj.className = 'even';
+//		var ckpage=document.modifyform.elements['chkAll'+num];
+		}
+</script>
+</head>
+<body leftmargin="2" topmargin="0" marginwIdth="0" marginheight="0">
+<table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border">
+  <tr class="topbg"> 
+    <td height="22" colspan="2" align="center"><strong>发送信息</strong></td>
+  </tr>
+  <tr class="tdbg"> 
+    <td wIdth="120" height="30"><strong>发送信息导航</strong></td>
+  </tr>
+</table>
+<!--
+<?php 
+
+$datebuf=date("Y-m-d H:i:s T");
+$row0['msg']=htmlspecialchars($row0['msg']);
+$row0['msg']=str_replace("\n", "<br>", $row0['msg']);
+print <<<EOT
+-->
+
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+  </tr>
+</table>
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2" nowrap=true>
+	<tr class=title>
+		<td align="center"><b>接收人类别</b></td>
+		<td align="center"><b>姓名</b></td>
+		<td align="center"><b>号码</b></td>
+		<td align="center"><b>服务商</b></td>
+		<td align="center"><b>goip编号</b></td>
+		<td align="center"><b>goip ID</b></td>
+		<td align="center"><b>发送时间</b></td>
+		<td align="center"><b>状态</b></td>
+	</tr>
+<!-- 
+EOT;
+$j=0;
+foreach($rsdb as $rs) {
+print <<<EOT
+-->
+	<tr class="even" onMouseOver="mouseover(this)" onMouseOut="mouseout(this)">
+		<td align="center">{$rs['recvlev']}</td>
+		<td align="center">{$rs['name']}</td>
+		<td align="center">{$rs['telnum']}</td>
+		<td align="center">{$rs['prov']}</td>
+		<td align="center">{$rs['goipid']}</td>
+		<td align="center">{$rs['goipname']}</td>
+		<td align="center">{$rs['time']}</td>
+		<td align="center">{$rs['over']}</td>			
+    </tr>
+
+<!--
+EOT;
+$j++;
+}
+
+print <<<EOT
+-->
+</table>
+		<tr>
+			<td  align=center>{$fenye}</td>
+		</tr>
+<!--
+EOT;
+?>
+-->
+</body>
+</html>

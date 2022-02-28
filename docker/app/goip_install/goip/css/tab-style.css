@@ -1,0 +1,46 @@
+.tabitem{
+	display: inline;
+	margin-left: 2px;
+	margin-right: 2px;
+	border-top: 1px solid #919b9c;
+	border-left: 4px solid #919b9c;
+	border-right: 1px solid #919b9c;
+	border-bottom: 1px solid #919b9c;
+	font-family: Trebuchet MS, Lucida Sans Unicode, Arial, sans-serif;
+	padding-left: 5px;
+	padding-right: 5px;
+	height: 20px;
+	font-size:14px;
+	cursor:pointer;
+}
+.tabitem_active{
+	border-left: 4px solid #CCCCC;
+	font-weight:bolder;
+	cursor:pointer;
+}
+.tabpane DIV{
+	float:left;
+	height:100%;	/* Height of tabs */
+	padding-left:3px;
+	vertical-align:middle;
+	background-repeat:no-repeat;
+	background-position:bottom left;
+	cursor:pointer;
+	position:relative;
+	bottom:-1px;
+	margin-top:0px;
+	margin-left:0px;
+	margin-right:0px;
+	border-top: 1px solid #C9DCA6;
+
+	border-left-style: none;
+	border-left-color: inherit;
+	border-left-width: medium;
+	border-right-style: none;
+	border-right-color: inherit;
+	border-right-width: medium;
+	border-bottom-style: none;
+	border-bottom-color: inherit;
+	border-bottom-width: medium;
+	padding-top:5px;
+}

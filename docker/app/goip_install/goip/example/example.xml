@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<sms>
+	<uid>fasong2</uid>
+	<senddate>2009-09-03</senddate>
+	<sendtime>12:14:00</sendtime>
+	<stopdate>2009-09-31</stopdate>
+	<stoptime>18:00:00</stoptime>
+	<goip>3HK</goip>
+	<msg>
+		<id>1</id>
+		<text>Hello World Message from xml file</text>
+		<rev>94633701</rev>
+	</msg>
+	<msg>
+		<id>2</id>
+		<text>Hello World Message from xml file</text>
+		<rev>68081724</rev>
+	</msg>
+</sms>

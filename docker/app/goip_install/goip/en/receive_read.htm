@@ -1,0 +1,117 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="../style.css" rel="stylesheet" type="text/css">
+<title>View SMS</title>
+<script src="time.js"></script>
+<script language="javascript">
+function unselectall()
+	{
+	    if(document.myform.chkAll.checked){
+		document.myform.chkAll.checked = document.myform.chkAll.checked&0;
+	    } 	
+	}
+
+function CheckAll(form)
+	{
+		var trck;
+		var e;
+		for (var i=0;i<form.elements.length;i++)
+	    {
+		    e = form.elements[i];
+		    if (e.type == 'checkbox' && e.id != "chkAll" && e.disabled==false){
+				e.checked = form.chkAll.checked;
+		 		do {e=e.parentNode} while (e.tagName!="TR") 
+		 		if(form.chkAll.checked)
+		 			e.className = 'even marked';
+		 		else
+		 			e.className = 'even';
+			}
+	    }
+		//form.chkAll.classname = 'even';
+	}
+function mouseover(obj) {
+                obj.className += ' hover';
+				//alert(obj.className);            	
+			}
+function mouseout(obj) {
+            	obj.className = obj.className.replace( ' hover', '' );
+				//alert(obj.className);
+			}
+function trclick(obj) {
+		//alert("ddddd");
+        var checkbox = obj.getElementsByTagName( 'input' )[0];
+        //if ( checkbox && checkbox.type == 'checkbox' ) ;
+        checkbox.checked ^= 1;
+		if(checkbox.checked)
+			obj.className = 'even marked';
+		else obj.className = 'even';
+//		var ckpage=document.modifyform.elements['chkAll'+num];
+		}
+</script>
+</head>
+<body leftmargin="2" topmargin="0" marginwIdth="0" marginheight="0">
+<table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border">
+  <tr class="topbg"> 
+    <td height="22" colspan="2" align="center"><strong>View SMS</strong></td>
+  </tr>
+</table>
+<!--
+<?php 
+
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>Navigation:View SMS</strong></td>
+
+  </tr>
+</table>
+<form action="receive.php?action=del" method=post name=myform onSubmit="return confirm('Sure to delete?')">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2" nowrap=false>
+	<tr class="title">
+		<td align="center" width="150"><b>Receive Time</b></td>
+		<td align="center"><b>Source Number</b></td>
+		<td align="center"><b>Phone book match</b></td>
+		<td align="center"><b>SMS Text</b></td>
+		<td align="center"><b>Operator</b></td>
+
+	</tr>
+
+<!-- 
+EOT;
+
+$row['msg']=htmlspecialchars($row['msg']);
+$row['msg']=str_replace("\n", "<br>", $row['msg']);
+print <<<EOT
+-->
+	<tr class="even" >   
+		<td align="center" width="150">{$row['time']}</td>
+		<td align="center">{$row['srcnum']}</td>
+		<td align="center" width="120">{$row['srcname']}</td> 
+		<td  width="55%" style="word-break : break-all; ">{$row['msg']}</td>
+						
+		<td width="100" align=center ><a href="send.php?type=re&reid={$row['id']}">Reply  </a> <a href="receive.php?action=del&id={$row['id']}">Delete  </a></td> 
+    </tr>
+
+<!--
+EOT;
+
+print <<<EOT
+-->
+</table>
+<input type="hIdden" name="boxs" value="{$j}">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2">
+
+					
+</table>
+
+<!--
+EOT;
+?>
+-->
+</form>
+</body>
+</html>
+

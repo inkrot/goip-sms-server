@@ -1,0 +1,236 @@
+<!--
+<?php 
+print <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="style.css" rel="stylesheet" type="text/css">
+<title>发送信息</title>
+<script src="time.js"></script>
+<script language="javascript">
+function mouseover(obj) {
+                obj.className += ' hover';
+				//alert(obj.className);            	
+			}
+function mouseout(obj) {
+            	obj.className = obj.className.replace( ' hover', '' );
+				//alert(obj.className);
+			}
+function trclick(obj) {
+		//alert("ddddd");
+        var checkbox = obj.getElementsByTagName( 'input' )[0];
+        //if ( checkbox && checkbox.type == 'checkbox' ) ;
+        checkbox.checked ^= 1;
+		if(checkbox.checked)
+			obj.className = 'even marked';
+		else obj.className = 'even';
+//		var ckpage=document.modifyform.elements['chkAll'+num];
+		}
+function CheckAll(form)
+        {
+                //alert(form);
+                var trck;
+                var e;
+                for (var i=0;i<form.elements.length;i++)
+            {
+                    e = form.elements[i];
+                    if (e.type == 'checkbox' && e.id != "chkAll" && e.disabled==false){
+                                e.checked = form.chkAll.checked;
+                                do {e=e.parentNode} while (e.tagName!="TR") 
+                                if(form.chkAll.checked)
+                                        e.className = 'even marked';
+                                else
+                                        e.className = 'even';
+                        }
+            }
+        }
+</script>
+</head>
+<body leftmargin="2" topmargin="0" marginwIdth="0" marginheight="0">
+<table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border">
+  <tr class="topbg"> 
+    <td height="22" colspan="2" align="center"><strong>发送信息</strong></td>
+  </tr>
+  <tr class="tdbg"> 
+    <td wIdth="120" height="30"><strong>发送信息导航</strong></td>
+    <td height="30"><a href="sendinfo.php?userid={$_SESSION['goip_userid']}" target=main>我的发送</a>&nbsp;|{$otherh}&nbsp;</td>
+  </tr>
+</table>
+<!-- 
+EOT;
+if($_GET[id]): 
+$datebuf=date("Y-m-d H:i:s T");
+$row0['msg']=htmlspecialchars($row0['msg']);
+$row0['msg']=str_replace("\n", "<br>", $row0['msg']);
+$cc="";
+if($row0['type']==9){ //bulk sms
+	$cc="<td align=\"center\"><b>短信内容</b></td>";
+}
+print <<<EOT
+-->
+
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="72%" height="25"><strong>当前位置：发送详情,发送内容:$row0[msg] 发送数量：$sendc </strong></td>
+    <td width="150"><a href="resend.php?messageid={$_GET['id']}"><font color='#FF0000'>重发所有失败发送</font></a></td>
+  </tr>
+</table>
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2" nowrap=true>
+	<tr class=title>
+		<td align="center"><b>接收人类别</b></td>
+		<td align="center"><b>姓名</b></td>
+		<td align="center"><b>号码</b></td>
+		{$cc}
+		<td align="center"><b>服务商</b></td>
+		<td align="center"><b>goip编号</b></td>
+		<td align="center"><b>goip ID</b></td>
+		<td align="center"><b>发送时间</b></td>
+		<td align="center"><b>发送</b></td>
+		<td align="center"><b>接收</b></td>
+		<td align="center"><b>错误号</b></td>
+		<td align="center"><b>操作</b></td>
+	</tr>
+<!-- 
+EOT;
+$j=0;
+foreach($rsdb as $rs) {
+$cc="";
+if($row0['type']==9){ //bulk sms
+	$rs['msg']=htmlspecialchars($rs['msg']);
+	$rs['msg']=str_replace("\n", "<br>", $rs['msg']);
+	$cc="<td  width=\"30%\" style=\"word-break : break-all; \">{$rs['msg']}</td>";
+}
+print <<<EOT
+-->
+	<tr class="even" onMouseOver="mouseover(this)" onMouseOut="mouseout(this)">
+		<td align="center">{$rs['recvlev']}</td>
+		<td align="center">{$rs['name']}</td>
+		<td align="center">{$rs['telnum']}</td>
+		{$cc}
+		<td align="center">{$rs['prov']}</td>
+		<td align="center">{$rs['goipid']}</td>
+		<td align="center">{$rs['goipname']}</td>
+		<td align="center">{$rs['time']}</td>
+		<td align="center">{$rs['over']}</td>
+		<td align="center">{$rs['received']}</td>
+		<td align="center">{$rs['error_no']}</td>
+						
+		<td wIdth="135" align=center >{$rs['resend']}</td>
+    </tr>
+
+<!--
+EOT;
+$j++;
+}
+
+print <<<EOT
+-->
+</table>
+		<tr>
+			<td  align=center>{$fenye}</td>
+		</tr>
+<!--
+EOT;
+else: 
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>当前位置：{$username}的发送一览</strong></td>
+<!--
+EOT;
+if($_SESSION['goip_permissions']<2):
+print <<<EOT
+-->
+	<td height="30" >选择一个管理员 <select name="admin" style="width:135" onChange="if(this.options[this.selectedIndex].value!=''){location='?type=all&userid='+this.options[this.selectedIndex].value;}">
+<!--
+EOT;
+if(!empty($userdb))
+foreach($userdb as $rs) {
+if($rs[id]==$_GET[userid]){
+print <<<EOT
+-->
+      <option value={$rs[id]} selected>{$rs[username]}</option>
+<!--
+EOT;
+}
+else{ 
+print <<<EOT
+-->	 
+	<option value={$rs[id]} >{$rs[username]}</option>
+<!--
+EOT;
+}
+}
+print <<<EOT
+-->	  
+	  </select></td>
+<!--
+EOT;
+endif;
+print <<<EOT
+-->
+  </tr>
+</table>
+<form action="sendinfo.php?action=del" method=post name=myform onSubmit="return confirm('Sure to delete?')">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2" nowrap=false>
+	<tr class=title>
+		<td wIdth="35" align=center height="25"><b>选择</b></td>
+		<td align="center" width="120"><b>发送时间</b></td>
+		<td align="center"><b>发送信息</b></td>
+		<td align="center"><b>发送数</b></td>
+		<td align="center"><b>完成数</b></td>
+		<td align="center"><b>操作</b></td>
+
+	</tr>
+
+<!-- 
+EOT;
+$j=0;
+foreach($rsdb as $rs) {
+$rs['msg']=htmlspecialchars($rs['msg']);
+$rs['msg']=str_replace("\n", "<br>", $rs['msg']);
+print <<<EOT
+-->
+	<tr class="even" onMouseOver="mouseover(this)" onMouseOut="mouseout(this)" onMouseDown="trclick(this)">
+		<td nowrap=true align=center wIdth="35"><input name="Id{$j}" type='checkbox' onClick="return false" value="{$rs['id']}"></td>
+		<td align="center">{$rs['time']}</td>
+		<td  width="60%" style="word-break : break-all; ">{$rs['msg']}</td>
+		<td align="center">{$rs['total']}</td>
+		<td align="center">{$rs['succ']}</td>
+
+						
+		<td width="200" align=center ><a href="sendinfo.php?id={$rs['id']}">查询详情</a> | <a href="sendinfo.php?id={$rs['id']}&action=del" onClick="return confirm('确认删除?')">删除</a></td>
+    </tr>
+
+<!--
+EOT;
+$j++;
+}
+print <<<EOT
+-->
+</table>
+<input type="hIdden" name="boxs" value="{$j}">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2">
+
+
+                                        <tr>
+                                                <td height="30" ><input name="chkAll" type="checkbox" Id="chkAll" onclick=CheckAll(this.form) value="checkbox">
+                                          选择当前页面<input name="submit" type='submit' value='删除所选'>
+        <input name="button" type='button' value='删除全部' onClick="if(confirm('确认删除数据库中的所有发送的短信?')) window.location='?action=delall'"></td>
+                                        <tr>
+                                                <td  align=center>{$fenye}</td>
+                                        </tr>
+</table>
+</form>
+<!--
+EOT;
+?>
+-->
+
+<?php endif;?>	
+</body>
+</html>

@@ -1,0 +1,14 @@
+HTTP api of send sms. Chinese page is http://your_ip/dosend.php English page is http://your_ip/en/dosend.php, can receive GET or POST parameters.
+  parameter:
+  USERNAME: user name
+  PASSWORD: user password
+  smsnum: number will you send to
+  Memo: content will you send 
+  smsprovider: (1-10) the provider id which in server. 
+  method: 2
+
+
+  for example:
+  http://192.168.2.2/goip/en/dosend.php?USERNAME=root&PASSWORD=root&smsprovider=1&smsnum=13800138000&method=2&Memo=hello
+
+

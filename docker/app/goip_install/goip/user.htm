@@ -1,0 +1,406 @@
+<!--
+<?php
+print <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="style.css" rel="stylesheet" type="text/css">
+<title>user management</title>
+<script language="javascript">
+function unselectall()
+	{
+	    if(document.myform.chkAll.checked){
+		document.myform.chkAll.checked = document.myform.chkAll.checked&0;
+	    } 	
+	}
+
+function CheckAll(form)
+	{
+		var trck;
+		var e;
+		for (var i=0;i<form.elements.length;i++)
+	    {
+		    e = form.elements[i];
+		    if (e.type == 'checkbox' && e.id != "chkAll" && e.disabled==false){
+				e.checked = form.chkAll.checked;
+		 		do {e=e.parentNode} while (e.tagName!="TR") 
+		 		if(form.chkAll.checked)
+		 			e.className = 'even marked';
+		 		else
+		 			e.className = 'even';
+			}
+	    }
+		//form.chkAll.classname = 'even';
+	}
+
+function mouseover(obj) {
+                obj.className += ' hover';
+				//alert(obj.className);
+            	
+			}
+
+function mouseout(obj) {
+            	obj.className = obj.className.replace( ' hover', '' );
+				//alert(obj.className);
+			}
+
+function trclick(obj) {
+		//alert("ddddd");
+        var checkbox = obj.getElementsByTagName( 'input' )[0];
+        //if ( checkbox && checkbox.type == 'checkbox' ) 
+        checkbox.checked ^= 1;
+		if(checkbox.checked)
+			obj.className = 'even marked';
+		else obj.className = 'even';
+//		var ckpage=document.modifyform.elements['chkAll'+num];
+	    if(document.myform.chkAll.checked){
+		document.myform.chkAll.checked = document.myform.chkAll.checked&0;
+	    } 	
+		
+
+		}
+
+</script>
+</head>
+<body leftmargin="2" topmargin="0" marginwIdth="0" marginheight="0">
+<table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border">
+  <tr class="topbg"> 
+    <td height="22" colspan="2" align="center"><strong>User Management</strong></td>
+  </tr>
+  <tr class="tdbg"> 
+    <td wIdth="100" height="30"><strong>管理导航:</strong></td>
+    <td height="30"><a href="user.php?action=modifyself" target=main>管理本用户</a>&nbsp;|&nbsp;<a href="user.php?&action=modifymsg" target=main>编辑常用语</a>&nbsp;|&nbsp;<a href="user.php?&action=add" target=main>添加用户</a>&nbsp;|&nbsp;<a href="user.php?action=main" target=main>用户管理</a></td>
+  </tr>
+</table>
+<!--
+EOT;
+if($action=="main") {
+print <<<EOT
+-->
+<br>
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>当前位置：用户管理</strong></td>
+  </tr>
+</table>
+<form action="user.php?action=del" method=post name=myform onSubmit="return confirm('确认删除?')">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2">
+	<tr class=title>
+		<td wIdth="35" align=center height="25"><b>选择</b></td>
+		<td align="center"><b>ID号</b></td>
+		<td align="center"><b>用户名</b></td>
+		<td align="center"><b>权限级别</b></td>
+		<td align="center"><b>备注信息</b></td>
+		<td wIdth="80" align=center><b>操作</b></td>
+	</tr>
+<!--
+EOT;
+$j=0;
+foreach($rsdb as $rs) {
+print <<<EOT
+-->
+	<tr class="even" onMouseOver="mouseover(this)" onMouseOut="mouseout(this)" onMouseDown="trclick(this)">
+		<td align=center wIdth="35"><input name="Id{$j}" type='checkbox' onClick="return false" value={$rs['Id']}></td>
+		
+		<td align="center">{$rs['id']}</td>
+		<td align="center">{$rs['username']}</td>
+		<td align="center">{$rs['permissions']}</td>
+		<td align="center">{$rs['info']}</td>
+		
+		<td align=center wIdth="80"><a href="user.php?action=modify&id={$rs['id']}">修改</a> | <a href="user.php?id={$rs['id']}&action=del" onClick="return confirm('确认删除?')">删除</a></td>
+    </tr>
+
+<!--
+EOT;
+$j++;
+}
+print <<<EOT
+-->
+</table>
+<input type="hIdden" name="boxs" value="{$j}">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2">
+
+
+					<tr>
+						<td height="30" ><input name="chkAll" type="checkbox" Id="chkAll" onclick=CheckAll(this.form) value="checkbox"> 
+					  选择当前页面<input name="submit" type='submit' value='删除所选'></td>
+					</tr>
+					<tr>
+						<td  align=center>{$fenye}</td>
+					</tr>
+</table>
+<!--
+EOT;
+}
+else if($action=="add")
+{
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>当前位置：添加用户</strong></td>
+  </tr>
+</table>
+<form method="post" action="user.php?action=saveadd" name="form1" onSubmit="javascript:return check_pw();">
+  <br>
+  <br>
+  <table wIdth="300" border="0" align="center" cellpadding="2" cellspacing="1" class="border" >
+    <tr class="title"> 
+      <td height="22" colspan="2"> <div align="center"><strong>添 加 管 理 员</strong></div></td>
+    </tr>
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>用户名:</strong></td>
+      <td class="tdbg"><input type="input" name="username"> </td>
+    </tr>
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>密码:</strong></td>
+      <td class="tdbg"><input type="password" name="Password"> </td>
+    </tr>
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>确认码:</strong></td>
+      <td class="tdbg"><input type="password" name="PwdConfirm"> </td>
+    </tr>
+<!--
+EOT;
+?>
+-->
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>权限级别:</strong></td>
+      <td class="tdbg"><select name="permissions" style="width:135">
+        <option value="1" selected>高级管理员</option>
+        <option value="2" >群管理员</option>
+	<option value="3" >组管理员</option>
+	<option value="4" >GoIP操作者</option>
+      </select>
+	  	 </td>
+    </tr>
+
+<!--
+<?php
+print <<<EOT
+-->	
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>备注信息:</strong></td>
+      <td class="tdbg"><input type="input" name="info"> </td>
+    </tr>
+    <tr> 
+      <td height="40" colspan="2" align="center" class="tdbg"><input name="Action" type="hIdden" Id="Action" value="Modify"> 
+        <input  type="submit" name="Submit" value="添加" style="cursor:hand;"> 
+        &nbsp; <input name="Cancel" type="button" Id="Cancel" value="取消" onClick="window.location.href='user.php'" style="cursor:hand;"></td>
+    </tr>
+  </table>
+  </form>
+<!--
+EOT;
+}
+else if($action=="modify")
+{
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>当前位置：修改用户</strong></td>
+  </tr>
+</table>
+<form method="post" action="user.php?action=savemodify&id={$rs['id']}" name="form1" onSubmit="javascript:return check_pw();">
+  <br>
+  <br>
+  <table wIdth="300" border="0" align="center" cellpadding="2" cellspacing="1" class="border" >
+    <tr class="title"> 
+      <td height="22" colspan="2"> <div align="center"><strong>修 改 管 理 员 信 息</strong></div></td>
+    </tr>
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>用户名:</strong></td>
+      <td class="tdbg">{$rs['username']} </td>
+    </tr>
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>新密码:</strong></td>
+      <td class="tdbg"><input type="password" name="Password"> </td>
+    </tr>
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>确认码:</strong></td>
+      <td class="tdbg"><input type="password" name="PwdConfirm"> </td>
+    </tr>
+<!--
+EOT;
+?>
+-->
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>权限级别:</strong></td>
+      <td class="tdbg"><select name="permissions" style="width:135">
+
+<!--
+<?php
+if($_GET[id]=='1'){
+?>
+-->
+        <option value="0" <?php if($rs[permissions]=='0') echo 'selected'; ?>>系统管理员</option>
+<!--
+<?php
+}
+if($_GET[id]!='1'){
+?>
+-->	
+        <option value="1" <?php if($rs[permissions]=='1') echo 'selected'; ?>>高级管理员</option>
+        <option value="2" <?php if($rs[permissions]=='2') echo 'selected'; ?>>群管理员</option>
+	<option value="3" <?php if($rs[permissions]=='3') echo 'selected'; ?>>组管理员</option>
+	<option value="4" <?php if($rs[permissions]=='4') echo 'selected'; ?>>GoIP操作者</option>
+      </select>
+	  	 </td>
+    </tr>
+
+<!--
+<?php
+}
+$binfo=htmlspecialchars($rs['info']);
+print <<<EOT
+-->	
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>备注信息:</strong></td>
+      <td class="tdbg"><input type="input" name="info" value="{$binfo}"> </td>
+    </tr>
+    <tr> 
+      <td height="40" colspan="2" align="center" class="tdbg"><input name="Id" type="hIdden" Id="Id" value="{$rs['Id']}"> 
+        <input  type="submit" name="Submit" value="确定" style="cursor:hand;"> 
+        &nbsp; <input name="Cancel" type="button" Id="Cancel" value="取消" onClick="window.location.href='user.php'" style="cursor:hand;"></td>
+    </tr>
+  </table>
+  </form>
+<!--
+EOT;
+}
+else if($action=="modifyself")
+{
+$binfo=htmlspecialchars($rs['info']);
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>当前位置：修改本用户信息</strong></td>
+  </tr>
+</table>
+<form method="post" action="user.php?action=savemodifyself" name="form1" onSubmit="javascript:return check_pw();">
+  <br>
+  <br>
+  <table wIdth="300" border="0" align="center" cellpadding="2" cellspacing="1" class="border" >
+    <tr class="title"> 
+      <td height="22" colspan="2"> <div align="center"><strong>修 改 管 理 员 密 码</strong></div></td>
+    </tr>
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>用户名:</strong></td>
+      <td class="tdbg">{$rs['username']} </td>
+    </tr>
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>新密码:</strong></td>
+      <td class="tdbg"><input type="password" name="Password"> </td>
+    </tr>
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>确认码:</strong></td>
+      <td class="tdbg"><input type="password" name="PwdConfirm"> </td>
+    </tr>
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>备注信息:</strong></td>
+      <td class="tdbg"><input type="input" name="info" value="{$binfo}"> </td>
+    </tr>	
+    <tr> 
+      <td height="40" colspan="2" align="center" class="tdbg"><input name="Action" type="hIdden" Id="Action" value="Modify"> 
+        <input  type="submit" name="Submit" value="确定" style="cursor:hand;"> 
+        &nbsp; <input name="Cancel" type="button" Id="Cancel" value="取消" onClick="window.location.href='user.php'" style="cursor:hand;"></td>
+    </tr>
+  </table>
+  </form>
+<!--
+EOT;
+}
+else if($action=="modifymsg")
+{
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>当前位置：修改常用语</strong></td>
+  </tr>
+</table>
+<form method="post" action="user.php?action=savemodifymsg" name="form1" onSubmit="javascript:return check_pw();">
+  <br>
+  <br>
+  <table wIdth="600" border="0" align="center" cellpadding="2" cellspacing="1" class="border" >
+    <tr class="title"> 
+      <td height="22" colspan="2"> <div align="center"><strong>修 改 常 用 语</strong></div></td>
+    </tr>
+<!--
+EOT;
+for($i=1;$i<=10;$i++){
+	$msg=htmlspecialchars($rs["msg$i"]);
+print <<<EOT
+-->
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>常用语$i:</strong></td>
+      <td class="tdbg"><input type="input" name="msg$i" value="$msg" maxlength="320" size="60"></td>
+    </tr>
+<!--
+EOT;
+}
+	
+print <<<EOT
+-->
+    <tr> 
+      <td height="40" colspan="2" align="center" class="tdbg"><input name="Action" type="hIdden" Id="Action" value="Modify"> 
+        <input  type="submit" name="Submit" value="确定" style="cursor:hand;"> 
+        &nbsp; <input name="Cancel" type="button" Id="Cancel" value="取消" onClick="window.location.href='user.php'" style="cursor:hand;"></td>
+    </tr>
+  </table>
+</form>
+<!--
+EOT;
+}
+print <<<EOT
+-->
+<script language="JavaScript" type="text/JavaScript">
+function check_pw()
+{
+  if(document.form1.Password.value=="" && document.form1.Submit.value=="确定")
+  	return true;
+  if(document.form1.Password.value=="")
+    {
+      alert("密码不能为空！");
+	  document.form1.Password.focus();
+      return false;
+    }
+    
+  if((document.form1.Password.value)!=(document.form1.PwdConfirm.value))
+    {
+      alert("初始密码与确认密码不同!");
+	  document.form1.PwdConfirm.select();
+	  document.form1.PwdConfirm.focus();	  
+      return false;
+    }
+}
+function check()
+{
+  if (document.myform.keyword.value=="")
+  {
+    alert("请输入关键字!");
+	document.myform.keyword.focus();
+	return false;
+  }
+}
+</script>
+</form>
+
+					  </td> 
+					</tr>
+</table>
+				
+</body>
+</html>
+<!--
+EOT;
+?>
+-->

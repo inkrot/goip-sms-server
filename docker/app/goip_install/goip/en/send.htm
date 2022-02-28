@@ -1,0 +1,741 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="../style.css" rel="stylesheet" type="text/css">
+<title>Send Message</title>
+<script src="time.js"></script>
+<script language="javascript">
+function toggle( targetId, count,srctr) {
+if (document.getElementById){
+  if (srctr.cells[1].innerText=='+')
+  	srctr.cells[1].innerText='-';
+  else srctr.cells[1].innerText='+';   
+  for(var i=targetId;i<targetId+count;i++){ 
+  //alert("dsdsd");
+	target = document.getElementById( 'submenu'+i );
+	if ( target.style.display == "none") {
+	target.style.display = "";  
+	} else { 
+	target.style.display = "none";
+	}
+  }
+ }
+}
+
+function CheckAll(form,name,start,count,checkv,ckall)
+	{
+		//alert(ckall+"sf");
+		
+		var trck,ck;
+		//var ck=form.elements['chkAll'+cknum];
+		if(checkv!=2){
+			for(var i=0;i<ckall;i++)
+				myform.elements['ids'+i].checked=checkv;
+		}
+		for (var i=start;i<start+count;i++)
+		{
+		 trck=myform.elements['id'+name+i]; //document.getElementsById('trid'+i);
+		 //alert(trck.checked)
+		 if(checkv==2)
+		 	trck.checked=myform.elements['ids'+ckall].checked?1:0;
+		 else 
+		 	trck.checked = checkv;	
+		ck=trck.checked;	 
+		 
+		 do {
+		 trck=trck.parentNode;} while (name == '' && trck.tagName!="TR")
+		 //alert(i);
+		 if(ck)
+		 	trck.className = 'marked';
+		 else
+		 	trck.className = 'even';
+		}
+		//form.chkAll.classname = 'even';
+	}
+	
+function CheckAll2(form)
+	{
+		var trck;
+		var e;
+		for (var i=0;i<form.elements.length;i++)
+	    {
+		    e = form.elements[i];
+		    if (e.type == 'checkbox' && e.id != "chkAll" && e.disabled==false){
+				e.checked = form.chkAll.checked;
+		 		do {e=e.parentNode} while (e.tagName!="TR") 
+		 		if(form.chkAll.checked)
+		 			e.className = 'even marked';
+		 		else
+		 			e.className = 'even';
+			}
+	    }
+		//form.chkAll.classname = 'even';
+	}
+
+function mouseover(obj) {
+                obj.className += ' hover';
+				//alert(obj.className);
+            	
+			}
+
+function mouseout(obj) {
+            	obj.className = obj.className.replace( ' hover', '' );
+				//alert(obj.className);
+			}
+
+function trclick(obj, ckall) {
+		//alert("ddddd");
+        var checkbox = obj.getElementsByTagName( 'input' )[0];
+        //if ( checkbox && checkbox.type == 'checkbox' ) 
+        checkbox.checked ^= 1;
+		if(checkbox.checked)
+			//obj.className += ' hover';//
+			obj.className = 'marked';
+		else obj.className = 'even';
+//		var ckpage=document.modifyform.elements['chkAll'+num];
+		//alert(checkbox.checked)
+		if(ckall>=0 && !checkbox.checked){
+			//alert('ids'+ckall+myform.elements['ids'+ckall].checked);
+			myform.elements['ids'+ckall].checked=0;	
+		}
+}
+function gbcount(message,total,used,remain){
+		 var max_ucs2, max_bit7,han,hanlen,len,svalue;
+		max_ucs2=67*15;
+		max_bit7=153*15;
+		len=message.value.length;
+		svalue=message.value;
+		if(han=message.value.match(/[\x00-\xff]/g)){
+			hanlen=han.length;
+		}
+		 else hanlen=0;
+                if(hanlen != len){
+			
+		 	if (svalue.length > max_ucs2) {
+				alert("can not more than 15 messages");
+			 	do {	 	
+			 	svalue = svalue.substring(0,svalue.length-1);
+			 	} while(svalue.length> max_ucs2);
+	                       used.value = svalue.length;
+	                        message.value=svalue;
+        	                len=message.value.length;
+			}
+			
+			
+                	remain.value = 'ucs2';
+			if(len == 0)
+				total.value=0;
+			else if(len<=70)
+				total.value=1;
+			else 
+				total.value=Math.ceil(len/67);
+				
+                }
+		else{
+                        if (svalue.length > max_bit7) {
+				alert("can not more than 5 messages");
+                                do {            
+                                svalue = svalue.substring(0,svalue.length-1);
+                                } while(svalue.length> max_bit7);
+                               used.value = svalue.length;
+                                message.value=svalue;
+                                len=message.value.length;
+                        }
+			remain.value = 'bit7';
+                        if(len == 0)
+                                total.value=0;
+                        else if(len<=160)
+                                total.value=1;
+                        else 
+                                total.value=Math.ceil(len/153);
+		}
+                        
+                        used.value=message.value.length;
+                        //remain.value = max1 - used.value;
+                }
+
+		
+function check()
+		{
+		  if (document.myform.Memo.value=="")
+		  {
+			alert("please input content of message!");
+			document.myform.Memo.focus();
+			return false;
+		  }		
+		}
+function check2()
+		{	
+		  if (document.myform.submit2.value=="Save Task" && document.myform.datehm.value=="")
+		  {
+			alert("please set time of the sending task!");
+			document.myform.datehm.focus();
+			return false;
+		  } 
+		}
+		
+function qmsginsert(qmsg)
+	{
+		document.myform.Memo.value+=qmsg;
+		
+	}
+</script>
+<style type="text/css">
+<!--
+.STYLE1 {font-size: 18pt}
+-->
+</style>
+</head>
+<body leftmargin="2" topmargin="0" marginwIdth="0" marginheight="0" onLoad="gbcount(document.myform.Memo,document.myform.total,document.myform.used,document.myform.remain);">
+<table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border">
+  <tr class="topbg"> 
+    <td height="22" colspan="2" align="center"><strong>Send message</strong></td>
+  </tr>
+  <tr class="tdbg"> 
+    <td wIdth="120" height="30"><strong>Navigation:</strong></td>
+    <td height="30"><a href="send.php?type=crowd" target=main>Send to Crowds</a>&nbsp;|&nbsp;<a href="send.php?type=group" target=main>Send to A Group</a>&nbsp;|&nbsp;<a href="send.php?type=all" target=main>Send to All</a></td>
+  </tr>
+</table>
+<!--
+<?php 
+if($_GET['type']=="group"):
+if($_GET[action]=="send"): 
+$datebuf=date("Y-m-d H:i:s T");
+print <<<EOT
+-->
+
+<form action="$formaction" method=post name=myform onSubmit="javascript:return check();">
+<input type="hIdden" name="groupid" value="{$_GET[id]}">
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="92%" height="25"><strong>Current Location: Send to A Group</strong></td>
+  </tr>
+   <tr class="title">
+    <td width="92%" height="25"><strong>Hello, $_SESSION[username]. Plesae choose receivers or related people from $gdb[0] and send message to them. nowtime:$datebuf.</strong></td>
+  </tr>
+</table>
+
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2" nowrap=true>
+<tr>
+	<td width="43%"><legend align=center>Choice</legend>
+	<div id="other" class="tables">
+	<table width="98%" height="100" border="1" cellspacing="1" cellpadding="0" scrolling="auto" nowrap=true >
+	<tr class=title>
+		<td align="center"><b>Receiver</b></td>
+		<td align="center"><b>Relation 1</b></td>
+		<td align="center"><b>Relation 2</b></td>
+    </tr>
+	  <tr>
+	  	<td align=center><span class="spanpage" onclick= "CheckAll(this.form,'a',0,$count,1)">ALL</span>/ 
+			<span class="spanpage" onclick= "CheckAll(this.form,'a',0,$count,0)">NOT</span>
+		</td>
+		<td align=center><span class="spanpage" onclick= "CheckAll(this.form,'b',0,$count,1)">ALL</span>/ 
+			<span class="spanpage" onclick= "CheckAll(this.form,'b',0,$count,0)">NOT</span>
+		</td>
+		<td align=center><span class="spanpage" onclick= "CheckAll(this.form,'c',0,$count,1)">ALL</span>/ 
+			<span class="spanpage" onclick= "CheckAll(this.form,'c',0,$count,0)">NOT</span>
+		</td>
+	</tr>
+
+
+<!--
+EOT;
+$j=0;
+foreach($rsdb as $rs) {
+$tdmsg=$tdmsg1=$tdmsg2='class="even"';
+$ckeckmsg=$ckeckmsg1=$ckeckmsg2='';
+if(in_array($rs['id'], $yrecvid)){
+	$tdmsg='class="marked"';
+	$ckeckmsg='checked';
+}
+if(in_array($rs['id'], $yrecvid1)){
+	$tdmsg1='class="marked"';
+	$ckeckmsg1='checked';
+}
+if(in_array($rs['id'], $yrecvid2)){
+	$tdmsg2='class="marked"';
+	$ckeckmsg2='checked';
+}
+print <<<EOT
+-->
+			  <tr >
+				<td height="25"  {$tdmsg} onMouseOver="mouseover(this)" onMouseOut="mouseout(this)" onMouseDown="trclick(this,-1)"><input name="ida$j" type='checkbox' onClick="return false" value="{$rs['id']}" {$ckeckmsg}><strong>$rs[name]</strong></td>
+				<td height="25"  {$tdmsg1} onMouseOver="mouseover(this)" onMouseOut="mouseout(this)" onMouseDown="trclick(this,-1)"><input name="idb$j" type='checkbox' onClick="return false" value="{$rs['id']}" {$ckeckmsg1}><strong>$rs[name1]</strong></td>
+				<td height="25"  {$tdmsg2} onMouseOver="mouseover(this)" onMouseOut="mouseout(this)" onMouseDown="trclick(this,-1)"><input name="idc$j" type='checkbox' onClick="return false" value="{$rs['id']}" {$ckeckmsg2}><strong>$rs[name2]</strong></td>
+              </tr>
+
+<!--
+EOT;
+$j++;
+}
+print <<<EOT
+-->
+          
+	  <tr>
+	  	<td align=center><span class="spanpage" onclick= "CheckAll(this.form,'a',0,$count,1)">ALL</span>/ 
+			<span class="spanpage" onclick= "CheckAll(this.form,'a',0,$count,0)">NOT</span>
+		</td>
+		<td align=center><span class="spanpage" onclick= "CheckAll(this.form,'b',0,$count,1)">ALL</span>/ 
+			<span class="spanpage" onclick= "CheckAll(this.form,'b',0,$count,0)">NOT</span>
+		</td>
+		<td align=center><span class="spanpage" onclick= "CheckAll(this.form,'c',0,$count,1)">ALL</span>/ 
+			<span class="spanpage" onclick= "CheckAll(this.form,'c',0,$count,0)">NOT</span>
+		</td>
+	</tr>		  
+    </table></div></td>
+	<input type="hIdden" name="boxsa" value="{$j}">
+	<td width="18%">
+	  <table width="96%"  height="400" border="0" cellspacing="2" cellpadding="2" nowrap=true>
+        <tr>
+          {$buttoninfo}
+        </tr>
+    </table></td>
+	<td width="39%"><table wIdth="95%"  height="400" border="0" cellspacing="2" cellpadding="2" nowrap=true>
+		<tr>
+		<td align="center">
+			<fieldset align=center><legend align=center>input content</legend>
+choose template<select name="qmsg"  style="width:120px" >
+	<option value='$msgrs[msg1]' selected>$msgrs[msg1]</option>
+<!--
+EOT;
+for($ii=2;$ii<=10;$ii++){
+	$qmsg=$msgrs["msg$ii"];
+	if($qmsg){
+print <<<EOT
+-->
+	<option value='{$qmsg}' >$qmsg</option>
+<!--
+EOT;
+}
+}
+	$qdate= $datebuf;
+print <<<EOT
+-->
+	<option value='{$qdate}' >$qdate</option>
+</select>
+<input type="button" value="Insert" onClick="qmsginsert(this.form.qmsg.value)">
+
+			<textarea name="Memo"  rows="15" wrap="virtual" cols="25" class="textarea" oninput="gbcount(this.form.Memo,this.form.total,this.form.used,this.form.remain);" onpropertychange="gbcount(this.form.Memo,this.form.total,this.form.used,this.form.remain);">$ymsg</textarea>
+                        <p>words                                                                            
+                        <input disabled maxLength="10" name="used" size="10" value="0" class="inputtext">  
+                        message                                                                           
+                        <input disabled maxLength="3" name="total" size="3" value="0" class="inputtext" style="width:25">
+                        code                                                                             
+                        <input disabled maxLength="10" name="remain" size="10" value="" class="inputtext"></td>
+                        </p>
+			</fieldset>
+
+    	</td>
+	</tr>
+	</table></td>
+</tr>
+</table>
+</form>
+<!--
+EOT;
+else: //group send
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>Current Location: Group List</strong></td>
+  </tr>
+</table>
+<form action="groups.php?action=del" method=post name=myform onSubmit="return confirm('sure to dalete?')">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2" nowrap=true>
+	<tr class=title>
+		<td align="center"><b>group name</b></td>
+		<td align="center"><b>in crowd</b></td>
+		<td align="center"><b>remark</b></td>
+		<td align=center><b>operation</b></td>
+	</tr>
+<!-- 
+EOT;
+$j=0;
+foreach($rsdb as $rs) {
+print <<<EOT
+-->
+	<tr class="even" >
+		<td align="center">{$rs['name']}</td>
+		<td align="center">{$rs['crowdname']}</td>
+		<td align="center">{$rs['info']}</td>
+
+						
+		<td wIdth="135" align=center ><a href="send.php?id={$rs['id']}&type=group&action=send">send message</a></td>
+    </tr>
+
+<!--
+EOT;
+$j++;
+}
+?>
+-->
+</table>
+<input type="hIdden" name="boxs" value="{$j}">
+<!--
+<?php
+endif; 
+elseif($_GET['type']=="crowd")://group
+if($_GET[action]=="send"): 
+$datebuf=date("Y-m-d H:i:s T");
+print <<<EOT
+-->
+
+<form action="$formaction" method=post name=myform onSubmit="javascript:return check();">
+<input type="hIdden" name="crowdid" value="{$_GET[id]}">
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="92%" height="25"><strong>Current Location: Send to Crowds</strong></td>
+  </tr>
+  <tr class="title">
+    <td width="92%" height="25"><strong>Hello, $_SESSION[username]. Plesae choose receivers or related people from $gdb[0] and send message to them. nowtime:$datebuf.</strong></td>
+  </tr>
+</table>
+
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2" nowrap=true>
+<tr>
+	<td width="43%"><table width="98%"  height="400" border="1" cellspacing="2" cellpadding="2" nowrap=true>
+      <tr> choose groups
+      <tr>
+          <td align="center">
+		  		<span class="spanpage" onclick= "CheckAll(this.form,'',0,$groupc,1,$crowdc)">ALL</span>/ 
+				<span class="spanpage" onclick= "CheckAll(this.form,'',0,$groupc,0,$crowdc)">NOT</span>
+		  <div id="other" class="tables"> 
+		  <table width="100%" height="400" border="0" cellspacing="1" cellpadding="0" scrolling="auto" nowrap=true>
+
+<!--
+EOT;
+$j=0;
+$k=0;
+foreach($rsdb as $crowdid => $rs) {
+//echo "$crowdid";
+if($ytype=='modify')
+	$cv='-';
+else 
+	$cv='+';
+print <<<EOT
+-->
+			  <tr class="even2" id='src$j'>
+				<td height="25"align=center width=10><input name="ids$j" type='checkbox' onClick="CheckAll(this.form,'',$k,$groups[$crowdid],2,$j)" value="{$rs['id']}"></td>
+				<td height="25" align=center width=20 onClick="toggle($k,$groups[$crowdid],src$j);" >{$cv}</td>
+                <td onClick="toggle($k,$groups[$crowdid],src$j);"><strong>$crowdna[$crowdid]</strong></td>
+              </tr>
+
+<!--
+EOT;
+
+foreach($rs as $grs) {
+$tdmsg='class="even"';
+$ckeckmsg='';
+$stmsg='display:none';
+if(in_array($grs['id'], $ygroupid0)){
+	if($ygroupid){
+		$tdmsg='class="marked"';
+		$ckeckmsg='checked';
+		$stmsg='';
+	}
+}
+
+print <<<EOT
+-->
+			  <tr style="$stmsg" Id="submenu$k"  $tdmsg onMouseOver="mouseover(this)" onMouseOut="mouseout(this)" onMouseDown="trclick(this, $j)">
+			  	<td height="25" align=center width=10>●</td>
+				<td height="25" align=center width=10><input name="id$k" type='checkbox' onClick="return false" value="{$grs['id']}" $ckeckmsg></td>
+                <td ><strong>$grs[name]</strong></td>
+              </tr>
+<!--
+EOT;
+$k++;
+}
+$j++;
+}
+print <<<EOT
+-->
+          </table>
+		  <input type="hIdden" name="boxsa" value="{$k}">
+		  
+		  </div>
+		  <input name="jr" type='checkbox' value="1" $ygroupid >Receiver<input name="jr1" type='checkbox' value="1" $ygroupid1 >Relation 1<input name="jr2" type='checkbox' value="1" $ygroupid2 >Relation 2<br>
+		  		<span class="spanpage" onclick= "CheckAll(this.form,'',0,$k,1,$j)">ALL</span>/ 
+				<span class="spanpage" onclick= "CheckAll(this.form,'',0,$k,0,$j)">NOT</span></td>
+      </tr>
+    </table></td>
+	<td width="18%">
+	  <table width="96%"  height="400" border="0" cellspacing="2" cellpadding="2" nowrap=true>
+        <tr>
+          {$buttoninfo}
+        </tr>
+    </table></td>
+	<td width="39%"><table wIdth="95%"  height="400" border="0" cellspacing="2" cellpadding="2" nowrap=true>
+		<tr>
+		<td align="center">
+			<fieldset align=center><legend align=center>input content</legend>
+choose template<select name="qmsg"  style="width:120px" >
+	<option value='$msgrs[msg1]' selected>$msgrs[msg1]</option>
+<!--
+EOT;
+for($ii=2;$ii<=10;$ii++){
+	$qmsg=$msgrs["msg$ii"];
+	if($qmsg){
+print <<<EOT
+-->
+	<option value='{$qmsg}' >$qmsg</option>
+<!--
+EOT;
+}
+}
+	$qdate= $datebuf;
+print <<<EOT
+-->
+	<option value='{$qdate}' >$qdate</option>
+</select>
+<input type="button" value="Insert" onClick="qmsginsert(this.form.qmsg.value)">
+
+			<textarea name="Memo"  rows="15" wrap="virtual" cols="25" class="textarea" oninput="gbcount(this.form.Memo,this.form.total,this.form.used,this.form.remain);" onpropertychange="gbcount(this.form.Memo,this.form.total,this.form.used,this.form.remain);">$ymsg</textarea>
+                        <p>words
+                        <input disabled maxLength="10" name="used" size="10" value="0" class="inputtext">
+                        message 
+                        <input disabled maxLength="3" name="total" size="3" value="0" class="inputtext" style="width:25">
+                        code
+                        <input disabled maxLength="10" name="remain" size="10" value="" class="inputtext"></td>
+                        </p>
+			</fieldset>
+
+    	</td>
+	</tr>
+	</table></td>
+</tr>
+</table>
+</form>
+<!--
+EOT;
+else: 
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>Current Location: Crowd List</strong></td>
+  </tr>
+</table>
+<form action="send.php?type=crowd&action=send" method=post name=myform>
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2" nowrap=true>
+	<tr class=title>
+		<td wIdth="35" align=center height="25"><b>choice</b></td>
+		<td align="center"><b>name</b></td>
+		<td align="center"><b>remark</b></td>
+		<td align=center><b>operation</b></td>
+	</tr>
+<!-- 
+EOT;
+$j=0;
+foreach($rsdb as $rs) {
+print <<<EOT
+-->
+	 <tr class="even" onMouseOver="mouseover(this)" onMouseOut="mouseout(this)" onMouseDown="trclick(this,-1)">
+		<td align=center wIdth="35"><input name="Id{$j}" type='checkbox' onClick="return false" value="{$rs['id']}"></td>
+		<td align="center">{$rs['name']}</td>
+		<td align="center">{$rs['info']}</td>
+
+						
+		<td wIdth="135" align=center ><a href="send.php?id={$rs['id']}&type=crowd&action=send">Send Message</a></td>
+    </tr>
+
+<!--
+EOT;
+$j++;
+}
+print <<<EOT
+-->
+</table>
+<input type="hIdden" name="boxs" value="{$j}">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2">
+
+
+					<tr>
+						<td height="30" ><input name="chkAll" type="checkbox" Id="chkAll" onclick=CheckAll2(this.form) value="checkbox"> 
+					  Choice current page<input name="submit" type='submit' value='Send to Selected Crowd(s)'></td>
+					</tr>
+
+</table>
+<!-- 
+EOT;
+endif;
+elseif($_GET['type']=='all'):
+$datebuf=date("Y-m-d H:i:s T");
+print <<<EOT
+-->
+<form action="$formaction" method=post name=myform onSubmit="javascript:return check();">
+<input type="hIdden" name="alltype" value="1">
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="92%" height="25"><strong>Current Location: Send to all receivers</strong></td>
+  </tr>
+   <tr class="title">
+    <td width="92%" height="25"><strong>Hello, $_SESSION[username]. Plesae choose receivers or related people and send message to them. nowtime:$datebuf.</strong></td>
+  </tr>
+</table>
+
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2" nowrap=true>
+<tr>
+	<td width="43%"><table width="98%"  height="400" border="1" cellspacing="2" cellpadding="2" nowrap=true>
+      <tr>There are $recvnum receivers in the database.
+      <tr class="even2">
+          <td align="center">
+		  <input name="jr" type='checkbox' value="1" $yrecv style="width:25px;height:25px"><span class="STYLE1">receiver</span>
+		  <input name="jr1" type='checkbox' value="1" $yrecv1 style="width:25px;height:25px"><span class="STYLE1">Relation 1</span>
+		  <input name="jr2" type='checkbox' value="1" $yrecv2 style="width:25px;height:25px"><span class="STYLE1">Relation 2</span>
+		  </td>
+      </tr>
+    </table></td>
+	<td width="18%">
+	  <table width="96%"  height="400" border="0" cellspacing="2" cellpadding="2" nowrap=true>
+        <tr>
+          {$buttoninfo}
+        </tr>
+    </table></td>
+	<td width="39%"><table wIdth="95%"  height="400" border="0" cellspacing="2" cellpadding="2" nowrap=true>
+		<tr>
+		<td align="center">
+			<fieldset align=center><legend align=center>input content</legend>
+choose template<select name="qmsg"  style="width:120px" >
+	<option value='$msgrs[msg1]' selected>$msgrs[msg1]</option>
+<!--
+EOT;
+for($ii=2;$ii<=10;$ii++){
+	$qmsg=$msgrs["msg$ii"];
+	if($qmsg){
+print <<<EOT
+-->
+	<option value='{$qmsg}' >$qmsg</option>
+<!--
+EOT;
+}
+}
+	$qdate= $datebuf;
+print <<<EOT
+-->
+	<option value='{$qdate}' >$qdate</option>
+</select>
+<input type="button" value="Insert" onClick="qmsginsert(this.form.qmsg.value)">
+
+			<textarea name="Memo"  rows="15" wrap="virtual" cols="25" class="textarea" oninput="gbcount(this.form.Memo,this.form.total,this.form.used,this.form.remain);" onpropertychange="gbcount(this.form.Memo,this.form.total,this.form.used,this.form.remain);">$ymsg</textarea>
+                        <p>words
+                        <input disabled maxLength="10" name="used" size="10" value="0" class="inputtext">
+                        message 
+                        <input disabled maxLength="3" name="total" size="3" value="0" class="inputtext" style="width:25">
+                        code
+                        <input disabled maxLength="10" name="remain" size="10" value="" class="inputtext"></td>
+                        </p>
+			</fieldset>
+
+    	</td>
+	</tr>
+	</table></td>
+</tr>
+</table>
+</form>
+<!-- 
+EOT;
+elseif($_GET['type']=='re' || $_GET['type']=='sn'):
+$datebuf=date("Y-m-d H:i:s T");
+print <<<EOT
+-->
+<form action="$formaction" method=post name=myform onSubmit="javascript:return check();">
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="92%" height="25"><strong>Current Location: Send to a Telephone</strong></td>
+  </tr>
+   <tr class="title">
+    <td width="92%" height="25"><strong>Hello, $_SESSION[username]. Plesae send message to a telephone. nowtime:$datebuf.</strong></td>
+  </tr>
+</table>
+
+<input type="hidden" name="method" id="method" value="2"/>
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2" nowrap=true>
+<tr>
+        <td width="43%"><table width="98%"  height="400" border="1" cellspacing="2" cellpadding="2" nowrap=true>
+
+<table valign="Top">
+<tr>
+  <td class="field-label"><label>Send to mobile</label></td>
+  <td>
+<textarea name="smsnum"  rows="5" wrap="virtual" cols="16" class="textarea">$rs[srcnum]</textarea>
+
+<!--  <input type="text" id="smsnum" name="smsnum" value="$rs[srcnum]"/> * -->
+  </td>
+</tr>
+<!-- 
+EOT;
+if($rs[srcname]):
+print <<<EOT
+-->
+<tr>
+  <td class="field-label"><label>Receiver name</label></td>
+  <td>
+  <input type="text" id="recvname" name="recvname" value="$rs[srcname]" readonly/>
+  </td>
+</tr>
+<!-- 
+EOT;
+endif;
+print <<<EOT
+-->
+$js
+  </td> 
+    </table></td>
+        <td width="18%">
+          <table width="96%"  height="400" border="0" cellspacing="2" cellpadding="2" nowrap=true>
+        <tr>
+          {$buttoninfo}
+        </tr>
+    </table></td>
+        <td width="39%"><table wIdth="95%"  height="400" border="0" cellspacing="2" cellpadding="2" nowrap=true>
+                <tr>
+                <td align="center">
+                        <fieldset align=center><legend align=center>input content</legend>
+choose template<select name="qmsg"  style="width:120px" >
+        <option value='$msgrs[msg1]' selected>$msgrs[msg1]</option>
+<!--
+EOT;
+for($ii=2;$ii<=10;$ii++){
+        $qmsg=$msgrs["msg$ii"];
+        if($qmsg){
+print <<<EOT
+-->
+        <option value='{$qmsg}' >$qmsg</option>
+<!--
+EOT;
+}
+}
+        $qdate= $datebuf;
+print <<<EOT
+-->
+        <option value='{$qdate}' >$qdate</option>
+</select>
+<input type="button" value="Insert" onClick="qmsginsert(this.form.qmsg.value)">
+
+                        <textarea name="Memo"  rows="15" wrap="virtual" cols="25" class="textarea" oninput="gbcount(this.form.Memo,this.form.total,this.form.used,this.form.remain);" onpropertychange="gbcount(this.form.Memo,this.form.total,this.form.used,this.form.remain);">$ymsg</textarea>
+                        <p>words
+                        <input disabled maxLength="10" name="used" size="10" value="0" class="inputtext">
+                        message 
+                        <input disabled maxLength="3" name="total" size="3" value="0" class="inputtext" style="width:25">
+                        code
+                        <input disabled maxLength="10" name="remain" size="10" value="" class="inputtext"></td>
+                        </p>
+                        </fieldset>
+
+        </td>
+        </tr>
+        </table></td>
+</tr>
+</table>
+</form>
+<!-- 
+EOT;
+endif;
+?>
+-->
+</body>
+</html>

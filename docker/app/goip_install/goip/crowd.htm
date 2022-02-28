@@ -1,0 +1,297 @@
+<!--
+<?php
+print <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="style.css" rel="stylesheet" type="text/css">
+<title>群管理</title>
+<script language="javascript">
+function unselectall()
+	{
+	    if(document.myform.chkAll.checked){
+		document.myform.chkAll.checked = document.myform.chkAll.checked&0;
+	    } 	
+	}
+
+function CheckAll(form)
+	{
+		var trck;
+		var e;
+		for (var i=0;i<form.elements.length;i++)
+	    {
+		    e = form.elements[i];
+		    if (e.type == 'checkbox' && e.id != "chkAll" && e.disabled==false){
+				e.checked = form.chkAll.checked;
+		 		do {e=e.parentNode} while (e.tagName!="TR") 
+		 		if(form.chkAll.checked)
+		 			e.className = 'even marked';
+		 		else
+		 			e.className = 'even';
+			}
+	    }
+		//form.chkAll.classname = 'even';
+	}
+
+function mouseover(obj) {
+                obj.className += ' hover';
+				//alert(obj.className);
+            	
+			}
+
+function mouseout(obj) {
+            	obj.className = obj.className.replace( ' hover', '' );
+				//alert(obj.className);
+			}
+
+function trclick(obj) {
+		//alert("ddddd");
+        var checkbox = obj.getElementsByTagName( 'input' )[0];
+        //if ( checkbox && checkbox.type == 'checkbox' ) 
+        checkbox.checked ^= 1;
+		if(checkbox.checked)
+			obj.className = 'even marked';
+		else obj.className = 'even';
+//		var ckpage=document.modifyform.elements['chkAll'+num];
+	    if(document.myform.chkAll.checked){
+		document.myform.chkAll.checked = document.myform.chkAll.checked&0;
+	    } 	
+		
+
+		}
+
+</script>
+</head>
+<body leftmargin="2" topmargin="0" marginwIdth="0" marginheight="0">
+<table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border">
+  <tr class="topbg"> 
+    <td height="22" colspan="2" align="center"><strong>群管理</strong></td>
+  </tr>
+  <tr class="tdbg"> 
+    <td wIdth="100" height="30"><strong>管理导航:</strong></td>
+    <td height="30"><a href="crowd.php" target=main>群一览</a>&nbsp;|&nbsp;<a href="crowd.php?action=add" target=main>添加群</a></td>
+  </tr>
+</table>
+<!--
+EOT;
+if($action=="main") {
+print <<<EOT
+-->
+<br>
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>当前位置：群一览</strong></td>
+  </tr>
+</table>
+<form action="crowd.php?action=del" method=post name=myform onSubmit="return confirm('确认删除?')">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2" nowrap=true>
+	<tr class=title>
+		<td wIdth="35" align=center height="25"><b>选择</b></td>
+		<td align="center"><b>名称</b></td>
+		<td align="center"><b>备注</b></td>
+		<td align="center"><b>管理员</b></td>
+		<td align=center><b>操作</b></td>
+	</tr>
+<!--
+EOT;
+$j=0;
+foreach($rsdb as $rs) {
+print <<<EOT
+-->
+	<tr class="even" onMouseOver="mouseover(this)" onMouseOut="mouseout(this)" onMouseDown="trclick(this)">
+		<td align=center wIdth="35"><input name="Id{$j}" type='checkbox' onClick="return false" value="{$rs['id']}"></td>
+		<td align="center">{$rs['name']}</td>
+		<td align="center">{$rs['info']}</td>
+		<td align="center">{$rs['username']}</td>
+
+						
+		<td  align=center ><a href="crowd.php?action=admin&id={$rs['id']}">管理员</a> | <a href="crowd.php?action=modify&id={$rs['id']}">修改</a> | <a href="crowd.php?id={$rs['id']}&action=del" onClick="return confirm('确认删除?')">删除</a></td>
+    </tr>
+
+<!--
+EOT;
+$j++;
+}
+print <<<EOT
+-->
+</table>
+<input type="hIdden" name="boxs" value="{$j}">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2">
+
+
+					<tr>
+						<td height="30" ><input name="chkAll" type="checkbox" Id="chkAll" onclick=CheckAll(this.form) value="checkbox"> 
+					  选择当前页面<input name="submit" type='submit' value='删除所选'></td>
+					</tr>
+					<tr>
+						<td  align=center>{$fenye}</td>
+					</tr>
+</table>
+<!--
+EOT;
+}
+else if($action=="add")
+{
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>当前位置：添加群</strong></td>
+  </tr>
+</table>
+<form method="post" action="crowd.php?action=saveadd" name="form1" onSubmit="javascript:return check_pw();">
+  <br>
+  <br>
+  <table wIdth="300" border="0" align="center" cellpadding="2" cellspacing="1" class="border" >
+    <tr class="title"> 
+      <td height="22" colspan="2"> <div align="center"><strong>添 加 群</strong></div></td>
+    </tr>
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>名称:</strong></td>
+      <td class="tdbg"><input type="input" name="name"> </td>
+    </tr>
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>备注信息:</strong></td>
+      <td class="tdbg"><input type="input" name="info"> </td>
+    </tr>
+    <tr> 
+      <td height="40" colspan="2" align="center" class="tdbg"><input name="Action" type="hIdden" Id="Action" value="Modify"> 
+        <input  type="submit" name="Submit" value="添加" style="cursor:hand;"> 
+        &nbsp; <input name="Cancel" type="button" Id="Cancel" value="取消" onClick="window.location.href='crowd.php'" style="cursor:hand;"></td>
+    </tr>
+  </table>
+  </form>
+<!--
+EOT;
+}
+else if($action=="modify")
+{
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>当前位置：修改群信息</strong></td>
+  </tr>
+</table>
+<form method="post" action="crowd.php?action=savemodify" name="form1" onSubmit="javascript:return check_pw();">
+  <br>
+  <br>
+  <table wIdth="300" border="0" align="center" cellpadding="2" cellspacing="1" class="border" >
+    <tr class="title"> 
+      <td height="22" colspan="2"> <div align="center"><strong>修改群信息</strong></div></td>
+    </tr>
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>名称:</strong></td>
+      <td class="tdbg"><input type="input" name="name" value="{$rs['name']}"> </td>
+    </tr>
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>备注信息:</strong></td>
+      <td class="tdbg"><input type="input" name="info" value="{$rs['info']}"> </td>
+    </tr>
+    <tr> 
+      <td height="40" colspan="2" align="center" class="tdbg"><input name="Id" type="hIdden" Id="Id" value="{$rs['id']}"> 
+        <input  type="submit" name="Submit" value="确定" style="cursor:hand;"> 
+        &nbsp; <input name="Cancel" type="button" Id="Cancel" value="取消" onClick="window.location.href='crowd.php'" style="cursor:hand;"></td>
+    </tr>
+  </table>
+  </form>
+<!--
+EOT;
+}
+elseif($action=="admin") {
+print <<<EOT
+-->
+<br>
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>当前位置：<>群管理员</strong></td>
+  </tr>
+</table>
+<form action="crowd.php?action=del" method=post name=myform onSubmit="return confirm('确认删除?')">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2" nowrap=true>
+	<tr class=title>
+		<td wIdth="35" align=center height="25"><b>选择</b></td>
+		<td align="center"><b>群名</b></td>
+		<td align="center"><b>管理员姓名</b></td>
+		<td align="center"><b>管理员级别</b></td>
+		<td align="center"><b>管理员备注</b></td>
+		<td wIdth="80" align=center><b>操作</b></td>
+	</tr>
+<div >
+<!--
+EOT;
+$j=0;
+foreach($rsdb as $rs) {
+print <<<EOT
+-->
+	<tr class="even" onMouseOver="mouseover(this)" onMouseOut="mouseout(this)" onMouseDown="trclick(this)">
+		<td align=center wIdth="35"><input name="Id{$j}" type='checkbox' onClick="return false" value="{$rs['id']}"></td>
+		<td align="center">{$rs['crowdname']}</td>
+		<td align="center">{$rs['username']}</td>
+		<td align="center">{$rs['permissions']}</td>		
+		<td align="center">{$rs['info']}</td>
+
+						
+		<td align=center wIdth="80"><a href="crowd.php?id={$rs['id']}&action=deladmin&crowdid={$_GET[id]}" onClick="return confirm('确认删除?')">删除该管理员</a></td>
+    </tr>
+
+</div>
+<!--
+EOT;
+$j++;
+}
+print <<<EOT
+-->
+</table>
+<input type="hIdden" name="boxs" value="{$j}">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2">
+
+
+					<tr>
+						<td height="30" ><input name="chkAll" type="checkbox" Id="chkAll" onclick=CheckAll(this.form) value="checkbox"> 
+					  选择当前页面<input name="submit" type='submit' value='删除所选'></td>
+					</tr>
+					<tr>
+						<td  align=center>{$fenye}</td>
+					</tr>
+
+</table>
+</form>
+<form action="crowd.php?action=addadmin&id=$_GET[id]" method=post name=myform onSubmit="return confirm('确认添加?')">
+					<tr>
+						<td height="30" >添加一个群管理员<select name="admin" style="width:135">
+        <option value=0 >选择一个管理员</option>
+<!--
+EOT;
+if(!empty($userdb))
+foreach($userdb as $rs) {
+print <<<EOT
+-->
+      <option value={$rs[id]} >{$rs[username]}</option>
+<!--
+EOT;
+}
+print <<<EOT
+-->	  
+	  </select><input name="submit" type='submit' value='确认添加'></td>
+					</tr>
+					  </td> 
+					</tr>
+</table>
+<!--
+EOT;
+}
+print <<<EOT
+-->
+</form>				
+</body>
+</html>
+<!--
+EOT;
+?>
+-->

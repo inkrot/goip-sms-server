@@ -1,0 +1,100 @@
+<!--
+<?php
+print <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="style.css" rel="stylesheet" type="text/css">
+<title>sms count</title>
+<script src="time.js"></script>
+<script language="javascript">
+
+</script>
+</head>
+<body leftmargin="2" topmargin="0" marginwIdth="0" marginheight="0">
+<table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border">
+  <tr class="topbg"> 
+    <td height="22" colspan="2" align="center"><strong>短信发送成功数量</strong></td>
+  </tr>
+</table>
+<!--
+EOT;
+print <<<EOT
+-->
+<form action="sms_count.php" method="post">
+服务商:
+{$prov_select}
+组:
+{$group_select}
+GoIP:
+{$select}
+
+开始时间:
+<input type="text" name="start_time"  readOnly onClick="SelectDate(this,'yyyy-MM-dd hh:mm')" value="{$start_time}">
+结束时间:
+<input type="text" name="end_time"  readOnly onClick="SelectDate(this,'yyyy-MM-dd hh:mm')" value="{$end_time}">
+<input type="submit" value="显示">
+</form>
+
+<table wIdth="100%" border="0" cellspacing="2" cellpadding="2">
+	<tr class=title>
+		<td align="center"><b>GoIP</b></td>
+                <td align="center"><b>短信发送成功数量</b></td>
+	</tr>
+<!--
+EOT;
+if(!$goip_id){
+print <<<EOT
+-->
+        <tr class="even2">
+                <td align="center">ALL</td>
+                <td align="center">$sms_count</td>
+    	</tr>
+<!--
+EOT;
+}
+foreach($goip as $rs) {
+print <<<EOT
+-->
+	<tr class="even">
+                <td align="center">{$rs[name]}</td>
+                <td align="center">{$rsdb[$rs[id]][sms_count]}</td>
+				
+    </tr>
+<!--
+EOT;
+}
+if(!$goip_id){
+print <<<EOT
+-->
+        <tr class="even2">
+                <td align="center">ALL</td>
+                <td align="center">$sms_count</td>
+        </tr>
+<!--
+EOT;
+}
+print <<<EOT
+-->
+</table>
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2">
+
+
+                                        <tr>
+                                                <td  align=center>{$fenye}</td>
+                                        </tr>
+</table>
+
+</table>
+
+					  </td> 
+					</tr>
+</table>
+				
+</body>
+</html>
+<!--
+EOT;
+?>
+-->

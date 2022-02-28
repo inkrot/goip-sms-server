@@ -1,0 +1,75 @@
+/* CSS Document */
+body{
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+/* Table Padding */
+.TablePaddingAllNull{
+	padding:0px;
+}
+.TablePaddingAll_1pt{
+	padding:1.0pt 1.0pt 1.0pt 1.0pt;
+}
+.TablePaddingAll_2pt{
+	padding:2.0pt 2.0pt 2.0pt 2.0pt;
+}
+.TablePaddingAll_3pt{
+	padding:3.0pt 3.0pt 3.0pt 3.0pt;
+}
+.TablePaddingAll_4pt{
+	padding:4.0pt 4.0pt 4.0pt 4.0pt;
+}
+/*Top*/
+.TablePaddingTop_1pt{
+	padding-top:1.0pt;
+}
+.TablePaddingTop_2pt{
+	padding-top:2.0pt;
+}
+.TablePaddingTop_3pt{
+	padding-top:3.0pt;
+}
+.TablePaddingTop_4pt{
+	padding-top:4.0pt;
+}
+/*Bottom*/
+.TablePaddingBottom_1pt{
+	padding-bottom:1.0pt;
+}
+.TablePaddingBottom_2pt{
+	padding-bottom:2.0pt;
+}
+.TablePaddingBottom_3pt{
+	padding-bottom:3.0pt;
+}
+.TablePaddingBottom_4pt{
+	padding-bottom:4.0pt;
+}
+/*Left*/
+.TablePaddingLeft_1pt{
+	padding-left:1.0pt;
+}
+.TablePaddingLeft_2pt{
+	padding-left:2.0pt;
+}
+.TablePaddingLeft_3pt{
+	padding-left:3.0pt;
+}
+.TablePaddingLeft_4pt{
+	padding-left:4.0pt;
+}
+/*Right*/
+.TablePaddingRight_1pt{
+	padding-right:1.0pt;
+}
+.TablePaddingRight_2pt{
+	padding-right:2.0pt;
+}
+.TablePaddingRight_3pt{
+	padding-right:3.0pt;
+}
+.TablePaddingRight_4pt{
+	padding-right:4.0pt;
+}

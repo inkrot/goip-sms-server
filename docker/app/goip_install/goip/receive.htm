@@ -1,0 +1,128 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="style.css" rel="stylesheet" type="text/css">
+<title>发送信息</title>
+<script src="time.js"></script>
+<script language="javascript">
+function unselectall()
+	{
+	    if(document.myform.chkAll.checked){
+		document.myform.chkAll.checked = document.myform.chkAll.checked&0;
+	    } 	
+	}
+
+function CheckAll(form)
+	{
+		var trck;
+		var e;
+		for (var i=0;i<form.elements.length;i++)
+	    {
+		    e = form.elements[i];
+		    if (e.type == 'checkbox' && e.id != "chkAll" && e.disabled==false){
+				e.checked = form.chkAll.checked;
+		 		do {e=e.parentNode} while (e.tagName!="TR") 
+		 		if(form.chkAll.checked)
+		 			e.className = 'even marked';
+		 		else
+		 			e.className = 'even';
+			}
+	    }
+		//form.chkAll.classname = 'even';
+	}
+function mouseover(obj) {
+                obj.className += ' hover';
+				//alert(obj.className);            	
+			}
+function mouseout(obj) {
+            	obj.className = obj.className.replace( ' hover', '' );
+				//alert(obj.className);
+			}
+function trclick(obj) {
+		//alert("ddddd");
+        var checkbox = obj.getElementsByTagName( 'input' )[0];
+        //if ( checkbox && checkbox.type == 'checkbox' ) ;
+        checkbox.checked ^= 1;
+		if(checkbox.checked)
+			obj.className = 'even marked';
+		else obj.className = 'even';
+//		var ckpage=document.modifyform.elements['chkAll'+num];
+		}
+</script>
+</head>
+<body leftmargin="2" topmargin="0" marginwIdth="0" marginheight="0">
+<table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border">
+  <tr class="topbg"> 
+    <td height="22" colspan="2" align="center"><strong>收件箱</strong></td>
+  </tr>
+</table>
+<!--
+<?php 
+
+print <<<EOT
+-->
+<form action="receive.php?action=search" method="post">
+$select
+</form>
+<form action="receive.php?goipname=$goipname&action=del" method=post name=myform onSubmit="return confirm('确认删除?')">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2" nowrap=false>
+	<tr class="title">
+		<td wIdth="35" align=center height="25"><b>选择</b></td>
+		<td align="center" width="150"><b>接收时间</b></td>
+		<td align="center"><b>短信中心号码</b></td>
+		<td align="center"><b>来源号码</b></td>
+		<td align="center"><b>电话本匹配</b></td>
+		<td align="center"><b>接收goip</b></td>
+		<td align="center"><b>短信内容</b></td>
+		<td align="center"><b>操作</b></td>
+
+	</tr>
+
+<!-- 
+EOT;
+$j=0;
+foreach($rsdb as $rs) {
+$rs['msg']=htmlspecialchars($rs['msg']);
+print <<<EOT
+-->
+	<tr class="even" onMouseOver="mouseover(this)" onMouseOut="mouseout(this)" onMouseDown="trclick(this)">   
+                <td align=center wIdth="25"><input name="Id{$j}" type='checkbox' onClick="return false" value="{$rs['id']}"></td>
+		<td align="center" width="150">{$rs['time']}</td>
+		<td align="center">{$rs['smscnum']}</td>
+		<td align="center">{$rs['srcnum']}</td>
+		<td align="center">{$rs['srcname']}</td> 
+		<td align="center">{$rs['goipname']}</td>
+		<td  width="50%" style="word-break : break-all; ">{$rs['msg']}</td>
+						
+		<td width="100" align=center > <a href="send.php?type=re&reid={$rs['id']}">回复</a> <a href="receive.php?action=del&id={$rs['id']}">删除</a></td> 
+    </tr>
+
+<!--
+EOT;
+$j++;
+}
+print <<<EOT
+-->
+</table>
+<input type="hIdden" name="boxs" value="{$j}">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2">
+
+
+					<tr>
+						<td height="30" ><input name="chkAll" type="checkbox" Id="chkAll" onclick=CheckAll(this.form) value="checkbox"> 
+					  选择当前页面<input name="submit" type='submit' value='删除所选'>
+<input name="button" type='button' value='删除全部' onClick="if(confirm('确认删除数据库中的所有收到的短信?')) window.location='?action=delall'"></td></td>
+					</tr>
+					<tr>
+						<td  align=center>{$fenye}</td>
+					</tr>
+</table>
+
+<!--
+EOT;
+?>
+-->
+</form>
+</body>
+</html>
+

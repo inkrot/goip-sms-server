@@ -1,0 +1,874 @@
+<!--
+<?php
+print <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="style.css" rel="stylesheet" type="text/css">
+<title>Auto USSD</title>
+<script language="javascript">
+function unselectall()
+	{
+	    if(document.myform.chkAll.checked){
+		document.myform.chkAll.checked = document.myform.chkAll.checked&0;
+	    } 	
+	}
+
+function CheckAll(form)
+	{
+		var trck;
+		var e;
+		for (var i=0;i<form.elements.length;i++)
+	    {
+		    e = form.elements[i];
+		    if (e.type == 'checkbox' && e.id != "chkAll" && e.disabled==false){
+				e.checked = form.chkAll.checked;
+		 		do {e=e.parentNode} while (e.tagName!="TR") 
+		 		if(form.chkAll.checked)
+		 			e.className = 'even marked';
+		 		else
+		 			e.className = 'even';
+			}
+	    }
+		//form.chkAll.classname = 'even';
+	}
+
+function mouseover(obj) {
+                obj.className += ' hover';
+				//alert(obj.className);
+            	
+			}
+
+function mouseout(obj) {
+            	obj.className = obj.className.replace( ' hover', '' );
+				//alert(obj.className);
+			}
+
+function trclick(obj) {
+		//alert("ddddd");
+        var checkbox = obj.getElementsByTagName( 'input' )[0];
+        //if ( checkbox && checkbox.type == 'checkbox' ) 
+        checkbox.checked ^= 1;
+		if(checkbox.checked)
+			obj.className = 'even marked';
+		else obj.className = 'even';
+//		var ckpage=document.modifyform.elements['chkAll'+num];
+	    if(document.myform.chkAll.checked){
+		document.myform.chkAll.checked = document.myform.chkAll.checked&0;
+	    } 	
+		
+
+		}
+
+var dec_num=/^[0-9]+$/
+function onfocus_check_integer(obj, lower, upper)
+{
+        var i;
+
+        //document.title="onfocus_check_integer: " + lower + "-" + upper;
+
+        if(!dec_num.test(obj.value)){
+                obj.value=lower;
+        }
+        else {
+                i=parseInt(obj.value);
+                if(i<lower || i>upper){
+                        if(i<lower){
+                                obj.value=lower;
+                        }
+                        if(i>upper){
+                                obj.value=upper;
+                        }
+                }
+        }
+}
+
+function showtype(value){
+	showtype1.style.display='none';
+	showtype2.style.display='none';
+	showtype3.style.display='none';
+	showtype4.style.display='none';
+	showtype5.style.display='none';
+	showtype6.style.display='none';
+	showtype7.style.display='none';
+	showtype8.style.display='none';
+	showtype9.style.display='none';
+	if(value == 1) {
+		showtype2.style.display='';
+		showtype3.style.display='';
+	}
+	else if(value == 2){
+		showtype1.style.display='';
+		showtype4.style.display='';
+		showtype5.style.display='';
+	}
+	else if(value == 3){
+		showtype1.style.display='';
+		showtype4.style.display='';
+		showtype5.style.display='';
+		showtype6.style.display='';
+		showtype7.style.display='';
+	}
+	else if(value == 4){
+		showtype1.style.display='';
+		showtype4.style.display='';
+		showtype5.style.display='';
+		showtype6.style.display='';
+		showtype7.style.display='';
+		showtype8.style.display='';
+		showtype9.style.display='';
+	}
+	else {
+		showtype1.style.display='';
+	}
+}
+
+function show_recharge(value){
+	showrecharge_ussd_self.style.display='none';
+	showrecharge_ussd.style.display='none';
+	showrecharge_sms.style.display='none';
+	showrecharge_sms2.style.display='none';
+	if(value == 0) showrecharge_ussd.style.display='';
+	else if(value==1) {
+		showrecharge_ussd_self.style.display='';
+		showrecharge_ussd.style.display='';
+	}else if(value==2){
+		showrecharge_sms.style.display='';
+		showrecharge_sms2.style.display='';
+	}
+}
+
+</script>
+</head>
+<body leftmargin="2" topmargin="0" marginwIdth="0" marginheight="0">
+<table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border">
+  <tr class="topbg"> 
+    <td height="22" colspan="2" align="center"><strong>自动查余额与充值</strong></td>
+  </tr>
+  <tr class="tdbg"> 
+    <td wIdth="100" height="30"><strong>管理导航:</strong></td>
+    <td height="30"><a href="?" target=main>参数管理</a>&nbsp;|&nbsp;<a href="?action=add" target=main>添加计划</a></td>
+  </tr>
+</table>
+<!--
+EOT;
+if($action=="main" || $action=="search") {
+print <<<EOT
+-->
+<br>
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>$maininfo</strong></td>
+  </tr>
+</table>
+
+<form action="?action=del" method=post name=myform onSubmit="return confirm('确认删除?')">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2">
+	<tr class=title>
+		<td wIdth="35" align=center height="25"><b>选择</b></td>
+                <td align="center"><b>名称</b></td>
+		<td align="center"><b>服务商</b></td>
+		<td align="center"><b>组</b></td>
+		<td align="center"><b>查询类型</b></td>
+		<td align="center"><b>USSD查询指令</b></td>
+		<td align="center"><b>SMS查询号码</b></td>
+		<td align="center"><b>SMS查询指令</b></td>
+		<td align="center"><b>发送间隔时间（分钟）</b></td>
+		<td align="center"><b>上次发送时间</b></td>
+		<td align="center"><b>下次发送时间</b></td>
+		<td  align=center><b>操作</b></td>
+	</tr>
+<!--
+EOT;
+$j=0;
+foreach($rsdb as $rs) {
+print <<<EOT
+-->
+	<tr class="even" onMouseOver="mouseover(this)" onMouseOut="mouseout(this)" onMouseDown="trclick(this)">
+		<td align=center wIdth="35"><input name="Id{$j}" type='checkbox' onClick="return false" value="{$rs['id']}"></td>
+                <td align="center">{$rs['name']}</td>
+		<td align="center">{$rs['prov']}</td>
+		<td align="center">{$rs['group_name']}</td>
+		<td align="center">{$rs['type']}</td>
+                <td align="center">{$rs['auto_ussd']}</td>
+		<td align="center">{$rs['auto_sms_num']}</td>
+		<td align="center">{$rs['auto_sms_msg']}</td>
+                <td align="center">{$rs['crontime']}</td>
+		<td align="center">{$rs['last_time']}</td>
+                <td align="center">{$rs['next_time']}</td>
+				
+		<td align=center><a href="?action=start&id={$rs['id']}">立即执行</a> | <a href="?action=modify&id={$rs['id']}">修改</a> | <a href="?id={$rs['id']}&action=del" onClick="return confirm('确认删除?')">删除</a></td>
+    </tr>
+
+<!--
+EOT;
+$j++;
+}
+print <<<EOT
+-->
+</table>
+<input type="hIdden" name="boxs" value="{$j}">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2">
+
+
+					<tr>
+						<td height="30" ><input name="chkAll" type="checkbox" Id="chkAll" onclick=CheckAll(this.form) value="checkbox"> 
+					  选择当前页面<input name="submit" type='submit' value='删除所选'></td>
+					</tr>
+					<tr>
+						<td  align=center>{$fenye}</td>
+					</tr>
+</table>
+<!--
+EOT;
+}
+else if($action=="add")
+{
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>当前位置：添加查余额和充值计划</strong></td>
+  </tr>
+</table>
+<form method="post" action="?action=saveadd" name="form1">
+  <table wIdth="600" border="0" align="center" cellpadding="2" cellspacing="1" class="border" >
+    <tr class="title">
+      <td height="22" colspan="2"> <div align="center"><strong>发送查询余额指令*</strong></div></td>
+    </tr>
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>名称:</strong></td>
+      <td class="tdbg"><input type="input" name="name"></td>
+    </tr>
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>服务商:</strong></td>
+      <td class="tdbg"><select name="prov_id" style="width:135">
+<!--
+EOT;
+foreach($prsdb as $prs){
+if($prs[prov]){
+print <<<EOT
+-->
+        <option value="$prs[id]">$prs[prov]</option>
+
+<!--
+EOT;
+}
+}
+print <<<EOT
+-->
+      </select></td>
+    </tr>
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>组:</strong></td>
+      <td class="tdbg"><select name="group_id" style="width:135">
+        <option value="0">None(None)</option>
+<!--
+EOT;
+foreach($ggrsdb as $prs){
+print <<<EOT
+-->     
+        <option value="$prs[id]">$prs[group_name]</option>
+
+<!--
+EOT;
+}
+print <<<EOT
+-->
+      </select></td>
+    </tr>
+    <tr>
+      <td wIdth="150" align="right" class="tdbg"><strong>查询方式:</strong></td>
+      <td class="tdbg">
+          <select name="type" style="width:135" onchange="showtype(this.value)">
+        <option value="0" selected>USSD</option>
+        <option value="1" >SMS</option>
+	<option value="2" >USSD(2步)</option>
+	<option value="3" >USSD(3步)</option>
+	<option value="4" >USSD(4步)</option>
+      </select></td>
+    </tr>
+    <tr style="display:" Id='showtype1'>
+      <td wIdth="300" align="right" class="tdbg"><strong>USSD查余额指令:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd"></td>
+    </tr>
+    <tr style="display:none" Id='showtype4'>
+      <td wIdth="300" align="right" class="tdbg"><strong>第一步USSD成功的识别字符:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd_step2_start_r"></td>
+    </tr>
+    <tr style="display:none" Id='showtype5'>
+      <td wIdth="300" align="right" class="tdbg"><strong>第二步USSD指令:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd_step2"></td>
+    </tr>
+    <tr style="display:none" Id='showtype6'>
+      <td wIdth="300" align="right" class="tdbg"><strong>第二步USSD成功的识别字符:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd_step3_start_r" value="$rs[auto_ussd_step3_start_r]"></td>
+    </tr>
+    <tr style="display:none" Id='showtype7'>
+      <td wIdth="300" align="right" class="tdbg"><strong>第三步USSD指令:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd_step3" value="$rs[auto_ussd_step3]"></td>
+    </tr>
+    <tr style="display:none" Id='showtype8'>
+      <td wIdth="300" align="right" class="tdbg"><strong>第三步USSD成功的识别字符:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd_step4_start_r" value="$rs[auto_ussd_step4_start_r]"></td>
+    </tr>
+    <tr style="display:none" Id='showtype9'>
+      <td wIdth="300" align="right" class="tdbg"><strong>第四步USSD指令:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd_step4" value="$rs[auto_ussd_step4]"></td>
+    </tr>
+    <tr style="display:none" Id='showtype2'>
+      <td wIdth="300" align="right" class="tdbg"><strong>SMS查余额号码:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_sms_num"></td>
+    </tr>
+    <tr style="display:none" Id='showtype3'>
+      <td wIdth="300" align="right" class="tdbg"><strong>SMS查余额内容:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_sms_msg"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>发送间隔时间(分钟):</strong></td>
+      <td class="tdbg"><input type="input" name="crontime" value=60 onblur="onfocus_check_integer(this, 15, 3000000)"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>余额不足判定值:</strong></td>
+      <td class="tdbg"><input type="input" name="bal_limit"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>充值达到界限:</strong></td>
+      <td class="tdbg"><input type="input" name="recharge_limit"></td>
+    </tr>
+    <tr class="title">
+      <td height="22" colspan="2"> <div align="center"><strong>识别余额*</strong></div></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>接收USSD 余额识别前缀:</strong></td>
+      <td class="tdbg"><input type="input" name="bal_ussd_r"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>接收USSD 欠费的识别字符串:</strong></td>
+      <td class="tdbg"><input type="input" name="bal_ussd_zero_match_char"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>查询余额后自动断开USSD:</strong></td>
+      <td class="tdbg"><input name="auto_disconnect_after_bal" type='checkbox' value="1"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>接收SMS 余额识别前缀:</strong></td>
+      <td class="tdbg"><input type="input" name="bal_sms_r"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>接收SMS 欠费的识别字符串:</strong></td>
+      <td class="tdbg"><input type="input" name="bal_sms_zero_match_char"></td>
+    </tr>
+    <tr class="title">
+      <td height="22" colspan="2"> <div align="center"><strong>余额不足时自动充值*</strong></div></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>充值类型:</strong></td>
+      <td class="tdbg">
+          <select name="recharge_type" style="width:135" onchange="show_recharge(this.value)">
+        <option value="0" $select0 >USSD自身使用充值卡充值</option>
+        <option value="1" $select1 >USSD使用其他线路的余额充值</option>
+	<option value="2" $select1 >SMS自身使用充值卡充值</option>
+      </td>
+    </tr>
+    <tr style="display:none" Id='showrecharge_ussd_self'>
+      <td wIdth="300" align="right" class="tdbg"><strong>用来充值的线路:</strong></td>
+      <td class="tdbg"><select name="recharge_ussd1_goip" style="width:135">
+<!--
+EOT;
+      
+foreach($grsdb as $grs){
+    
+print <<<EOT
+-->   
+        <option value="$grs[id]">$grs[name]</option>
+    
+<!--
+EOT;
+}     
+print <<<EOT
+--> 
+      </select></td>
+    </tr>
+    <tr Id='showrecharge_ussd'>
+      <td wIdth="300" align="right" class="tdbg"><strong>充值的USSD指令:</strong></td>
+      <td class="tdbg"><input type="input" name="recharge_ussd"></td>
+    </tr>
+    <tr style="display:none" Id='showrecharge_sms'>
+      <td wIdth="300" align="right" class="tdbg"><strong>SMS充值的号码:</strong></td>
+      <td class="tdbg"><input type="input" name="recharge_sms_num"></td>
+    </tr>
+    <tr style="display:none" Id='showrecharge_sms2'>
+      <td wIdth="300" align="right" class="tdbg"><strong>SMS充值的指令:</strong></td>
+      <td class="tdbg"><input type="input" name="recharge_sms_msg"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>余额不足充值完成前禁用呼出:</strong></td>
+      <td class="tdbg"><input name="disable_callout_when_bal" type='checkbox' value="1"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>充值成功识别字符:</strong></td>
+      <td class="tdbg"><input type="input" name="recharge_ok_r"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>充值成功识别字符(格式2):</strong></td>
+      <td class="tdbg"><input type="input" name="recharge_ok_r2"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>充值成功后自动充值限制时间:</strong></td>
+      <td class="tdbg"><input name="auto_reset_remain_enable" type='checkbox' value="1"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>充值成功后确定余额时间间隔(秒):</strong></td>
+      <td class="tdbg"><input type="input" name="bal_delay"  onblur="onfocus_check_integer(this, 0, 60)"></td>
+    </tr>
+    <tr class="title">
+      <td height="22" colspan="2"> <div align="center"><strong>余额不足时执行</strong></div></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>余额不足时汇报SMS至号码:</strong></td>
+      <td class="tdbg"><input type="input" name="send_sms"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>用来汇报SMS的线路:</strong></td>
+      <td class="tdbg"><select name="sms_report_goip" style="width:135">
+        <option value="0">自身</option>
+<!--
+EOT;
+      
+foreach($grsdb as $grs){
+    
+print <<<EOT
+-->   
+        <option value="$grs[id]">$grs[name]</option>
+    
+<!--
+EOT;
+}     
+print <<<EOT
+--> 
+      </select></td>
+    </tr>
+
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>余额不足时汇报至邮箱地址:</strong></td>
+      <td class="tdbg"><input type="input" name="send_email"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>余额不足时关闭线路:</strong></td>
+      <td class="tdbg"><input name="disable_if_low_bal" type='checkbox' value="1"></td>
+    </tr>
+    <tr class="title">
+      <td height="22" colspan="2"> <div align="center"><strong>二次USSD（充值完成后）</strong></div></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>二次USSD指令:</strong></td>
+      <td class="tdbg"><input type="input" name="ussd2"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>二次USSD成功识别字符:</strong></td>
+      <td class="tdbg"><input type="input" name="ussd2_ok_match"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>二次USSD第二步指令:</strong></td>
+      <td class="tdbg"><input type="input" name="ussd22"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>二次USSD第二步成功识别字符:</strong></td>
+      <td class="tdbg"><input type="input" name="ussd22_ok_match"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>二次USSD失败时关闭线路:</strong></td>
+      <td class="tdbg"><input name="disable_if_ussd2_undone" type='checkbox' value="1"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>二次USSD失败时汇报SMS至号码:</strong></td>
+      <td class="tdbg"><input type="input" name="send_sms2"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>二次USSD失败时汇报至邮箱地址:</strong></td>
+      <td class="tdbg"><input type="input" name="send_mail2"></td>
+    </tr>
+    <tr> <td height="20" align="left" colspan="2" class="tdbg">* 余额识别前缀中，请填入接收到的信息中余额之前的几个字符，系统会自动获取这几个字符后的余额（只取整数）。比如收到的信息为：你的账号余额为126.12元，如果识别处填入的是"余额为"，就可以获得值126。<br>
+* 如果识别到余额少于设定的余额不足判定值，并且设置了充值的USSD，将会自动发送USSD充值；如果设置了余额不足发送SMS号码，将会发送余额不足的警告短信给设定的号码<br>
+* 充值USSD中，分为两种类型，一种是自身用充值卡号充值，用?代替充值的卡号。比如设定的为*123*?#, 当发送USSD充值时，会从数据库取可用的充值卡号，比如可用卡号为1234567，最终设备发送*123*1234567#这个USSD指令。第二种是用其他线路的余额来充值，这种方式需要在GoIP列表中预先填写SIM卡号码，然后USSD指令中，用!代替需要充值的SIM卡号码。比如设定用来充值的GoIP线路为L1, 充值指令设为*123*1*100*123456*!#,当线路L2（号码为10086），当L2自动查余额发现需要USSD充值时，会从数据库读取本线路的号码10086，最终从线路L1发送*123*1*100*123456*10086#这个USSD指令。
+*必须填写充值成功识别字符， 才能判断充值是否成功：当发送USSD充值指令后，系统得到运营商返回的信息，从返回的信息中查找是否含充值成功识
+别字符,如果找到，则认为充值成功，自动把充值卡设置为使用完毕；反之则把充值卡还原为未使用状态。
+</td></tr>
+    <tr> 
+      <td height="40" colspan="2" align="center" class="tdbg"><input name="Action" type="hIdden" Id="Action" value="Modify"> 
+        <input  type="submit" name="Submit" value="添加" style="cursor:hand;"> 
+        &nbsp; <input name="Cancel" type="button" Id="Cancel" value="取消" onClick="window.location.href='recharge.php'" style="cursor:hand;"></td>
+    </tr>
+  </table>
+</form>
+<!--
+EOT;
+}
+else if($action=="modify")
+{
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>当前位置：修改计划</strong></td>
+  </tr>
+</table>
+<form method="post" action="?action=savemodify" name="form1">
+  <table wIdth=600 border="0" align="center" cellpadding="2" cellspacing="1" class="border" >
+    <tr class="title"> 
+      <td height="22" colspan="2"> <div align="center"><strong>修 改 计 划</strong></div></td>
+    </tr>
+    <tr class="title"> 
+      <td height="22" colspan="2"> <div align="center"><strong>发送查询余额指令*</strong></div></td>
+    </tr>
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>名称:</strong></td>
+      <td class="tdbg"><input type="input" name="name" value="$rs[name]">  </td>
+    </tr>
+<!--
+EOT;
+print <<<EOT
+-->
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>服务商:</strong></td>
+      <td class="tdbg">
+	  <select name="prov_id" style="width:135">
+<!--
+EOT;
+foreach($prsdb as $prs){
+
+if($rs[prov_id]==$prs[id])
+	$select=' selected';
+else 
+	$select='';
+if($prs[prov]){
+print <<<EOT
+-->
+        <option value="$prs[id]" $select >$prs[prov]</option>
+
+<!--
+EOT;
+}
+}
+print <<<EOT
+-->
+      </select></td>
+    </tr>
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>组</strong></td>
+      <td class="tdbg">
+          <select name="group_id" style="width:135">
+        <option value="0">None(None)</option>
+<!--
+EOT;
+foreach($ggrsdb as $prs){
+      
+if($rs[group_id]==$prs[id])
+        $select=' selected';
+else 
+        $select='';
+print <<<EOT
+-->
+        <option value="$prs[id]" $select >$prs[group_name]</option>
+
+<!--
+EOT;
+}
+print <<<EOT
+-->
+      </select></td>
+    </tr>
+
+<!--
+EOT;
+$display='none';
+$display1='none';
+$display2='none';
+$display3='none';
+$display4='none';
+
+if($rs[type]==0) {
+        $select_ussd='selected';
+        $display=''; 
+}else if($rs[type]==1){
+        $select_sms='selected';
+        $display1=''; 
+}else if($rs[type]==2){
+        $select_ussd_step2='selected';
+        $display=''; 
+        $display2=''; 
+}else if($rs[type]==3){
+        $select_ussd_step3='selected';
+        $display=''; 
+        $display2='';
+        $display3=''; 
+}else if($rs[type]==4){
+        $select_ussd_step4='selected';
+        $display=''; 
+        $display2='';
+        $display3=''; 
+        $display4=''; 
+}
+if($rs[auto_disconnect_after_bal]) $ack="checked";
+print <<<EOT
+-->
+    <tr>
+      <td wIdth="150" align="right" class="tdbg"><strong>查询方式:</strong></td>
+      <td class="tdbg">
+          <select name="type" style="width:135" onchange="showtype(this.value)">
+        <option value="0" $select_ussd >USSD</option>
+        <option value="1" $select_sms >SMS</option>
+        <option value="2" $select_ussd_step2 >USSD(2 steps)</option>
+        <option value="3" $select_ussd_step3 >USSD(3 steps)</option>
+        <option value="4" $select_ussd_step4 >USSD(4 steps)</option>
+      </select></td>
+    </tr>
+    <tr style="display:{$display}" Id='showtype1'>
+      <td wIdth="300" align="right" class="tdbg"><strong>USSD查余额指令:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd" value="$rs[auto_ussd]"></td>
+    </tr>
+    <tr style="display:{$display2}" Id='showtype4'>
+      <td wIdth="300" align="right" class="tdbg"><strong>第一步USSD成功的识别字符:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd_step2_start_r" value="$rs[auto_ussd_step2_start_r]"></td>
+    </tr>
+    <tr style="display:{$display2}" Id='showtype5'>
+      <td wIdth="300" align="right" class="tdbg"><strong>第二步USSD指令:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd_step2" value="$rs[auto_ussd_step2]"></td>
+    </tr>
+    <tr style="display:{$display3}" Id='showtype6'>
+      <td wIdth="300" align="right" class="tdbg"><strong>第二步USSD成功的识别字符:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd_step3_start_r" value="$rs[auto_ussd_step3_start_r]"></td>
+    </tr>
+    <tr style="display:{$display3}" Id='showtype7'>
+      <td wIdth="300" align="right" class="tdbg"><strong>第三步USSD指令:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd_step3" value="$rs[auto_ussd_step3]"></td>
+    </tr>
+    <tr style="display:{$display4}" Id='showtype8'>
+      <td wIdth="300" align="right" class="tdbg"><strong>第三步USSD成功的识别字符:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd_step4_start_r" value="$rs[auto_ussd_step4_start_r]"></td>
+    </tr> 
+    <tr style="display:{$display4}" Id='showtype9'>
+      <td wIdth="300" align="right" class="tdbg"><strong>第四步USSD指令:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd_step4" value="$rs[auto_ussd_step4]"></td>
+    </tr>
+    <tr style="display:{$display1}" Id='showtype2'>
+      <td wIdth="300" align="right" class="tdbg"><strong>SMS查余额号码:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_sms_num" value="$rs[auto_sms_num]"></td>
+    </tr>
+    <tr style="display:{$display1}" Id='showtype3'>
+      <td wIdth="300" align="right" class="tdbg"><strong>SMS查余额内容:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_sms_msg" value="$rs[auto_sms_msg]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>发送间隔时间（分钟）:</strong></td>
+      <td class="tdbg"><input type="input" name="crontime" value="$rs[crontime]" onblur="onfocus_check_integer(this, 5, 3000000)"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>余额不足判定值:</strong></td>
+      <td class="tdbg"><input type="input" name="bal_limit" value="$rs[bal_limit]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>充值达到界限:</strong></td>
+      <td class="tdbg"><input type="input" name="recharge_limit" value="$rs[recharge_limit]"></td>
+    </tr>
+    <tr class="title">
+      <td height="22" colspan="2"> <div align="center"><strong>识别余额*</strong></div></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>接收USSD 余额识别前缀:</strong></td>
+      <td class="tdbg"><input type="input" name="bal_ussd_r" value="$rs[bal_ussd_r]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>接收USSD 欠费的识别字符串:</strong></td>
+      <td class="tdbg"><input type="input" name="bal_ussd_zero_match_char" value="$rs[bal_ussd_zero_match_char]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>查询余额后自动断开USSD:</strong></td>
+      <td class="tdbg"><input name="auto_disconnect_after_bal" type='checkbox' value="1" $ack></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>接收的SMS余额识别格式:</strong></td>
+      <td class="tdbg"><input type="input" name="bal_sms_r" value="$rs[bal_sms_r]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>接收SMS 欠费的识别字符串:</strong></td>
+      <td class="tdbg"><input type="input" name="bal_sms_zero_match_char" value="$rs[bal_sms_zero_match_char]"></td>
+    </tr>
+    <tr class="title">
+      <td height="22" colspan="2"> <div align="center"><strong>余额不足时自动充值*</strong></div></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>USSD充值类型:</strong></td>
+      <td class="tdbg">
+          <select name="recharge_type" style="width:135" onchange="show_recharge(this.value)">
+        <option value="0" $select0 >USSD自身使用充值卡充值</option>
+        <option value="1" $select1 >USSD使用其他线路的余额充值</option>
+	<option value="2" $select2 >SMS自身使用充值卡充值</option>
+      </td>
+    </tr>
+    <tr style="display:$display_re" Id='showrecharge_ussd_self'>
+      <td wIdth="300" align="right" class="tdbg"><strong>用来充值的线路:</strong></td>
+      <td class="tdbg"><select name="recharge_ussd1_goip" style="width:135">
+<!--
+EOT;
+
+foreach($grsdb as $grs){
+if($rs[recharge_ussd1_goip]==$grs[id])
+        $select=' selected';
+else 
+        $select='';
+print <<<EOT
+-->
+        <option value="$grs[id]" $select>$grs[name]</option>
+
+<!--
+EOT;
+}
+if($rs[disable_if_low_bal]) $cck="checked";
+if($rs[disable_if_ussd2_undone]) $cck2="checked";
+if($rs[disable_callout_when_bal]) $outck="checked";
+if($rs[auto_reset_remain_enable]) $auto_reset_remain_ck="checked";
+print <<<EOT
+-->
+      </select></td>
+    </tr>
+    <tr style="display:none" Id='showrecharge_ussd'>
+      <td wIdth="300" align="right" class="tdbg"><strong>充值的USSD指令:</strong></td>
+      <td class="tdbg"><input type="input" name="recharge_ussd" value="$rs[recharge_ussd]"></td>
+    </tr>
+    <tr  style="display:none" Id='showrecharge_sms'>
+      <td wIdth="300" align="right" class="tdbg"><strong>SMS充值的号码:</strong></td>
+      <td class="tdbg"><input type="input" name="recharge_sms_num" value="$rs[recharge_sms_num]"></td>
+    </tr>
+    <tr  style="display:none" Id='showrecharge_sms2'>
+      <td wIdth="300" align="right" class="tdbg"><strong>SMS充值的指令:</strong></td>
+      <td class="tdbg"><input type="input" name="recharge_sms_msg" value="$rs[recharge_sms_msg]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>余额不足充值完成前禁用呼出:</strong></td>
+      <td class="tdbg"><input name="disable_callout_when_bal" type='checkbox' value="1" $outck></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>充值成功识别字符:</strong></td>
+      <td class="tdbg"><input type="input" name="recharge_ok_r" value="$rs[recharge_ok_r]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>充值成功识别字符(格式2):</strong></td>
+      <td class="tdbg"><input type="input" name="recharge_ok_r2" value="$rs[recharge_ok_r2]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>充值成功后自动充值限制时间:</strong></td>
+      <td class="tdbg"><input name="auto_reset_remain_enable" type='checkbox' value="1" $auto_reset_remain_ck></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>充值成功后确定余额时间间隔(秒):</strong></td>
+      <td class="tdbg"><input type="input" name="bal_delay" value="$rs[bal_delay]"  onblur="onfocus_check_integer(this, 0, 60)"></td>
+    </tr>
+    <tr class="title">
+      <td height="22" colspan="2"> <div align="center"><strong>余额不足时执行</strong></div></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>余额不足时汇报SMS至号码:</strong></td>
+      <td class="tdbg"><input type="input" name="send_sms" value="$rs[send_sms]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>用来汇报SMS的线路:</strong></td>
+      <td class="tdbg"><select name="sms_report_goip" style="width:135">
+	<option value="0">自身</option>
+<!--
+EOT;
+
+foreach($grsdb as $grs){
+if($rs[sms_report_goip]==$grs[id])
+        $select=' selected';
+else 
+        $select='';
+print <<<EOT
+-->
+        <option value="$grs[id]" $select>$grs[name]</option>
+
+<!--
+EOT;
+}
+print <<<EOT
+-->
+      </select></td>
+    </tr>
+
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>余额不足时汇报至邮箱:</strong></td>
+      <td class="tdbg"><input type="input" name="send_email" value="$rs[send_email]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>余额不足时关闭线路:</strong></td>
+      <td class="tdbg"><input name="disable_if_low_bal" type='checkbox' value="1" $cck></td>
+    </tr>
+    <tr class="title">
+      <td height="22" colspan="2"> <div align="center"><strong>二次USSD（充值完成后）</strong></div></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>二次USSD指令:</strong></td>
+      <td class="tdbg"><input type="input" name="ussd2" value="$rs[ussd2]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>二次USSD成功识别字符:</strong></td>
+      <td class="tdbg"><input type="input" name="ussd2_ok_match" value="$rs[ussd2_ok_match]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>二次USSD第二步指令:</strong></td>
+      <td class="tdbg"><input type="input" name="ussd22" value="$rs[ussd22]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>二次USSD第二步成功识别字符:</strong></td>
+      <td class="tdbg"><input type="input" name="ussd22_ok_match" value="$rs[ussd22_ok_match]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>二次USSD失败时关闭线路:</strong></td>
+      <td class="tdbg"><input name="disable_if_ussd2_undone" type='checkbox' value="1" $cck2></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>二次USSD失败时汇报SMS至号码:</strong></td>
+      <td class="tdbg"><input type="input" name="send_sms2" value="$rs[send_sms2]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>二次USSD失败时汇报至邮箱地址:</strong></td>
+      <td class="tdbg"><input type="input" name="send_mail2" value="$rs[send_mail2]"></td>
+    </tr>
+    <tr> <td height="20" align="left" colspan="2" class="tdbg">* 余额识别前缀，请填入接收到的信息中余额之前的几个字符，系统会自动获取这几个字符后的余额（只取整数）。比如收到的信息为：你的账号余额为126.12元，如果识别处填入的是"余额为"，就可以获得值126。<br>
+* 如果识别到余额少于设定的余额不足判定值，并且设置了充值的USSD，将会自动发送USSD充值；如果设置了余额不足发送SMS号码，将会发送余额不足的警告短信给设定的号码<br>
+* 充值USSD中，分为两种类型，一种是自身用充值卡号充值，用?代替充值的卡号。比如设定的为*123*?#, 当发送USSD充值时，会从数据库取可用的充值卡号，比如可用卡号为1234567，最终设备发送*123*1234567#这个USSD指令。第二种是用其他线路的余额来充值，这种方式需要在GoIP列表中预先填写SIM卡号码，然后USSD指令中，用!代替需要充值的SIM卡号码。比如设定用来充值的GoIP线路为L1, 充值指令设为*123*1*100*123456*!#,当线路L2（号码为10086），当L2自动查余额发现需要USSD充值时，会从数据库读取本线路的号码10086，最终从线路L1发送*123*1*100*123456*10086#这个USSD指令。
+*必须填写充值成功识别字符， 才能判断充值是否成功：当发送USSD充值指令后，系统得到运营商返回的信息，从返回的信息中查找是否含充值成功识别字符,如果找到，则认为充值成功，自动把充值卡设置为使用完毕；反之则把充值卡还原为未使用状态。
+
+</td></tr>	
+    <tr> 
+      <td height="40" colspan="2" align="center" class="tdbg"><input name="Id" type="hIdden" Id="Id" value="{$rs['id']}"> 
+        <input  type="submit" name="Submit" value="确定" style="cursor:hand;"> 
+        &nbsp; <input name="Cancel" type="button" Id="Cancel" value="取消" onClick="window.location.href='recharge.php'" style="cursor:hand;"></td>
+    </tr>
+  </table>
+<script language="javascript">
+        show_recharge($rs[recharge_type]);
+</script>
+</form>
+<!--
+EOT;
+}
+print <<<EOT
+-->
+</form>
+
+					  </td> 
+					</tr>
+</table>
+				
+</body>
+</html>
+<!--
+EOT;
+?>
+-->

@@ -1,0 +1,86 @@
+<!--
+<?php
+print <<<EOT
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>发送xml文件</title>
+<meta name="Author" content="Gaby_chen">
+<link href="style.css" rel="stylesheet" type="text/css">
+<SCRIPT language=javascript>
+function check() 
+{
+	var strFileName=document.uploadform.xmlfile.value;
+	if (strFileName=="")
+	{
+    	alert("请选择上传文件!");
+		document.uploadform.xmlfile.focus();
+    	return false;
+  	}
+}
+</SCRIPT>
+</head>
+<body leftmargin="2" topmargin="0" marginwIdth="0" marginheight="0">
+<table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border">
+  <tr class="topbg"> 
+    <td height="22" colspan="2" align="center"><strong>发送xml文件</strong></td>
+  </tr>
+  <tr class="tdbg"> 
+    <td wIdth="120" height="30"><strong>发送信息导航</strong></td>
+    <td height="30"><a href="xmlfile.php" target=main>发送xml文件</a>&nbsp;|&nbsp;<a href="xmlfile.php?action=request" target=main>获取xml发送状态</a></td>
+  </tr>
+</table>
+<!--
+EOT;
+if($_GET['action']!='request'){
+print <<<EOT
+-->
+</table>
+  <table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border">
+    <tr class="title"> 
+      <td height="22" colspan="2" align="center"><strong>上传一个xml文件进行发送</strong></td>
+    </tr>
+	 <tr class="tdbg"> 
+      <td><strong>上传一个xml文件:</strong><a href="example/example.xml" target="_blank"> [例子]</a></td>
+      <td>
+<FORM  name=uploadform action="xmlfile.php" method="POST" enctype="multipart/form-data" onSubmit="return check();">
+<INPUT TYPE="HIdDEN"  name="action" value="send">
+<input type=file name=xmlfile ><INPUT TYPE="SUBMIT" value="发  送">
+</FORM>
+	   </td>
+    </tr>
+  </table>
+<!--
+EOT;
+}
+else{
+print <<<EOT
+-->
+</table>
+  <table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border">
+    <tr class="title"> 
+      <td height="22" colspan="2" align="center"><strong>获取xml发送状态</strong></td>
+    </tr>
+	 <tr class="tdbg"> 
+      <td><strong>包含uid请求的xml文件:</strong></b><a href="example/getstatus.xml" target="_blank"> [例子]</a></td>
+      <td>
+<FORM  name=uploadform action="xmlfile.php" method="POST" enctype="multipart/form-data" onSubmit="return check();">
+<INPUT TYPE="HIdDEN"  name="action" value="request">
+<input type=file name=xmlfile><INPUT TYPE="SUBMIT" value="获  取">
+</FORM>
+	   </td>
+    </tr>
+  </table>
+<!--
+EOT;
+}
+print <<<EOT
+-->
+</body>
+</html>
+<!--
+EOT;
+?>
+-->

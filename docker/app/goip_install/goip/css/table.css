@@ -1,0 +1,90 @@
+/***************************************
+   =TABLES
+-------------------------------------- */
+
+#content th,
+#content td {
+  padding: 3px 6px;
+}
+#content th {
+  text-align: left;
+  color: #fff;
+}
+#content thead th {
+  background-color: #15b;    
+}
+#content .sortable thead th,
+#content .filterable thead th {
+  padding-left: 14px;
+}
+#content tbody th,
+.subhead {
+  background-color: #6f93ce;
+  padding-left: 0;
+}
+th img {
+  float: left;
+}
+
+tr.even,
+tr.first {
+  background-color: #eee;
+}
+tr.odd,
+tr.second {
+  background-color: #ddd;
+}
+tr.third {
+  background-color: #ccc;  
+}
+
+td.sorted {
+	background: #ffd;
+}
+th.sorted-asc {
+  background: url('../icons/arrow_up.png') no-repeat 0 50%;
+}
+th.sorted-desc {
+  background: url('../icons/arrow_down.png') no-repeat 0 50%;
+}
+
+/* filterable table */
+
+#content table.filterable {
+  width: 78%;
+  
+}
+#content .filters {
+ float: right;
+ width: 19%;
+ padding-left:5px;
+}
+
+#content .filterable thead th {
+  padding-left: 6px;
+}
+#content .page-number,
+#content .filter {
+  padding: .2em;
+  border: 1px solid #fff;
+}
+#content .active {
+  background: #ccf;
+  border: 1px solid #006;
+}
+
+
+#content tr.highlight {
+  background: #ff6;
+}
+#content tr.plain {
+  background: #fff;
+}
+.tooltip {
+  position: absolute;
+  z-index: 2;
+  background: #efd;
+  border: 1px solid #ccc;
+  padding: 3px;
+}
+

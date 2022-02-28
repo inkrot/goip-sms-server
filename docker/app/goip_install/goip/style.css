@@ -1,0 +1,153 @@
+BODY
+{
+	FONT-FAMILY: "藥胎";
+	FONT-SIZE: 12pt;
+	text-decoration: none;
+	line-height: 150%;
+	background-color: #FBFDFF;
+}
+TD
+{
+	FONT-FAMILY: "藥胎";
+	FONT-SIZE: 12pt;
+}
+Input
+{
+	FONT-SIZE: 12pt;
+	HEIGHT: 24px;
+}
+Button
+{
+	FONT-SIZE: 12pt;
+	HEIGHT: 24px; 
+}
+Select
+{
+	FONT-SIZE: 12pt;
+	HEIGHT: 24px;
+}
+A
+{
+	FONT-SIZE: 12pt;
+	TEXT-DECORATION: none;
+	color: #000000;
+
+}
+A:hover
+{
+	FONT-SIZE: 12pt;
+	COLOR: #428EFF;
+	text-decoration: underline;
+
+}
+.title
+{
+	background:url(images/topbar_bg.gif);
+}
+.border
+{
+	border: 1px solId #215DC6;
+}
+.tdbg{
+	background:#D6DFF7;
+	line-height: 120%;
+}
+
+.topbg
+{
+	/*background:url(../images/admin/topbg.gif);
+	*/
+	background-color: #215DC6;
+	color: #FFFFFF;
+
+}
+.bgcolor {
+	background-color: #215DC6;
+}
+.banner	     { background-color: #003366 }
+.sidebar     { background-color: #cccccc }title
+.content     { background-color: #ffffff }
+.subtitle    { font-size: 28px; font-weight: bold; font-family:helvetica,arial; color: #ffffff; padding: 8px }
+.title2      { font-size: 14px; font-weight: bold; font-family:helvetica,arial; color: #cccccc; background-color: #003366; padding:6px }
+.title3      { font-size: 14px; font-family:helvetica,arial; color: #003366; padding:6px }
+.savebutton  { font-size: 14px; font-family:helvetica,arial; color: #003366; background-color: #cccccc; cursor: hand; cursor:pointer;border: 0px; padding: 0px; text-align: left}
+.title4      { font-size: 16px; font-weight: bold; font-family:helvetica,arial; color: #003366; padding:6px }
+.title5      { font-size: 16px; font-family:helvetica,arial; color: #003366; padding:6px }
+.content     { font-size: 12px; color: #003366; font-family:helvetica,arial }
+.edit        { font-size: 12px; border: 1px solid #003366; width: 140px; font-family:helvetica,arial }
+.edit2        { font-size: 12px; border: 1px solid #003366; width: 300px; font-family:helvetica,arial }
+.edit3        { font-size: 12px; border: 1px solid #003366; width: 90px; font-family:helvetica,arial }
+.edit4        { font-size: 12px; border: 1px solid #003366; width: 50px; font-family:helvetica,arial }
+.wedit        { font-size: 12px; border: 1px solid #003366; width: 310px; font-family:helvetica,arial }
+.valuerange   { font-size: 11px; border: 1px solid #003366; width: 65px; font-family:helvetica,arial }
+.valuerange2   { font-size: 11px; border: 1px solid #003366; width: 65px; font-family:helvetica,arial }
+.select      { font-size: 12px; border: 1px solid #003366; width: 140px; font-family:helvetica,arial }
+.select2     { font-size: 12px; border: 1px solid #003366; width: 80px; font-family:helvetica,arial; left-padding: 5px}
+.button      { font-size: 12px; border: 1px solid #003366; font-family:helvetica,arial; cursor:hand; cursor:pointer }
+.text        { font-size: 12px; color: #003366; font-family:helvetica,arial }
+.title1      {
+	font-size: 12px;
+	font-weight: bold;
+	color: #003366;
+	font-family:helvetica,arial;
+	text-align   :   center;
+	}
+.stitle      { font-size: 12px; font-style: italic; color: #003366; font-family:helvetica,arial }
+.warning     { font-size: 12px; color: #883333; font-family:helvetica,arial }
+.tab	     { font-size: 12px; border: 1px solid #003366; font-family:helvetica,arial; padding: 5px }
+a            { text-decoration: none; font-size: 12pt; color:#003366; font-family:helvetica,arial }
+a:link       { text-decoration: none; color:#003366; font-size: 12pt}
+a:hover      { text-decoration: underline; color:#003366; font-size: 12pt }
+a:active     { text-decoration: none; color: #003366; font-size: 12pt }
+
+.tables{
+	  OVERFLOW:   auto;HEIGHT:   400px; width:98% 
+}
+.spanpage	 { cursor:hand;text-decoration:underline;color:blue;}
+
+.tdbg2 a.link{
+	background:#D6D000;
+	line-height: 120%;
+}
+
+.even {
+	BACKGROUND: #D6DFF7;
+	line-height: 120%;
+}
+.marked {
+	BACKGROUND: #ffcc99; 
+}
+.even2 {
+	BACKGROUND: #CCFF99;
+	line-height: 120%;
+}
+
+.even marked{
+	background:#ffcc99;
+	line-height: 120%;
+}
+/*
+TABLE TD.marked {
+	BACKGROUND: #ffcc99; 
+}
+
+
+/*
+.hover {
+	BACKGROUND: #bbffff; COLOR: #000000
+}
+*/
+.inputtext {
+	border:none; 
+	background:#000000; 
+	color: #883333;
+	width:38px;
+}
+.submit {
+	width:80px;
+	height:40px;
+}
+.textarea {
+	font-size: 18px;
+}
+

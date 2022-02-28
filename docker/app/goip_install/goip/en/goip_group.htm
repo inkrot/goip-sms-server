@@ -1,0 +1,132 @@
+<!--
+<?php
+print <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="../style.css" rel="stylesheet" type="text/css">
+<title>Manage GoIP Group</title>
+</head>
+<body leftmargin="2" topmargin="0" marginwIdth="0" marginheight="0">
+<table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border">
+  <tr class="topbg"> 
+    <td height="22" colspan="2" align="center"><strong>Manage GoIP Group</strong></td>
+  </tr>
+  <tr class="tdbg"> 
+    <td wIdth="100" height="30"><strong>Navigation:</strong></td>
+    <td height="30"><a href="goip_group.php" target=main>Group List</a>&nbsp;|&nbsp;<a href="goip_group.php?action=add" target=main>Add a group</a></td>
+  </tr>
+</table>
+<!--
+EOT;
+if($action=="main") {
+print <<<EOT
+-->
+<br>
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>Current Location: Group List</strong></td>
+  </tr>
+</table>
+<form action="goip_group.php">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2" nowrap=true>
+	<tr class=title>
+		<td align="center"><b>Name</b></td>
+		<td align=center><b>Operation</b></td>
+	</tr>
+<!--
+EOT;
+$j=0;
+foreach($rsdb as $rs) {
+print <<<EOT
+-->
+	<tr class="even">
+		<td align="center">{$rs['group_name']}</td>
+
+						
+		<td align=center ><a href="goip_group.php?action=modify&id={$rs['id']}">Modify</a> | <a href="goip_group.php?id={$rs['id']}&action=del" onClick="return confirm('Are you sure to delete?')">Delete</a></td>
+    </tr>
+
+<!--
+EOT;
+$j++;
+}
+print <<<EOT
+-->
+</table>
+<!--
+EOT;
+}
+else if($action=="add")
+{
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>Current Location: Add Group</strong></td>
+  </tr>
+</table>
+<form method="post" action="goip_group.php?action=saveadd" name="form1">
+  <br>
+  <br>
+  <table wIdth="300" border="0" align="center" cellpadding="2" cellspacing="1" class="border" >
+    <tr class="title"> 
+      <td height="22" colspan="2"> <div align="center"><strong>Add a group</strong></div></td>
+    </tr>
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>Group name:</strong></td>
+      <td class="tdbg"><input type="input" name="group_name"> </td>
+    </tr>
+    <tr> 
+      <td height="40" colspan="2" align="center" class="tdbg"><input name="Action" type="hIdden" Id="Action" value="Modify"> 
+        <input  type="submit" name="Submit" value="  Add  " style="cursor:hand;"> 
+        &nbsp; <input name="Cancel" type="button" Id="Cancel" value="Cancel" onClick="window.location.href='goip_group.php'" style="cursor:hand;"></td>
+    </tr>
+  </table>
+  </form>
+<!--
+EOT;
+}
+else if($action=="modify")
+{
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>Current Location: Modify a Group</strong></td>
+  </tr>
+</table>
+<form method="post" action="goip_group.php?action=savemodify" name="form1">
+  <br>
+  <br>
+  <table wIdth="300" border="0" align="center" cellpadding="2" cellspacing="1" class="border" >
+    <tr class="title"> 
+      <td height="22" colspan="2"> <div align="center"><strong>Modify a group</strong></div></td>
+    </tr>
+    <tr> 
+      <td wIdth="100" align="right" class="tdbg"><strong>Group name:</strong></td>
+      <td class="tdbg"><input type="input" name="group_name" value="{$rs['group_name']}"> </td>
+    </tr>
+    <tr> 
+      <td height="40" colspan="2" align="center" class="tdbg"><input name="Id" type="hIdden" Id="Id" value="{$rs['id']}"> 
+        <input  type="submit" name="Submit" value="Modify" style="cursor:hand;"> 
+        &nbsp; <input name="Cancel" type="button" Id="Cancel" value="Cancel" onClick="window.location.href='goip_group.php'" style="cursor:hand;"></td>
+    </tr>
+  </table>
+  </form>
+<!--
+EOT;
+}
+print <<<EOT
+-->
+</form>				
+</body>
+</html>
+<!--
+EOT;
+?>
+-->

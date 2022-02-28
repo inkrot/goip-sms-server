@@ -1,0 +1,27 @@
+.BtnStyle1 {
+	height: 22px;
+	width: 60px;
+	background-image: url(../../images/TopMenu/BG/BG_200x25_1.gif);
+	border: 1px solid #A0A0A4;
+	font:Arial;
+	font-size:12px;
+}
+.BtnStyle2 {
+	height: 22px;
+	width: 60px;
+	background-image: url(../../images/TopMenu/BG/BG_200x25_1.gif);
+	border: 1px solid #A0A0A4;
+	font:Arial;
+	font-size:12px;
+}.MoveOverICON {
+	cursor: hand;
+}
+.BtnStyle3 {
+
+	height: 22px;
+	width: 40px;
+	background-image: url(../../images/TopMenu/BG/BG_200x25_1.gif);
+	border: 1px solid #A0A0A4;
+	font:Arial;
+	font-size:12px;
+}

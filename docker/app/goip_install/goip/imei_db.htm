@@ -1,0 +1,236 @@
+<!--
+<?php
+print <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="style.css" rel="stylesheet" type="text/css">
+<title>IMEI数据库</title>
+<script language="javascript">
+function unselectall()
+	{
+	    if(document.myform.chkAll.checked){
+		document.myform.chkAll.checked = document.myform.chkAll.checked&0;
+	    } 	
+	}
+
+function CheckAll(form)
+	{
+		var trck;
+		var e;
+		for (var i=0;i<form.elements.length;i++)
+	    {
+		    e = form.elements[i];
+		    if (e.type == 'checkbox' && e.id != "chkAll" && e.disabled==false){
+				e.checked = form.chkAll.checked;
+		 		do {e=e.parentNode} while (e.tagName!="TR") 
+		 		if(form.chkAll.checked)
+		 			e.className = 'even marked';
+		 		else
+		 			e.className = 'even';
+			}
+	    }
+		//form.chkAll.classname = 'even';
+	}
+
+function mouseover(obj) {
+                obj.className += ' hover';
+				//alert(obj.className);
+            	
+			}
+
+function mouseout(obj) {
+            	obj.className = obj.className.replace( ' hover', '' );
+				//alert(obj.className);
+			}
+
+function trclick(obj) {
+		//alert("ddddd");
+        var checkbox = obj.getElementsByTagName( 'input' )[0];
+        //if ( checkbox && checkbox.type == 'checkbox' ) 
+        checkbox.checked ^= 1;
+		if(checkbox.checked)
+			obj.className = 'even marked';
+		else obj.className = 'even';
+//		var ckpage=document.modifyform.elements['chkAll'+num];
+	    if(document.myform.chkAll.checked){
+		document.myform.chkAll.checked = document.myform.chkAll.checked&0;
+	    } 	
+		
+
+		}
+
+var dec_num=/^[0-9]+$/
+function onfocus_check_integer(obj, lower, upper)
+{
+        var i;
+
+        //document.title="onfocus_check_integer: " + lower + "-" + upper;
+
+        if(!dec_num.test(obj.value)){
+                obj.value=lower;
+        }
+        else {
+                i=parseInt(obj.value);
+                if(i<lower || i>upper){
+                        if(i<lower){
+                                obj.value=lower;
+                        }
+                        if(i>upper){
+                                obj.value=upper;
+                        }
+                }
+        }
+}
+
+
+</script>
+</head>
+<body leftmargin="2" topmargin="0" marginwIdth="0" marginheight="0">
+<FORM  name=uploadform action="?action=upload" method="POST" enctype="multipart/form-data" onSubmit="return check()">
+<table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border">
+  <tr class="topbg"> 
+    <td height="22" colspan="2" align="center"><strong>IMEI数据库</strong></td>
+  </tr>
+  <tr class="tdbg"> 
+    <td wIdth="100" height="30"><strong>导航:</strong></td>
+    <td height="30"><a href="?" target=main>IMEI列表</a>&nbsp;|&nbsp;<a href="?action=add" target=main>添加IMEI</a>&nbsp;|&nbsp;
+上传IMEI数据文件(.csv 或者 .xls格式)<a href="example/imei_data.xls" target="_blank"> [例子]</a><INPUT TYPE="HIdDEN"  name="action" value="mingsenupload">
+<input type=file name=img1><INPUT TYPE="SUBMIT" value="上传">
+</td>
+  </tr>
+</table>
+</FORM>
+<!--
+EOT;
+if($action=="main" || $action=="search") {
+print <<<EOT
+-->
+<form action="?action=del" method=post name=myform onSubmit="return confirm('确认删除?')">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2">
+	<tr class=title>
+		<td wIdth="35" align=center height="25"><b>选择</b></td>
+                <td align="center"><b>IMEI</b></td>
+		<td align="center"><b>是否已用</b></td>
+		<td align="center"><b>使用的GoIP</b></td>
+		<td  align=center><b>操作</b></td>
+	</tr>
+<!--
+EOT;
+$j=0;
+foreach($rsdb as $rs) {
+print <<<EOT
+-->
+	<tr class="even" onMouseOver="mouseover(this)" onMouseOut="mouseout(this)" onMouseDown="trclick(this)">
+		<td align=center wIdth="35"><input name="Id{$j}" type='checkbox' onClick="return false" value="{$rs['id']}"></td>
+                <td align="center">{$rs['imei']}</td>
+		<td align="center">{$rs['used']}</td>
+		<td align="center">{$rs['name']}</td>
+				
+		<td align=center><a href="?action=modify&id={$rs['id']}">修改</a> | <a href="?id={$rs['id']}&action=del" onClick="return confirm('确认删除?')">删除</a></td>
+    </tr>
+
+<!--
+EOT;
+$j++;
+}
+print <<<EOT
+-->
+</table>
+<input type="hIdden" name="boxs" value="{$j}">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2">
+
+
+					<tr>
+						<td height="30" ><input name="chkAll" type="checkbox" Id="chkAll" onclick=CheckAll(this.form) value="checkbox"> 
+					  选择当前页<input name="submit" type='submit' value='删除所选'></td>
+					</tr>
+					<tr>
+						<td  align=center>{$fenye}</td>
+					</tr>
+</table>
+<!--
+EOT;
+}
+else if($action=="add")
+{
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>当前位置:添加IMEI数据</strong></td>
+  </tr>
+</table>
+<form method="post" action="?action=saveadd" name="form1">
+  <br>
+  <br>
+  <table wIdth="400" border="0" align="center" cellpadding="2" cellspacing="1" class="border" >
+    <tr class="title"> 
+      <td height="22" colspan="2"> <div align="center"><strong>IMEI数据</strong></div></td>
+    </tr>
+    <tr> 
+      <td wIdth="150" align="right" class="tdbg"><strong>IMEI:</strong></td>
+      <td class="tdbg"><input type="input" name="imei" onblur="onfocus_check_integer(this, 0, 999999999999999)"></td>
+    </tr>
+    <tr> 
+      <td height="40" colspan="2" align="center" class="tdbg"><input name="Action" type="hIdden" Id="Action" value="修改"> 
+        <input  type="submit" name="Submit" value="添加" style="cursor:hand;"> 
+        &nbsp; <input name="Cancel" type="button" Id="Cancel" value="取消" onClick="window.location.href='?'" style="cursor:hand;"></td>
+    </tr>
+  </table>
+</form>
+<!--
+EOT;
+}
+else if($action=="modify")
+{
+if($rs[used]) $used_ck="checked";
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>当前数据: 修改IMEI数据</strong></td>
+  </tr>
+</table>
+<form method="post" action="?action=savemodify" name="form1">
+  <br>
+  <br>
+  <table wIdth="400" border="0" align="center" cellpadding="2" cellspacing="1" class="border" >
+    <tr class="title"> 
+      <td height="22" colspan="2"> <div align="center"><strong>修改IMEI数据</strong></div></td>
+    </tr>
+    <tr> 
+      <td wIdth="150" align="right" class="tdbg"><strong>IMEI:</strong></td>
+      <td class="tdbg"><input type="input" name="imei" value="$rs[imei]"  onblur="onfocus_check_integer(this, 0, 999999999999999)">  </td>
+    </tr>
+    <tr>
+      <td wIdth="100" align="right" class="tdbg"><strong>是否已使用:</strong></td>
+      <td class="tdbg"><input type="checkbox" name="used" value=1 $used_ck>  </td>
+    </tr>
+    <tr> 
+      <td height="40" colspan="2" align="center" class="tdbg"><input name="Id" type="hIdden" Id="Id" value="{$rs['id']}"> 
+        <input  type="submit" name="Submit" value="保存" style="cursor:hand;"> 
+        &nbsp; <input name="Cancel" type="button" Id="Cancel" value="取消" onClick="window.location.href='?'" style="cursor:hand;"></td>
+    </tr>
+  </table>
+</form>
+<!--
+EOT;
+}
+print <<<EOT
+-->
+</form>
+
+					  </td> 
+					</tr>
+</table>
+				
+</body>
+</html>
+<!--
+EOT;
+?>
+-->

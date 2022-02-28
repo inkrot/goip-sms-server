@@ -1,0 +1,1020 @@
+<!--
+<?php
+print <<<EOT
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="../style.css" rel="stylesheet" type="text/css">
+<title>Auto Balance and Recharge</title>
+<script language="javascript">
+function unselectall()
+	{
+	    if(document.myform.chkAll.checked){
+		document.myform.chkAll.checked = document.myform.chkAll.checked&0;
+	    } 	
+	}
+
+function CheckAll(form)
+	{
+		var trck;
+		var e;
+		for (var i=0;i<form.elements.length;i++)
+	    {
+		    e = form.elements[i];
+		    if (e.type == 'checkbox' && e.id != "chkAll" && e.disabled==false){
+				e.checked = form.chkAll.checked;
+		 		do {e=e.parentNode} while (e.tagName!="TR") 
+		 		if(form.chkAll.checked)
+		 			e.className = 'even marked';
+		 		else
+		 			e.className = 'even';
+			}
+	    }
+		//form.chkAll.classname = 'even';
+	}
+
+function mouseover(obj) {
+                obj.className += ' hover';
+				//alert(obj.className);
+            	
+			}
+
+function mouseout(obj) {
+            	obj.className = obj.className.replace( ' hover', '' );
+				//alert(obj.className);
+			}
+
+function trclick(obj) {
+		//alert("ddddd");
+        var checkbox = obj.getElementsByTagName( 'input' )[0];
+        //if ( checkbox && checkbox.type == 'checkbox' ) 
+        checkbox.checked ^= 1;
+		if(checkbox.checked)
+			obj.className = 'even marked';
+		else obj.className = 'even';
+//		var ckpage=document.modifyform.elements['chkAll'+num];
+	    if(document.myform.chkAll.checked){
+		document.myform.chkAll.checked = document.myform.chkAll.checked&0;
+	    } 	
+		
+
+		}
+
+var dec_num=/^[0-9]+$/
+function onfocus_check_integer(obj, lower, upper)
+{
+        var i;
+
+        //document.title="onfocus_check_integer: " + lower + "-" + upper;
+
+        if(!dec_num.test(obj.value)){
+                obj.value=lower;
+        }
+        else {
+                i=parseInt(obj.value);
+                if(i<lower || i>upper){
+                        if(i<lower){
+                                obj.value=lower;
+                        }
+                        if(i>upper){
+                                obj.value=upper;
+                        }
+                }
+        }
+}
+
+function showtype(value){
+	showtype1.style.display='none';
+	showtype2.style.display='none';
+	showtype3.style.display='none';
+	showtype4.style.display='none';
+	showtype5.style.display='none';
+	showtype6.style.display='none';
+	showtype7.style.display='none';
+	showtype8.style.display='none';
+	showtype9.style.display='none';
+	if(value == 1) {
+		showtype2.style.display='';
+		showtype3.style.display='';
+	}
+	else if(value == 2){
+		showtype1.style.display='';
+		showtype4.style.display='';
+		showtype5.style.display='';
+	}
+	else if(value == 3){
+		showtype1.style.display='';
+		showtype4.style.display='';
+		showtype5.style.display='';
+		showtype6.style.display='';
+		showtype7.style.display='';
+	}
+	else if(value == 4){
+		showtype1.style.display='';
+		showtype4.style.display='';
+		showtype5.style.display='';
+		showtype6.style.display='';
+		showtype7.style.display='';
+		showtype8.style.display='';
+		showtype9.style.display='';
+	}
+	else {
+		showtype1.style.display='';
+	}
+}
+
+function show_recharge(value){
+	showrecharge_ussd_self.style.display='none';
+	showrecharge_ussd.style.display='none';
+	showrecharge_ussd2.style.display='none';
+	showrecharge_sms.style.display='none';
+	showrecharge_sms2.style.display='none';
+	show_recharge_step2_1.style.display='none';
+	show_recharge_step2_2.style.display='none';
+	if(value == 0) {
+		showrecharge_ussd.style.display='';
+		showrecharge_ussd2.style.display='';
+		if(document.getElementById("re_step2_enable").checked) {
+			show_recharge_step2_1.style.display='';
+			show_recharge_step2_2.style.display='';
+		}
+	}
+        else if(value==1) {
+		showrecharge_ussd_self.style.display='';
+		showrecharge_ussd.style.display='';
+		showrecharge_ussd2.style.display='';
+		if(document.getElementById("re_step2_enable").checked) {
+			show_recharge_step2_1.style.display='';
+			show_recharge_step2_2.style.display='';
+		}
+	}else if(value==2){
+		showrecharge_sms.style.display='';
+		showrecharge_sms2.style.display='';
+	}
+}
+
+function show_recharge2(){
+	if(document.getElementById("re_step2_enable").checked) {
+		show_recharge_step2_1.style.display='';
+		show_recharge_step2_2.style.display='';
+	}
+	else {
+		show_recharge_step2_1.style.display='none';
+		show_recharge_step2_2.style.display='none';
+	}
+}
+
+function show_recharge_con(value){
+	show_recharge_con_2.style.display='none';
+	show_recharge_con_3.style.display='none';
+	document.getElementById("show_recharge_con_"+value).style.display='';
+}
+</script>
+</head>
+<body leftmargin="2" topmargin="0" marginwIdth="0" marginheight="0">
+<table wIdth="100%" border="0" align="center" cellpadding="2" cellspacing="1" class="border">
+  <tr class="topbg"> 
+    <td height="22" colspan="2" align="center"><strong>Auto balance and recharge</strong></td>
+  </tr>
+  <tr class="tdbg"> 
+    <td wIdth="100" height="30"><strong>Navigation:</strong></td>
+    <td height="30"><a href="?" target=main>Schemes List</a>&nbsp;|&nbsp;<a href="?action=add" target=main>Add Scheme</a></td>
+  </tr>
+</table>
+<!--
+EOT;
+if($action=="main" || $action=="search") {
+print <<<EOT
+-->
+<br>
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>$maininfo</strong></td>
+  </tr>
+</table>
+
+<form action="?action=del" method=post name=myform onSubmit="return confirm('Sure to delete?')">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2">
+	<tr class=title>
+		<td wIdth="35" align=center height="25"><b>choose</b></td>
+                <td align="center"><b>Scheme Name</b></td>
+		<td align="center"><b>Provider</b></td>
+		<td align="center"><b>Group</b></td>
+		<td align="center"><b>Balance Checking Method</b></td>
+		<td align="center"><b>USSD Balance Code</b></td>
+		<td align="center"><b>SMS Balance NUM</b></td>
+		<td align="center"><b>SMS Balance CMD</b></td>
+		<td align="center"><b>Checking Interval(min)</b></td>
+		<td align="center"><b>Last Sending Time</b></td>
+		<td align="center"><b>Next Sending Time</b></td>
+		<td  align=center><b>Operation</b></td>
+	</tr>
+<!--
+EOT;
+$j=0;
+foreach($rsdb as $rs) {
+print <<<EOT
+-->
+	<tr class="even" onMouseOver="mouseover(this)" onMouseOut="mouseout(this)" onMouseDown="trclick(this)">
+		<td align=center wIdth="35"><input name="Id{$j}" type='checkbox' onClick="return false" value="{$rs['id']}"></td>
+                <td align="center">{$rs['name']}</td>
+		<td align="center">{$rs['prov']}</td>
+		<td align="center">{$rs['group_name']}</td>
+		<td align="center">{$rs['type']}</td>
+                <td align="center">{$rs['auto_ussd']}</td>
+		<td align="center">{$rs['auto_sms_num']}</td>
+		<td align="center">{$rs['auto_sms_msg']}</td>
+                <td align="center">{$rs['crontime']}</td>
+		<td align="center">{$rs['last_time']}</td>
+                <td align="center">{$rs['next_time']}</td>
+				
+		<td align=center><a href="?action=start&id={$rs['id']}">Send Now</a> | <a href="?action=modify&id={$rs['id']}">Modify</a> | <a href="?id={$rs['id']}&action=del" onClick="return confirm('Sure to delete?')">Delete</a></td>
+    </tr>
+
+<!--
+EOT;
+$j++;
+}
+print <<<EOT
+-->
+</table>
+<input type="hIdden" name="boxs" value="{$j}">
+<table wIdth="100%"  border="0" cellspacing="2" cellpadding="2">
+
+
+					<tr>
+						<td height="30" ><input name="chkAll" type="checkbox" Id="chkAll" onclick=CheckAll(this.form) value="checkbox"> 
+					  Choose current page<input name="submit" type='submit' value='Delete selected'></td>
+					</tr>
+					<tr>
+						<td  align=center>{$fenye}</td>
+					</tr>
+</table>
+<!--
+EOT;
+}
+else if($action=="add")
+{
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>Current Location:Add Scheme of Balance and Recharge</strong></td>
+  </tr>
+</table>
+<form method="post" action="?action=saveadd" name="form1">
+  <table wIdth="600" border="0" align="center" cellpadding="2" cellspacing="1" class="border" >
+    <tr class="title"> 
+      <td height="22" colspan="2"> <div align="center"><strong>Balance Checking Scheme*</strong></div></td>
+    </tr>
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>Scheme Name:</strong></td>
+      <td class="tdbg"><input type="input" name="name"></td>
+    </tr>
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>Provider:</strong></td>
+      <td class="tdbg"><select name="prov_id" style="width:135">
+<!--
+EOT;
+foreach($prsdb as $prs){
+if($prs[prov]){
+print <<<EOT
+-->
+        <option value="$prs[id]">$prs[prov]</option>
+
+<!--
+EOT;
+}
+}
+print <<<EOT
+-->
+      </select></td>
+    </tr>
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>Group:</strong></td>
+      <td class="tdbg"><select name="group_id" style="width:135">
+	<option value="0">None(None)</option>
+<!--
+EOT;
+foreach($ggrsdb as $prs){
+print <<<EOT
+-->
+        <option value="$prs[id]">$prs[group_name]</option>
+
+<!--
+EOT;
+}
+print <<<EOT
+-->
+      </select></td>
+    </tr>
+
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Balance Checking Method:</strong></td>
+      <td class="tdbg">
+          <select name="type" style="width:135" onchange="showtype(this.value)">
+        <option value="0" selected>USSD</option>
+        <option value="1" >SMS</option>
+	<option value="2" >USSD(2 steps)</option>
+	<option value="3" >USSD(3 steps)</option>
+	<option value="4" >USSD(4 steps)</option>
+      </select></td>
+    </tr>
+    <tr style="display:" Id='showtype1'>
+      <td wIdth="300" align="right" class="tdbg"><strong>USSD Balance Code:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd"></td>
+    </tr>
+    <tr style="display:none" Id='showtype4'>
+      <td wIdth="300" align="right" class="tdbg"><strong>String for 1st Balance USSD Code OK:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd_step2_start_r"></td>
+    </tr>
+    <tr style="display:none" Id='showtype5'>
+      <td wIdth="300" align="right" class="tdbg"><strong>2nd USSD Balance Code:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd_step2"></td>
+    </tr>
+    <tr style="display:none" Id='showtype6'>
+      <td wIdth="300" align="right" class="tdbg"><strong>String for 2nd Balance USSD Code OK:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd_step3_start_r" value="$rs[auto_ussd_step3_start_r]"></td>
+    </tr>
+    <tr style="display:none" Id='showtype7'>
+      <td wIdth="300" align="right" class="tdbg"><strong>3rd USSD Balance Code:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd_step3" value="$rs[auto_ussd_step3]"></td>
+    </tr>
+    <tr style="display:none" Id='showtype8'>
+      <td wIdth="300" align="right" class="tdbg"><strong>String for 3rd Balance USSD Code OK:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd_step4_start_r" value="$rs[auto_ussd_step4_start_r]"></td>
+    </tr>
+    <tr style="display:none" Id='showtype9'>
+      <td wIdth="300" align="right" class="tdbg"><strong>4th USSD Balance Code:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd_step4" value="$rs[auto_ussd_step4]"></td>
+    </tr>
+
+    <tr style="display:none" Id='showtype2'>
+      <td wIdth="300" align="right" class="tdbg"><strong>SMS Balance NUM:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_sms_num"></td>
+    </tr>
+    <tr style="display:none" Id='showtype3'>
+      <td wIdth="300" align="right" class="tdbg"><strong>SMS Balance CMD:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_sms_msg"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Checking Interval(min):</strong></td>
+      <td class="tdbg"><input type="input" name="crontime" value=60 onblur="onfocus_check_integer(this, 5, 3000000)"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Low Balance Trigger:</strong></td>
+      <td class="tdbg"><input type="input" name="bal_limit"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Terminate Recharge Trigger:</strong></td>
+      <td class="tdbg"><input type="input" name="recharge_limit"></td>
+    </tr>
+
+    <tr class="title">
+      <td height="22" colspan="2"> <div align="center"><strong>Extracting SIM Card Balance*</strong></div></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Exact Balance Prefix (USSD):</strong></td>
+      <td class="tdbg"><input type="input" name="bal_ussd_r"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>String for Owe (USSD):</strong></td>
+      <td class="tdbg"><input type="input" name="bal_ussd_zero_match_char"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Terminate USSD Menu after Balance Checking:</strong></td>
+      <td class="tdbg"><input name="auto_disconnect_after_bal" type='checkbox' value="1"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Exact Balance Prefix (SMS):</strong></td>
+      <td class="tdbg"><input type="input" name="bal_sms_r"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>String for Owe (SMS):</strong></td>
+      <td class="tdbg"><input type="input" name="bal_sms_zero_match_char"></td>
+    </tr>
+    <tr class="title">
+      <td height="22" colspan="2"> <div align="center"><strong>Recharge Settings*</strong></div></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Recharge Trigger Type:</strong></td>
+      <td class="tdbg">
+          <select name="recharge_con_type" style="width:135" onchange="show_recharge_con(this.value)">
+        <option value="0" $re_con_select0 >Low Balance</option>
+	<option value="2" $re_con_select2 >Fixed Time</option>
+	<option value="3" $re_con_select3 >Low Remain</option>
+          </select>
+      </td>
+    </tr>
+
+    <tr style="display:none" Id='show_recharge_con_2'>
+      <td wIdth="300" align="right" class="tdbg"><strong>Fixed Time of Every Day(hhmmss):</strong></td>
+      <td class="tdbg"><input type="input" name="fixed_time"></td>
+    </tr>
+
+    <tr style="display:none" Id='show_recharge_con_3'>
+      <td wIdth="300" align="right" class="tdbg"><strong>Low Remain Trigger:</strong></td>
+      <td class="tdbg"><input type="input" name="remain_limit"></td>
+    </tr>
+
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Recharge Method:</strong></td>
+      <td class="tdbg">
+          <select name="recharge_type" style="width:135" onchange="show_recharge(this.value)">
+        <option value="0" $select0 >USSD Via its own channel</option>
+	<option value="1" $select1 >USSD Via a fixed channel</option>
+	<option value="2" $select2 >SMS Via its own channel</option>
+          </select>
+      </td>
+    </tr>
+    <tr style="display:none" Id='showrecharge_ussd_self'>
+      <td wIdth="300" align="right" class="tdbg"><strong>Recharge Line Name:</strong></td>
+      <td class="tdbg"><select name="recharge_ussd1_goip" style="width:135">
+<!--
+EOT;
+
+foreach($grsdb as $grs){
+
+print <<<EOT
+-->
+        <option value="$grs[id]">$grs[name]</option>
+
+<!--
+EOT;
+}
+print <<<EOT
+-->
+      </select></td>
+    </tr>
+    <tr Id='showrecharge_ussd'>
+      <td wIdth="300" align="right" class="tdbg"><strong>USSD Recharge Code:</strong></td>
+      <td class="tdbg"><input type="input" name="recharge_ussd"></td>
+    </tr>
+    <tr id='showrecharge_ussd2'>
+      <td wIdth="300" align="right" class="tdbg"><strong>Need 2 step2 USSD:</strong></td>
+      <td class="tdbg"><input name="re_step2_enable" id='re_step2_enable' type='checkbox' value="1" onclick="show_recharge2(this.value)"></td>
+    </tr>
+    <tr Id='show_recharge_step2_1' style="display:none">
+      <td wIdth="300" align="right" class="tdbg"><strong>String for 1st USSD Recharge Code OK:</strong></td>
+      <td class="tdbg"><input type="input" name="re_step2_ok_r"></td>
+    </tr>
+    <tr Id='show_recharge_step2_2' style="display:none">
+      <td wIdth="300" align="right" class="tdbg"><strong>2nd USSD Recharge Code:</strong></td>
+      <td class="tdbg"><input type="input" name="re_step2_cmd"></td>
+    </tr>
+    <tr style="display:none" Id='showrecharge_sms'>
+      <td wIdth="300" align="right" class="tdbg"><strong>SMS Recharge NUM:</strong></td>
+      <td class="tdbg"><input type="input" name="recharge_sms_num"></td>
+    </tr>
+    <tr style="display:none" Id='showrecharge_sms2'>
+      <td wIdth="300" align="right" class="tdbg"><strong>SMS Recharge CMD:</strong></td>
+      <td class="tdbg"><input type="input" name="recharge_sms_msg"></td>
+    </tr>
+<!--
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Number of Result SMS:</strong></td>
+      <td class="tdbg"><input type="input" name="recharge_sms_ok_num"></td>
+    </tr>
+-->
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>String for Recharge OK:</strong></td>
+      <td class="tdbg"><input type="input" name="recharge_ok_r"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Alternate String for Recharge OK:</strong></td>
+      <td class="tdbg"><input type="input" name="recharge_ok_r2"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Disable Callout (reactivate after recharge):</strong></td>
+      <td class="tdbg"><input name="disable_callout_when_bal" type='checkbox' value="1"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Set Talk Time Limit after a Recharge OK(M):</strong></td>
+      <td class="tdbg"><input type="input" name="remain_set" onblur="onfocus_check_integer(this, 0, 999999)"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Reset Remain Time after Recharge OK:</strong></td>
+      <td class="tdbg"><input name="auto_reset_remain_enable" type='checkbox' value="1"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Balance Checking Delay after a Recharge OK(S):</strong></td>
+      <td class="tdbg"><input type="input" name="bal_delay" onblur="onfocus_check_integer(this, 0, 60)"></td>
+    </tr>
+    <tr class="title">
+      <td height="22" colspan="2"> <div align="center"><strong>Action on Low Balance</strong></div></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>SMS Recipient <GSM Number>:</strong></td>
+      <td class="tdbg"><input type="input" name="send_sms"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Specify the GoIP Channel to send SMS Alert:</strong></td>
+      <td class="tdbg"><select name="sms_report_goip" style="width:135">
+        <option value="0">its own channel</option>
+<!--
+EOT;
+      
+foreach($grsdb as $grs){
+    
+print <<<EOT
+-->   
+        <option value="$grs[id]">$grs[name]</option>
+    
+<!--
+EOT;
+}     
+print <<<EOT
+--> 
+      </select></td>
+    </tr>
+
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Send alert via Email <Email Account>:</strong></td>
+      <td class="tdbg"><input type="input" name="send_email"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Disable Line (No SIM Recharging):</strong></td>
+      <td class="tdbg"><input name="disable_if_low_bal" type='checkbox' value="1"></td>
+    </tr>
+
+    <tr class="title">
+      <td height="22" colspan="2"> <div align="center"><strong>Follow-up USSD Codes</strong></div></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>1st Follow-up USSD Code:</strong></td>
+      <td class="tdbg"><input type="input" name="ussd2"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>String for 1st Follow-up USSD Code OK:</strong></td>
+      <td class="tdbg"><input type="input" name="ussd2_ok_match"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>2nd Follw-up USSD Code:</strong></td>
+      <td class="tdbg"><input type="input" name="ussd22"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>2nd Follow-up USSD Code OK:</strong></td>
+      <td class="tdbg"><input type="input" name="ussd22_ok_match"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Disable Line if a Follow-up code fails:</strong></td>
+      <td class="tdbg"><input name="disable_if_ussd2_undone" type='checkbox' value="1"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>GSM Number (Failure of Sending Follow-up codes):</strong></td>
+      <td class="tdbg"><input type="input" name="send_sms2"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Email Account (Failure of Sending Follow-up codes):</strong></td>
+      <td class="tdbg"><input type="input" name="send_mail2"></td>
+    </tr>
+    <tr> 
+      <td height="40" colspan="2" align="center" class="tdbg"><input name="Action" type="hIdden" Id="Action" value="Modify"> 
+        <input  type="submit" name="Submit" value=" ADD " style="cursor:hand;"> 
+        &nbsp; <input name="Cancel" type="button" Id="Cancel" value="Cancel" onClick="window.location.href='recharge.php'" style="cursor:hand;"></td>
+    </tr>
+
+    <tr> <td height="20" colspan="2" class="tdbg">Notes (Proposed):<br>
+1.  Either USSD or SMS method can be selected to perform balance checking.  <br>
+2.  The Exact Balance Prefix and/or the Exact Balance Suffix (including blank spaces) are used to extract the SIM balance from the b
+alance checking response from the network.  The SIM balance is accurate to two decimal places. <br>
+3.  SIM card recharging starts when the SIM balance is below the Low Balance Trigger if the line is not disabled at low balance.<br>
+4.  SIM card recharging stops when the SIM balance is equal or above the Terminate Recharge Trigger.<br>
+5.  SIM Card recharging can be set to use its own channel to perform the recharge (Recharge Method = Via its own channel) or a fixed
+ channel to recharge all channels (Recharge Method = Via a fixed channel).  If the fixed channel method is selected, the GSM number
+of each channel inside the GoIP settings must be set properly; otherwise, SIM recharge of the channel without a correct GSM number w
+ill fail.<br>
+6.  Recharge via its own channel uses the vouchers in the Recharge Card database.This method uses ? instead of recharge card number.
+ Such as setting is *123*?# when send USSD recharge,it will take the available recharge card number from the database, for example a
+vailable card number is 1234567, eventually the device to send *123*1234567# this USSD commands. <br>
+7.  Recharge via a fixed channel deducts the recharge value from the balance of the SIM that is inserted in this fixed channel. USSD
+ commands with ! instead of the GSM number which need to recharge. Such as setting is used to recharge is the GoIP line L1, recharge
+ command set to *123*1*100*123456*!#, the line L2 (Number 10086). When the L2 found need to USSD recharge server will get its GSM nu
+mber 10086 from the line L2 data, then line L1 sent *123*1*100*123456*10086# USSD commands.<br>
+6.  "String for Recharge OK" or "Alternate String for Recharge OK" are used to determine if the recharge is successful or not.  As l
+ong as either string matches the response from the network, the recharge is successful.  <br>
+</td></tr>
+  </table>
+</form>
+<!--
+EOT;
+}
+else if($action=="modify")
+{
+print <<<EOT
+-->
+<table width="100%" height="25"  border="0" cellpadding="0" cellspacing="0">
+  <tr class="topbg">
+    <td width="8%">&nbsp;</td>
+    <td width="92%" height="25"><strong>Current Location:Modify Scheme of Balance and Recharge</strong></td>
+  </tr>
+</table>
+<form method="post" action="?action=savemodify" name="form1">
+  <table wIdth=600 border="0" align="center" cellpadding="2" cellspacing="1" class="border" >
+    <tr class="title"> 
+      <td height="22" colspan="2"> <div align="center"><strong>Balance Checking Scheme*</strong></div></td>
+    </tr>
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>Scheme Name:</strong></td>
+      <td class="tdbg"><input type="input" name="name" value=$rs[name]>  </td>
+    </tr>
+<!--
+EOT;
+print <<<EOT
+-->
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>Provider</strong></td>
+      <td class="tdbg">
+	  <select name="prov_id" style="width:135">
+<!--
+EOT;
+foreach($prsdb as $prs){
+
+if($rs[prov_id]==$prs[id])
+	$select=' selected';
+else 
+	$select='';
+if($prs[prov]){
+print <<<EOT
+-->
+        <option value="$prs[id]" $select >$prs[prov]</option>
+
+<!--
+EOT;
+}
+}
+print <<<EOT
+-->
+      </select></td>
+    </tr>
+    <tr> 
+      <td wIdth="300" align="right" class="tdbg"><strong>Group</strong></td>
+      <td class="tdbg">
+	  <select name="group_id" style="width:135">
+	<option value="0">None(None)</option>
+<!--
+EOT;
+foreach($ggrsdb as $prs){
+
+if($rs[group_id]==$prs[id])
+	$select=' selected';
+else 
+	$select='';
+print <<<EOT
+-->
+        <option value="$prs[id]" $select >$prs[group_name]</option>
+
+<!--
+EOT;
+}
+print <<<EOT
+-->
+      </select></td>
+    </tr>
+
+
+<!--
+EOT;
+$display='none';
+$display1='none';
+$display2='none';
+$display3='none';
+$display4='none';
+
+if($rs[type]==0) {
+	$select_ussd='selected';
+	$display=''; 
+}else if($rs[type]==1){
+	$select_sms='selected';
+	$display1=''; 
+}else if($rs[type]==2){
+	$select_ussd_step2='selected';
+	$display=''; 
+	$display2=''; 
+}else if($rs[type]==3){
+	$select_ussd_step3='selected';
+	$display=''; 
+	$display2='';
+	$display3=''; 
+}else if($rs[type]==4){
+	$select_ussd_step4='selected';
+	$display=''; 
+	$display2='';
+	$display3=''; 
+	$display4=''; 
+}
+
+if($rs[auto_disconnect_after_bal]) $ack="checked";
+print <<<EOT
+-->
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Balance Checking Method:</strong></td>
+      <td class="tdbg">
+          <select name="type" style="width:135" onchange="showtype(this.value)">
+        <option value="0" $select_ussd >USSD</option>
+        <option value="1" $select_sms >SMS</option>
+	<option value="2" $select_ussd_step2 >USSD(2 steps)</option>
+	<option value="3" $select_ussd_step3 >USSD(3 steps)</option>
+	<option value="4" $select_ussd_step4 >USSD(4 steps)</option>
+      </select></td>
+    </tr>
+    <tr style="display:{$display}" Id='showtype1'>
+      <td wIdth="300" align="right" class="tdbg"><strong>USSD Balance Code:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd" value="$rs[auto_ussd]"></td>
+    </tr>
+    <tr style="display:{$display2}" Id='showtype4'>
+      <td wIdth="300" align="right" class="tdbg"><strong>String for 1st Balance USSD Code OK:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd_step2_start_r" value="$rs[auto_ussd_step2_start_r]"></td>
+    </tr>
+    <tr style="display:{$display2}" Id='showtype5'>
+      <td wIdth="300" align="right" class="tdbg"><strong>2nd USSD Balance Code:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd_step2" value="$rs[auto_ussd_step2]"></td>
+    </tr>
+    <tr style="display:{$display3}" Id='showtype6'>
+      <td wIdth="300" align="right" class="tdbg"><strong>String for 2nd Balance USSD Code OK:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd_step3_start_r" value="$rs[auto_ussd_step3_start_r]"></td>
+    </tr>
+    <tr style="display:{$display3}" Id='showtype7'>
+      <td wIdth="300" align="right" class="tdbg"><strong>3rd USSD Balance Code:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd_step3" value="$rs[auto_ussd_step3]"></td>
+    </tr>
+    <tr style="display:{$display4}" Id='showtype8'>
+      <td wIdth="300" align="right" class="tdbg"><strong>String for 3rd Balance USSD Code OK:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd_step4_start_r" value="$rs[auto_ussd_step4_start_r]"></td>
+    </tr>
+    <tr style="display:{$display4}" Id='showtype9'>
+      <td wIdth="300" align="right" class="tdbg"><strong>4th USSD Balance Code:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_ussd_step4" value="$rs[auto_ussd_step4]"></td>
+    </tr>
+
+    <tr style="display:{$display1}" Id='showtype2'>
+      <td wIdth="300" align="right" class="tdbg"><strong>SMS Balance NUM:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_sms_num" value="$rs[auto_sms_num]"></td>
+    </tr>
+    <tr style="display:{$display1}" Id='showtype3'>
+      <td wIdth="300" align="right" class="tdbg"><strong>SMS Balance CMD:</strong></td>
+      <td class="tdbg"><input type="input" name="auto_sms_msg" value="$rs[auto_sms_msg]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Checking Interval(min):</strong></td>
+      <td class="tdbg"><input type="input" name="crontime" value="$rs[crontime]" onblur="onfocus_check_integer(this, 5, 3000000)"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Low Balance Trigger:</strong></td>
+      <td class="tdbg"><input type="input" name="bal_limit" value="$rs[bal_limit]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Terminate Recharge Trigger:</strong></td>
+      <td class="tdbg"><input type="input" name="recharge_limit" value="$rs[recharge_limit]"></td>
+    </tr>
+    <tr class="title">
+      <td height="22" colspan="2"> <div align="center"><strong>Extracting SIM Card Balance*</strong></div></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Exact Balance Prefix (USSD):</strong></td>
+      <td class="tdbg"><input type="input" name="bal_ussd_r" value="$rs[bal_ussd_r]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>String for Owe (USSD):</strong></td>
+      <td class="tdbg"><input type="input" name="bal_ussd_zero_match_char" value="$rs[bal_ussd_zero_match_char]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Terminate USSD Menu after Balance Checking:</strong></td>
+      <td class="tdbg"><input name="auto_disconnect_after_bal" type='checkbox' value="1" $ack></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Exact Balance Prefix (SMS):</strong></td>
+      <td class="tdbg"><input type="input" name="bal_sms_r" value="$rs[bal_sms_r]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>String for Owe (SMS):</strong></td>
+      <td class="tdbg"><input type="input" name="bal_sms_zero_match_char" value="$rs[bal_sms_zero_match_char]"></td>
+    </tr>
+    <tr class="title">
+      <td height="22" colspan="2"> <div align="center"><strong>Recharge Settings*</strong></div></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Recharge Trigger Type:</strong></td>
+      <td class="tdbg">
+          <select name="recharge_con_type" style="width:135" onchange="show_recharge_con(this.value)">
+        <option value="0" $re_con_select0 >Low Balance</option>
+        <option value="2" $re_con_select2 >Fixed Time</option>
+        <option value="3" $re_con_select3 >Low Remain</option>
+          </select>
+      </td>
+    </tr>
+
+    <tr style="display:none" Id='show_recharge_con_2'>
+      <td wIdth="300" align="right" class="tdbg"><strong>Fixed Time of Every Day(hhmmss):</strong></td>
+      <td class="tdbg"><input type="input" name="fixed_time" value="$rs[fixed_time]"></td>
+    </tr>
+
+    <tr style="display:none" Id='show_recharge_con_3'>
+      <td wIdth="300" align="right" class="tdbg"><strong>Low Remain Trigger:</strong></td>
+      <td class="tdbg"><input type="input" name="remain_limit" value="$rs[remain_limit]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Recharge Method:</strong></td>
+      <td class="tdbg">
+          <select name="recharge_type" style="width:135" onchange="show_recharge(this.value)">
+        <option value="0" $select0 >USSD Via its own channel</option>
+        <option value="1" $select1 >USSD Via a fixed channel</option>
+	<option value="2" $select2 >SMS Via its own channel</option>
+          </select>
+      </td>
+    </tr>
+    <tr style="display:$display_re" Id='showrecharge_ussd_self'>
+      <td wIdth="300" align="right" class="tdbg"><strong>Recharge Line Name:</strong></td>
+      <td class="tdbg"><select name="recharge_ussd1_goip" style="width:135">
+<!--
+EOT;
+
+foreach($grsdb as $grs){
+if($rs[recharge_ussd1_goip]==$grs[id])
+        $select=' selected';
+else 
+        $select='';
+print <<<EOT
+-->
+        <option value="$grs[id]" $select>$grs[name]</option>
+
+<!--
+EOT;
+}
+if($rs[disable_if_low_bal]) $cck="checked";
+if($rs[disable_if_ussd2_undone]) $cck2="checked";
+if($rs[disable_callout_when_bal]) $outck="checked";
+if($rs[auto_reset_remain_enable]) $auto_reset_remain_ck="checked";
+if($rs[re_step2_enable]) $re2ck="checked";
+print <<<EOT
+-->
+      </select></td>
+    </tr>
+    <tr style="display:none" Id='showrecharge_ussd'>
+      <td wIdth="300" align="right" class="tdbg"><strong>USSD Recharge Code:</strong></td>
+      <td class="tdbg"><input type="input" name="recharge_ussd" value="$rs[recharge_ussd]"></td>
+    </tr>
+    <tr id='showrecharge_ussd2'>
+      <td wIdth="300" align="right" class="tdbg"><strong>Need 2 step2 USSD:</strong></td>
+      <td class="tdbg"><input name="re_step2_enable" id='re_step2_enable' type='checkbox' value="1" onclick="show_recharge2(this.value)" $re2ck></td>
+    </tr>
+    <tr Id='show_recharge_step2_1' style="display:none">
+      <td wIdth="300" align="right" class="tdbg"><strong>String for 1st USSD Recharge Code OK:</strong></td>
+      <td class="tdbg"><input type="input" name="re_step2_ok_r" value="$rs[re_step2_ok_r]"></td>
+    </tr>
+    <tr Id='show_recharge_step2_2' style="display:none">
+      <td wIdth="300" align="right" class="tdbg"><strong>2nd USSD Recharge Code:</strong></td>
+      <td class="tdbg"><input type="input" name="re_step2_cmd" value="$rs[re_step2_cmd]"></td>
+    </tr>
+
+    <tr  style="display:none" Id='showrecharge_sms'>
+      <td wIdth="300" align="right" class="tdbg"><strong>SMS Recharge NUM:</strong></td>
+      <td class="tdbg"><input type="input" name="recharge_sms_num" value="$rs[recharge_sms_num]"></td>
+    </tr>
+    <tr  style="display:none" Id='showrecharge_sms2'>
+      <td wIdth="300" align="right" class="tdbg"><strong>SMS Recharge CMD:</strong></td>
+      <td class="tdbg"><input type="input" name="recharge_sms_msg" value="$rs[recharge_sms_msg]"></td>
+    </tr>
+<!--
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Number of Result SMS:</strong></td>
+      <td class="tdbg"><input type="input" name="recharge_sms_ok_num" value="$rs[recharge_sms_ok_num]"></td>
+    </tr>
+-->
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>String for Recharge OK:</strong></td>
+      <td class="tdbg"><input type="input" name="recharge_ok_r" value="$rs[recharge_ok_r]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Alternate String for Recharge OK:</strong></td>
+      <td class="tdbg"><input type="input" name="recharge_ok_r2" value="$rs[recharge_ok_r2]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Disable Callout (reactivate after recharge):</strong></td>
+      <td class="tdbg"><input name="disable_callout_when_bal" type='checkbox' value="1" $outck></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Set Talk Time Limit after a Recharge OK(M):</strong></td>
+      <td class="tdbg"><input type="input" name="remain_set"value="$rs[remain_set]" onblur="onfocus_check_integer(this, 0, 999999)"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Reset Remain Time after Recharge OK:</strong></td>
+      <td class="tdbg"><input name="auto_reset_remain_enable" type='checkbox' value="1" $auto_reset_remain_ck></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Balance Checking Delay after a Recharge OK(S):</strong></td>
+      <td class="tdbg"><input type="input" name="bal_delay" value="$rs[bal_delay]" onblur="onfocus_check_integer(this, 0, 60)"></td>
+    </tr>
+    <tr class="title">
+      <td height="22" colspan="2"> <div align="center"><strong>Action on Low Balance</strong></div></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>SMS Recipient <GSM Number>:</strong></td>
+      <td class="tdbg"><input type="input" name="send_sms" value="$rs[send_sms]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Specify the GoIP Channel to send SMS Alert:</strong></td>
+      <td class="tdbg"><select name="sms_report_goip" style="width:135">
+	<option value="0">its own channel</option>
+<!--
+EOT;
+
+foreach($grsdb as $grs){
+if($rs[sms_report_goip]==$grs[id])
+        $select=' selected';
+else 
+        $select='';
+print <<<EOT
+-->
+        <option value="$grs[id]" $select>$grs[name]</option>
+
+<!--
+EOT;
+}
+print <<<EOT
+-->
+      </select></td>
+    </tr>
+
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Send alert via Email <Email Account>:</strong></td>
+      <td class="tdbg"><input type="input" name="send_email" value="$rs[send_email]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Disable Line (No SIM Recharging):</strong></td>
+      <td class="tdbg"><input name="disable_if_low_bal" type='checkbox' value="1" $cck></td>
+    </tr>
+    <tr class="title">
+      <td height="22" colspan="2"> <div align="center"><strong>Follow-up USSD Codes</strong></div></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>1st Follow-up USSD Code:</strong></td>
+      <td class="tdbg"><input type="input" name="ussd2" value="$rs[ussd2]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>String for 1st Follow-up USSD Code OK:</strong></td>
+      <td class="tdbg"><input type="input" name="ussd2_ok_match" value="$rs[ussd2_ok_match]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>2nd Follw-up USSD Code:</strong></td>
+      <td class="tdbg"><input type="input" name="ussd22" value="$rs[ussd22]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>2nd Follow-up USSD Code OK:</strong></td>
+      <td class="tdbg"><input type="input" name="ussd22_ok_match" value="$rs[ussd22_ok_match]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Disable Line if a Follow-up code fails:</strong></td>
+      <td class="tdbg"><input name="disable_if_ussd2_undone" type='checkbox' value="1" $cck2></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>GSM Number (Failure of Sending Follow-up codes):</strong></td>
+      <td class="tdbg"><input type="input" name="send_sms2" value="$rs[send_sms2]"></td>
+    </tr>
+    <tr>
+      <td wIdth="300" align="right" class="tdbg"><strong>Email Account (Failure of Sending Follow-up codes):</strong></td>
+      <td class="tdbg"><input type="input" name="send_mail2" value="$rs[send_mail2]"></td>
+    </tr>
+     <tr> 
+      <td height="40" colspan="2" align="center" class="tdbg"><input name="Id" type="hIdden" Id="Id" value="{$rs['id']}"> 
+        <input  type="submit" name="Submit" value="Save" style="cursor:hand;"> 
+        &nbsp; <input name="Cancel" type="button" Id="Cancel" value="Cancel" onClick="window.location.href='recharge.php'" style="cursor:hand;"></td>
+    </tr>
+    <tr> <td height="20" colspan="2"class="tdbg">Notes (Proposed):<br>
+1.  Either USSD or SMS method can be selected to perform balance checking.  <br>
+2.  The Exact Balance Prefix and/or the Exact Balance Suffix (including blank spaces) are used to extract the SIM balance from the balance checking response from the network.  The SIM balance is accurate to two decimal places. <br>
+3.  SIM card recharging starts when the SIM balance is below the Low Balance Trigger if the line is not disabled at low balance.<br>
+4.  SIM card recharging stops when the SIM balance is equal or above the Terminate Recharge Trigger.<br>
+5.  SIM Card recharging can be set to use its own channel to perform the recharge (Recharge Method = Via its own channel) or a fixed channel to recharge all channels (Recharge Method = Via a fixed channel).  If the fixed channel method is selected, the GSM number of each channel inside the GoIP settings must be set properly; otherwise, SIM recharge of the channel without a correct GSM number will fail.<br>
+6.  Recharge via its own channel uses the vouchers in the Recharge Card database.This method uses ? instead of recharge card number. Such as setting is *123*?# when send USSD recharge,it will take the available recharge card number from the database, for example available card number is 1234567, eventually the device to send *123*1234567# this USSD commands. <br>
+7.  Recharge via a fixed channel deducts the recharge value from the balance of the SIM that is inserted in this fixed channel. USSD commands with ! instead of the GSM number which need to recharge. Such as setting is used to recharge is the GoIP line L1, recharge command set to *123*1*100*123456*!#, the line L2 (Number 10086). When the L2 found need to USSD recharge server will get its GSM number 10086 from the line L2 data, then line L1 sent *123*1*100*123456*10086# USSD commands.<br>
+6.  "String for Recharge OK" or "Alternate String for Recharge OK" are used to determine if the recharge is successful or not.  As long as either string matches the response from the network, the recharge is successful.  <br>
+
+</td></tr>	
+  </table>
+<script language="javascript">
+	show_recharge($rs[recharge_type]);
+	show_recharge2();
+	show_recharge_con($rs[recharge_con_type]);
+</script>
+</form>
+<!--
+EOT;
+}
+print <<<EOT
+-->
+</form>
+
+					  </td> 
+					</tr>
+</table>
+				
+</body>
+</html>
+<!--
+EOT;
+?>
+-->

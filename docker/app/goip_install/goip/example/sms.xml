@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<send>
+<sms>
+	<number>13800138000</number>
+	<content>hello</content>
+	<provider>cdma</provider>
+</sms>
+<sms>
+	<number>13800138000</number>
+	<content>msg2</content>
+	<provider>cdma</provider>
+</sms>
+<sms>
+	<number>10086</number>
+	<content>msg3</content>
+	<provider>yidong</provider>
+</sms>
+</send>
