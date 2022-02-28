@@ -9,7 +9,7 @@ require_once("global.php");
 	function do_cron($db,$crontime,$port,$count)
 	{
 		if(!$port) $port=44444;
-		$rs=$db->fetch_array($db->query("SELECT id FROM message WHERE crontime>0 and crontime<$crontime and over=0"));//是否有未执行的比新计划还要前的计划
+		$rs=$db->fetch_array($db->query("SELECT id FROM message WHERE crontime>0 and crontime<$crontime and `over`=0"));//是否有未执行的比新计划还要前的计划
 		$flag=1;
 		if(empty($rs[0])){
 			$flag=0;
@@ -130,7 +130,7 @@ elseif($_POST['action']=='request'){
 	//print_r($xml);
 	//echo($xml[""][0]->uid[0]);
 	//echo($uid);
-	$query=$db->query("select message.over,message.msgid,message.time,sends.over as sover from message left join sends on sends.messageid=message.id where uid='$uid'");
+	$query=$db->query("select `message.over`,message.msgid,message.time,sends.over as sover from message left join sends on sends.messageid=message.id where uid='$uid'");
 /*
 	$rs=$db->fetch_array($query);
 	

@@ -31,7 +31,7 @@ if($goip_id) $where.=" and goipid='$goip_id'";
 if($prov_id) $where.=" and goip.provider='$prov_id'";
 if($group_id) $where.=" and group_id='$group_id'";
 
-$sql="SELECT goipid,sum(sends.total) as ok_count from sends left join goip on sends.goipid=goip.id where over=1 and time>'$start_time' and time<'$end_time' $where group by goipid";
+$sql="SELECT goipid,sum(sends.total) as ok_count from sends left join goip on sends.goipid=goip.id where `over`=1 and time>'$start_time' and time<'$end_time' $where group by goipid";
 /*
 //echo $sql." $goip_id";
 $query=$db->query($sql);

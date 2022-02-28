@@ -242,7 +242,7 @@ function startdo($db, $tels, $sendid, $msg, $len){
 					if($comm[0]=="OK"){
 						//更新数据库，发送成功 
 						//echo "inser: ".$goipnow[tel][id]."  $goipnow[tel] ok<br>";
-						$db->query("update sends set over=1,goipid=$goipnow[id] where id=".$goipnow[tel][id]." and messageid=$sendid");	
+						$db->query("update sends set `over`=1,goipid=$goipnow[id] where id=".$goipnow[tel][id]." and messageid=$sendid");
 						/**/
 						if($goipnow[send]!="SEND"){//不处于发送状态，无视
 							echo "not send status <br>";
@@ -524,7 +524,7 @@ function startdo($db, $tels, $sendid, $msg, $len){
 		$sendid=$merow[id];
 		$msg=$merow[msg];
 		$len=strlen($msg);
-		$query=$db->query("SELECT * FROM sends  where messageid=$_GET[messageid] and over=0 ORDER BY id");
+		$query=$db->query("SELECT * FROM sends  where messageid=$_GET[messageid] and `over`=0 ORDER BY id");
 		while($row=$db->fetch_array($query)) {
 			$tels[$row[provider]][]=$row; 
 			$totalnum++;

@@ -151,7 +151,7 @@ function restart(&$goiprow,$len,$msg)
 	function do_cron($db,$crontime,$port)
 	{
 		if(!$port) $port=44444;
-		$rs=$db->fetch_array($db->query("SELECT id FROM message WHERE crontime>0 and crontime<$crontime and over=0"));//是否有未執行的比新計劃還要前的計劃
+		$rs=$db->fetch_array($db->query("SELECT id FROM message WHERE crontime>0 and crontime<$crontime and `over`=0"));//是否有未執行的比新計劃還要前的計劃
 		$flag=1;
 		if(empty($rs[0])){
 			$flag=0;
@@ -563,7 +563,7 @@ function startdo($db, $tels,$sendid, $goipid=0){
 		//$sendid=1111;
 		//$id=0;
 		//$query=$db->query("SELECT prov.*,goip.* FROM goip,prov where prov.id=goip.provider and alive=1 and gsm_status!='LOGOUT' ORDER BY name");	
-		$db->query("update message set over=1 where id=$sendid");
+		$db->query("update message set `over`=1 where id=$sendid");
 		$query=$db->query("SELECT prov.*,goip.* FROM goip,prov where prov.id=goip.provider ORDER BY name");	
 		$socks=array();
 		$errortels=array();
@@ -744,9 +744,9 @@ function startdo($db, $tels,$sendid, $goipid=0){
 					if($comm[0]=="OK"){
 						//更新數據庫，發送成功 
 						if(is_numeric($comm[3])) 
-							$db->query("update sends set over=1,sms_no=$comm[3],goipid=$goipnow[id],time=now() where id='".$goipnow[telid]."' and messageid=$sendid");	
+							$db->query("update sends set `over`=1,sms_no=$comm[3],goipid=$goipnow[id],time=now() where id='".$goipnow[telid]."' and messageid=$sendid");
 						else 
-							$db->query("update sends set over=1,goipid=$goipnow[id],time=now() where id='".$goipnow[telid]."' and messageid=$sendid");	
+							$db->query("update sends set `over`=1,goipid=$goipnow[id],time=now() where id='".$goipnow[telid]."' and messageid=$sendid");
 
 						/**/
 						if($goipnow[send]!="SEND"){//不處于發送狀態，無視
@@ -1118,7 +1118,7 @@ function startdo($db, $tels,$sendid, $goipid=0){
 				$i++;
 			}
 		}
-		$db->query("update message set over=2 where id=$sendid");
+		$db->query("update message set `over`=2 where id=$sendid");
 		echo "All sendings done! Failure:{$i}";
 		echo "<br><br>";
 		echo "<a href=sendinfo.php?id=$sendid target=main><font size=2'>Click me to check details.</font></a>";

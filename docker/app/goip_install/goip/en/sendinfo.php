@@ -170,7 +170,7 @@ else {
 	}
 	else $userid=$_SESSION[goip_userid];
 	
-	$query=$db->query("SELECT count(*) AS count FROM message where userid=$userid and (over>1 or crontime=0)");
+	$query=$db->query("SELECT count(*) AS count FROM message where userid=$userid and (`over`>1 or crontime=0)");
 	$row=$db->fetch_array($query);
 	$count=$row['count'];
 	$numofpage=ceil($count/$perpage);
@@ -191,7 +191,7 @@ else {
 	}
 	$fenye=showpage("sendinfo.php?type=$_GET[type]&userid=$_GET[userid]&",$page,$count,$perpage,true,true,"rows");
 	
-	$query=$db->query("SELECT * from message where userid=$userid  and (over>1 or crontime=0) ORDER BY time DESC,userid LIMIT $start_limit,$perpage");
+	$query=$db->query("SELECT * from message where userid=$userid  and (`over`>1 or crontime=0) ORDER BY time DESC,userid LIMIT $start_limit,$perpage");
 	while($row=$db->fetch_array($query)) {
 		//$row[crontime]=date("Y-m-d H:i:s", $row[crontime]);
 
@@ -199,7 +199,7 @@ else {
 		$row0=$db->fetch_array($query0);
 		$row["total"]=$row0['count'];
 
-		$query0=$db->query("SELECT count(*) as count from sends,message where message.id=$row[id] and sends.messageid=message.id and sends.over=1");
+		$query0=$db->query("SELECT count(*) as count from sends,message where message.id=$row[id] and sends.messageid=message.id and `sends.over`=1");
 		$row0=$db->fetch_array($query0);
 		$row["succ"]=$row0['count'];		
 		$rsdb[]=$row;
