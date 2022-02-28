@@ -1,6 +1,6 @@
 ## Get started
 ```
-git clone https://github.com/doanbaanh/goip-sms-server.git
+git clone https://github.com/inkrot/goip-sms-server.git
 cd goip-sms-server
 make build
 make up
