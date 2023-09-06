@@ -4,8 +4,8 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV DATE_TIMEZONE Europe/Moscow
 
 RUN echo 'deb http://archive.debian.org/debian wheezy main contrib non-free\ndeb http://archive.debian.org/debian-security/ wheezy/updates main' > /etc/apt/sources.list \
-	&& apt-get -o Acquire::Check-Valid-Until=false update \
-	&& apt-get install -f --no-install-recommends -y \
+	&& apt-get --allow-unauthenticated -o Acquire::Check-Valid-Until=false update \
+	&& apt-get install --allow-unauthenticated -f --no-install-recommends -y \
 		apache2 \
 		libapache2-mod-php5 \
 		php5-mysql \
